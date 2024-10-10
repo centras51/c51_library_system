@@ -10,11 +10,44 @@ class Librarian:
     def __init__(self) -> None:
         pass
 
-    def username_password_verification(self):
+    def username_password_verification(self, username, password):
+        usr_psw_df = pd.read_csv("CSVs\\librarians_db.csv")
+        user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
+        if not user_info.empty:
+            return user_info['password'].values[0] == password
+        return False
+        
+    def find_reader(self):
         pass
+    
+    def find_book(self):
+        pass
+    
+    def remove_book(self):
+        pass
+    
+    def add_book(self):
+        pass
+    
 
 class Reader:
     def __init__(self) -> None:
+        pass
+    
+    def username_password_verification(self, username, password):
+        usr_psw_df = pd.read_csv("CSVs\\passwords_db.csv")
+        user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
+        if not user_info.empty:
+            return user_info['password'].values[0] == password
+        return False
+    
+    def make_reservation(self):
+        pass
+    
+    def find_book(self):
+        pass
+    
+    def show_reader_history(self):
         pass
 
 class ReaderRegistration:
@@ -41,12 +74,56 @@ class ReaderRegistration:
     
     def save_reader_datas(self, reader_name, reader_last_name, reader_email, reader_phone, reader_card_number):
         new_reader_line = {'vardas': reader_name, 'pavarde': reader_last_name, 'email': reader_email, 'telefonas': reader_phone, 'skaitytojo_kortele': reader_card_number}
-
         reader_df = pd.read_csv("CSVs\\readers_db.csv")
         reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
         reader_df.to_csv("CSVs\\readers_db.csv", index=False, encoding='utf-8')
+        
+    def save_reader_password(self, reader_name, reader_last_name, reader_email, reader_phone, reader_card_number, username, password):
+        new_reader_line = {'vardas': reader_name, 'pavarde': reader_last_name, 'email': reader_email, 'telefonas': reader_phone, 'skaitytojo_kortele': reader_card_number, 'username': username, 'password': password}
+        reader_df = pd.read_csv("CSVs\\passwords_db.csv")
+        reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
+        reader_df.to_csv("CSVs\\passwords_db.csv", index=False, encoding='utf-8')
+
+
+class BorrowBook():
+    def __init__(self) -> None:
+        pass
+    
+    def take_book(self):
+        pass
+    
+    def return_book(self):
+        pass
+    
+    def set_term(self):
+        pass
+    
+    def books_with_delay(self):
+        pass
+    
+    def fines_for_delay(self):
+        pass
+    
+
+class Books():
+    def __init__(self) -> None:
+        pass
+    
+    def find_book(self):
+        pass
+    
+    def find_reservation(self):
+        pass
+    
+    def show_books(self):
+        pass
+    
+    def show_history(self):
+        pass
 
 reader_registration = ReaderRegistration()
+librarian = Librarian()
+reader = Reader()
 
 while True:
     print("-" * 50)
@@ -67,24 +144,14 @@ while True:
             print("Norėdami prisijungti prie darbuotojo aplinkos, įveskite savo duomenis")
             print("-" * 50)
             librarian_login_user_name = input("Įveskite naudotojo vardą:\n ")
-            if librarian_login_user_name in passwords:
+            librarian_login_password = input("Įveskite slaptažodį:\n ")
+            if not librarian.username_password_verification(librarian_login_user_name, librarian_login_password):
                 print("-" * 50)
                 print("C51 BIBLIOTEKOS SISTEMA")
                 print("-" * 50)
-                librarian_login_password = input("Įveskite slaptažodį:\n ")
-                if librarian_login_password in passwords:
-                    print("-" * 50)
-                    print("C51 BIBLIOTEKOS SISTEMA")
-                    print("-" * 50)
-                    print(f"Sveiki prisijungę {librarian_login_user_name}!")
-                else:
-                    print("Neteisingas slaptažodis!")
-                    continue
+                print("Neteisingas slaptažodis arba vartotojo vardas!")
             else:
-                print("-" * 50)
-                print("C51 BIBLIOTEKOS SISTEMA")
-                print("-" * 50)
-                print(f'"{librarian_login_user_name}" vartotojo nėra!')
+                print(f"Sveiki prisijungę, {librarian_login_user_name}!")
                 continue
         elif choose_1_level == 2:
             print("-" * 50)
@@ -93,25 +160,20 @@ while True:
             print("Norėdami prisijungti prie lankytojo aplinkos, įveskite savo duomenis")
             print("-" * 50)
             reader_login_user_name = input("Įveskite naudotojo vardą:\n ")
-            if reader_login_user_name in passwords:
+            reader_login_password = input("Įveskite slaptažodį:\n ")
+            if not reader.username_password_verification(reader_login_user_name, reader_login_password):
                 print("-" * 50)
                 print("C51 BIBLIOTEKOS SISTEMA")
                 print("-" * 50)
-                reader_login_password = input("Įveskite slaptažodį:\n ")
-                if reader_login_password in passwords:
-                    print("-" * 50)
-                    print("C51 BIBLIOTEKOS SISTEMA")
-                    print("-" * 50)
-                    print(f"Sveiki prisijungę {reader_login_user_name}!")
-                else:
-                    print("Neteisingas slaptažodis!")
-                    continue
+                print("Neteisingas slaptažodis arba vartotojo vardas!")
             else:
-                print("-" * 50)
-                print("C51 BIBLIOTEKOS SISTEMA")
-                print("-" * 50)
-                print(f'"{reader_login_user_name}" vartotojo nėra!')
-                continue
+                print(f"Sveiki prisijungę, {reader_login_user_name}!")
+            while True:    
+                print("1. Peržiūrėti leidinių sąrašą;")
+                print("2. Ieškoti leidinių.")
+                print("3. Grįžti į pagrindinį langą.")
+                print("4. Išeiti iš programos.")
+                choose_1_3_level = input("Pasirinkite 1-4:\n")
         elif choose_1_level == 3:
                 print("-" * 50)
                 print("C51 BIBLIOTEKOS SISTEMA")
@@ -141,6 +203,15 @@ while True:
                     print(f"Jūsų įvestas el. pašto adresas {reader_email} neatitinka reikalavimų.")
                     continue
                 while True:
+                    username = input("Įveskite naują vartotojo vardą:\n")
+                    password = input("Įveskite naują slaptažodį:\n")
+                    password2 = input("Pakartokite slaptažodį:\n")
+                    if password != password2:
+                        print("Slaptažodžiai nesutampa! Pakartokite iš naujo")
+                        continue
+                    else:
+                        break
+                while True:
                     reader_phone = input("Įveskite savo telefono numerį: +370")
                     if not reader_registration.is_valid_phone(reader_phone):
                         print(f"Klaida! Patikrinkite telefono numerį. Jūsų įvestas numeris:\n{reader_phone}")
@@ -150,10 +221,11 @@ while True:
                 print(f"Registracija sėkminga. Jūsų duomenys:\n {reader_name} {reader_last_name},\n Telefono numeris: {reader_phone}\n Email: {reader_email}")
                 print(f"Jūsų skaitytojo kortelės numeris: {reader_registration.reader_card_number_generator()}")
                 reader_registration.save_reader_datas(reader_name, reader_last_name, reader_email, reader_phone, reader_registration.reader_card_number_generator())
+                reader_registration.save_reader_password(reader_name, reader_last_name, reader_email, reader_phone, reader_registration.reader_card_number, username, password)
                 break
             
         elif choose_1_level == 5:
             print("Išeinama iš programos!")
             break
-    except ValueError:
+    except ZeroDivisionError:
         print("Reikšmė turi būti 1-5")
