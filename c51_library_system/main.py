@@ -3,12 +3,19 @@ import datetime as dt
 import streamlit as st
 import getpass
 import re
+import random
 
 
 class Librarian:
     def __init__(self) -> None:
         pass
 
+    def username_password_verification(self):
+        pass
+
+class Reader:
+    def __init__(self) -> None:
+        pass
 
 class ReaderRegistration:
     def __init__(self) -> None:
@@ -25,10 +32,19 @@ class ReaderRegistration:
         return reader_phone.isnumeric() and number_length == 8 and first_digit == "6"
     
     def reader_card_number_generator(self):
-        self.reader_card_number = "testinis numeris 12345678"
-        
-        return self.reader_card_number
+        self.reader_card_number = random.randint(10000000, 99999999)
+        reader_df = pd.read_csv("CSVs\\readers_db.csv")
+        existing_reader_card_numbers = reader_df['skaitytojo_kortele'].to_list()
+        while True:
+            if self.reader_card_number not in existing_reader_card_numbers:
+                return self.reader_card_number
+    
+    def save_reader_datas(self, reader_name, reader_last_name, reader_email, reader_phone, reader_card_number):
+        new_reader_line = {'vardas': reader_name, 'pavarde': reader_last_name, 'email': reader_email, 'telefonas': reader_phone, 'skaitytojo_kortele': reader_card_number}
 
+        reader_df = pd.read_csv("CSVs\\readers_db.csv")
+        reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
+        reader_df.to_csv("CSVs\\readers_db.csv", index=False, encoding='utf-8')
 
 reader_registration = ReaderRegistration()
 
@@ -129,9 +145,11 @@ while True:
                     if not reader_registration.is_valid_phone(reader_phone):
                         print(f"Klaida! Patikrinkite telefono numerį. Jūsų įvestas numeris:\n{reader_phone}")
                     else:
+                        reader_phone = "+370" + reader_phone
                         break
                 print(f"Registracija sėkminga. Jūsų duomenys:\n {reader_name} {reader_last_name},\n Telefono numeris: {reader_phone}\n Email: {reader_email}")
                 print(f"Jūsų skaitytojo kortelės numeris: {reader_registration.reader_card_number_generator()}")
+                reader_registration.save_reader_datas(reader_name, reader_last_name, reader_email, reader_phone, reader_registration.reader_card_number_generator())
                 break
             
         elif choose_1_level == 5:
