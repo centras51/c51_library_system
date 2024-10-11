@@ -7,96 +7,216 @@ from readeregistration import ReaderRegistration
 from librarian import Librarian
 from reader import Reader
 
-
 st.set_page_config(layout="wide")
 
+# Inicializuojame sesijos būseną
+if 'page' not in st.session_state:
+    st.session_state.page = 'login'
 
+def navigate(page):
+    st.session_state.page = page
 
-
-
-
-
-class BorrowBook():
-    def __init__(self) -> None:
-        pass
-    
-    def take_book(self):
-        pass
-    
-    def return_book(self):
-        pass
-    
-    def set_term(self):
-        pass
-    
-    def books_with_delay(self):
-        pass
-    
-    def fines_for_delay(self):
-        pass
-    
-
-class Books():
-    def __init__(self) -> None:
-        pass
-    
-    def find_book(self):
-        pass
-    
-    def find_reservation(self):
-        pass
-    
-    def show_books(self):
-        pass
-    
-    def show_history(self):
-        pass
-
+# Inicializuojame objektus
 reader_registration = ReaderRegistration()
 librarian = Librarian()
 reader = Reader()
 
-menu = ["Prisijungimas bibliotekininkui", "Prisijungimas lankytojui", "Dirbti neprisijungus (apribotos funkcijos)", "Naujo skaitytojo registracija", "Išeiti"]
-choice = st.sidebar.selectbox("Pasirinkite", menu)
-
-col1, col2 = st.columns(2)
-with col1:
+# Prisijungimo puslapis
+if st.session_state.page == 'login':
     st.title("C51 BIBLIOTEKOS SISTEMA")
+    
+    # Meniu rodymas tik prisijungimo puslapyje
+    st.subheader("Pasirinkite veiksmą:")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("Prisijungimas bibliotekininkui"):
+            st.session_state.page = 'librarian_login'
+    with col2:
+        if st.button("Prisijungimas lankytojui"):
+            st.session_state.page = 'reader_login'
+    with col3:
+        if st.button("Dirbti neprisijungus (apribotos funkcijos)"):
+            navigate('anonymous_environment')
+    
+    if st.button("Naujo skaitytojo registracija"):
+        navigate('reader_registration')
+    if st.button("Išeiti"):
+        st.write("Išeinama iš programos...")
+        st.stop()
 
-with col2:
-    if st.button("Išeiti iš sistemos"):
-        st.write("Išeiti")
-
-if choice == "Prisijungimas bibliotekininkui":
+# Bibliotekininko prisijungimas
+elif st.session_state.page == 'librarian_login':
     st.subheader("Bibliotekininko prisijungimas")
-    librarian_username = st.text_input("Naudotojo vardas", key="librarian_username")
-    librarian_password = st.text_input("Slaptažodis", type='password', key="librarian_password")
+    librarian_username = st.text_input("Naudotojo vardas")
+    librarian_password = st.text_input("Slaptažodis", type='password')
     if st.button("Prisijungti"):
         if librarian.username_password_verification(librarian_username, librarian_password):
             st.success(f"Sveiki prisijungę, {librarian_username}!")
+            st.session_state['librarian_username'] = librarian_username  # Išsaugome vartotojo vardą
+            navigate('librarian_environment')
         else:
             st.error("Neteisingas naudotojo vardas arba slaptažodis!")
+    if st.button("Grįžti"):
+        navigate('login')
 
-if choice == "Prisijungimas lankytojui":
+# Skaitytojo prisijungimas
+elif st.session_state.page == 'reader_login':
     st.subheader("Bibliotekos lankytojo prisijungimas")
     reader_username = st.text_input("Naudotojo vardas", key="reader_username")
     reader_password = st.text_input("Slaptažodis", type='password', key="reader_password")
     if st.button("Prisijungti", key="reader_login_button"):
         if reader.username_password_verification(reader_username, reader_password):
             st.success(f"Sveiki prisijungę, {reader_username}!")
+            st.session_state['reader_username'] = reader_username  # Išsaugome vartotojo vardą
+            navigate('reader_environment')
         else:
             st.error("Neteisingas naudotojo vardas arba slaptažodis!")
+    if st.button("Grįžti"):
+        navigate('login')
 
-if choice == "Dirbti neprisijungus (apribotos funkcijos)":
-    pass
+# Bibliotekininko aplinka
+elif st.session_state.page == 'librarian_environment':
+    st.title("Bibliotekos valdymas")
+    st.write(f"Bibliotekininko vardas: {st.session_state.get('librarian_username')}")
 
-if choice == "Naujo skaitytojo registracija":
-    st.subheader("Naujo skaitytojo registracija")
-    reader_name = st.text_input("Vardas", key="new_reader_name")
-    reader_last_name = st.text_input("Pavardė", key="new_reader_lastname")
-    reader_email = st.text_input("El. paštas", key="new_reader_email")
-    reader_phone = st.text_input("Telefono numeris", help="Įveskite numerį be +370", key="new_reader_phone")
+    st.subheader("Knygų bazė")
+    if st.button("Rodyti knygas"):
+        books_df = librarian.show_books()
+        st.dataframe(books_df, use_container_width=True)
+        
+    if st.button("Knygų paieška"):
+        librarian.find_book()
+        
+    if st.button("Autoriaus paieška"):
+        librarian.find_author()
+
+    if st.button("Pridėti knygą"):
+        librarian.add_book()
+
+    if st.button("Nurašyti knygas"):
+        librarian.remove_book()
+
+    st.subheader("Skaitytojų bazė")
+    if st.button("Atidaryti skaitytojų bazę"):
+        readers_df = librarian.show_readers()
+        if readers_df is not None:
+            st.write(readers_df)
+        else:
+            st.info("Nėra skaitytojų duomenų.")
+
+    if st.button("Paieška skaitytojų bazėje"):
+       librarian.find_reader()
+
+    if st.button("Pridėti naują skaitytoją"):
+        st.subheader("Naujo skaitytojo registracija")
+        reader_name = st.text_input("Vardas", key="name").title()
+        reader_last_name = st.text_input("Pavardė", key="lastname").title()
+        reader_email = st.text_input("El. paštas", key="email").lower()
+        reader_phone = st.text_input("Telefono numeris +370", help="Įveskite numerį be +370", key="phone")
+
+        if st.button("Registruoti", key="register_reader"):
+            if not reader_name.isalpha() or not reader_last_name.isalpha():
+                st.error("Vardą ir pavardę turi sudaryti tik raidės!")
+            elif not reader_registration.is_valid_email(reader_email):
+                st.error("Neteisingas el. pašto formatas!")
+            elif not reader_registration.is_valid_phone(reader_phone):
+                st.error("Neteisingas telefono numeris! Numeris turi būti 8 skaitmenų, prasidedantis 6.")
+            else:
+                reader_card_number = reader_registration.reader_card_number_generator()
+                reader_registration.save_reader_datas(reader_name, reader_last_name, reader_email, "+370" + reader_phone, reader_card_number)
+                st.success(f"Sėkmingai užregistruotas naujas skaitytojas: {reader_name} {reader_last_name}. Skaitytojo kortelės numeris: {reader_card_number}")
+
+    st.subheader("Valdymo skiltis")
+    if st.button("Bibliotekos darbuotojai"):
+        librarian.show_librarians()
     
+    if st.button("Atsijungti"):
+        st.session_state.page = 'login'
+        st.session_state.pop('librarian_username', None)
+        st.experimental_rerun()
+
+    if st.button("Išeiti iš programos"):
+        st.write("Išeinama iš programos...")
+        st.stop()
+
+# Skaitytojo aplinka
+elif st.session_state.page == 'reader_environment':
+    st.title("Bibliotekos lankytojo aplinka")
+    st.write(f"Sveiki, {st.session_state.get('reader_username')}")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("Peržiūrėti knygas"):
+            books_df = reader.show_books()
+            if books_df is not None:
+                st.write(books_df)
+            else:
+                st.info("Nėra knygų duomenų.")
+
+        if st.button("Ieškoti knygos"):
+            search_query = st.text_input("Įveskite paieškos užklausą")
+            if st.button("Ieškoti", key="search_books_reader"):
+                search_results = reader.search_books(search_query)
+                if not search_results.empty:
+                    st.write(search_results)
+                else:
+                    st.info("Pagal jūsų užklausą knygų nerasta.")
+
+    with col2:
+        if st.button("Atsijungti"):
+            st.session_state.page = 'login'
+            st.session_state.pop('reader_username', None)
+            st.experimental_rerun()
+
+        if st.button("Išeiti iš programos"):
+            st.write("Išeinama iš programos...")
+            st.stop()
+
+# Anoniminė aplinka
+elif st.session_state.page == 'anonymous_environment':
+    st.title("Peržiūra be registracijos")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("Peržiūrėti knygas"):
+            books_df = reader.show_books()
+            if books_df is not None:
+                st.write(books_df)
+            else:
+                st.info("Nėra knygų duomenų.")
+
+        if st.button("Ieškoti knygos"):
+            search_query = st.text_input("Įveskite paieškos užklausą")
+            if st.button("Ieškoti", key="search_books_anonymous"):
+                search_results = reader.search_books(search_query)
+                if not search_results.empty:
+                    st.write(search_results)
+                else:
+                    st.info("Pagal jūsų užklausą knygų nerasta.")
+
+    with col2:
+        if st.button("Grįžti į prisijungimo langą"):
+            st.session_state.page = 'login'
+            st.experimental_rerun()
+
+        if st.button("Išeiti iš programos"):
+            st.write("Išeinama iš programos...")
+            st.stop()
+
+# Naujo skaitytojo registracija
+elif st.session_state.page == 'reader_registration':
+    st.title("Naujo skaitytojo registracija")
+    reader_name = st.text_input("Vardas", key="name").title()
+    reader_last_name = st.text_input("Pavardė", key="lastname").title()
+    reader_email = st.text_input("El. paštas", key="email").lower()
+    reader_phone = st.text_input("Telefono numeris +370", help="Įveskite numerį be +370", key="phone")
+    new_username = st.text_input("Jūsų prisijungimo vardas", help="Sugalvokite ir įveskite savo prisijungimo vardą", key="username")
+    new_password = st.text_input("Jūsų slaptažodis", type="password", help="Įveskite slaptažodį", key="password")
+    new_password2 = st.text_input("Pakartokite slaptažodį", type="password", help="Pakartokite slaptažodį", key="password1")
+
     if st.button("Registruotis", key="register_button"):
         if not reader_name.isalpha() or not reader_last_name.isalpha():
             st.error("Vardą ir pavardę turi sudaryti tik raidės!")
@@ -104,118 +224,16 @@ if choice == "Naujo skaitytojo registracija":
             st.error("Neteisingas el. pašto formatas!")
         elif not reader_registration.is_valid_phone(reader_phone):
             st.error("Neteisingas telefono numeris! Numeris turi būti 8 skaitmenų, prasidedantis 6.")
+        elif new_password != new_password2:
+            st.error("Slaptažodžiai nesutampa.")
         else:
             reader_card_number = reader_registration.reader_card_number_generator()
             reader_registration.save_reader_datas(reader_name, reader_last_name, reader_email, "+370" + reader_phone, reader_card_number)
-            st.success(f"Sėkmingai užregistruotas {reader_name} {reader_last_name}. Kortelės numeris: {reader_card_number}")
-            
-            
-# while True:
-#     print("-" * 50)
-#     print("C51 BIBLIOTEKOS SISTEMA")
-#     print("-" * 50)
-#     print("1. Prisijungimas bibliotekininkui.")
-#     print("2. Prisijungimas bibliotekos lankytojui.")
-#     print("3. Dirbti neprisijungus (apribotos funkcijos).")
-#     print("4. Naujo skaitytojo registracija.")
-#     print("5. Išeiti iš programos.")
-#     print("-" * 50)
-#     try:
-#         choose_1_level = int(input("Įveskite savo pasirinkimą (1 - 5):\n"))
-#         if choose_1_level == 1:
-#             print("-" * 50)
-#             print("C51 BIBLIOTEKOS SISTEMA")
-#             print("-" * 50)
-#             print("Norėdami prisijungti prie darbuotojo aplinkos, įveskite savo duomenis")
-#             print("-" * 50)
-#             librarian_login_user_name = input("Įveskite naudotojo vardą:\n ")
-#             if librarian_login_user_name in passwords:
-#                 print("-" * 50)
-#                 print("C51 BIBLIOTEKOS SISTEMA")
-#                 print("-" * 50)
-#                 librarian_login_password = input("Įveskite slaptažodį:\n ")
-#                 if librarian_login_password in passwords:
-#                     print("-" * 50)
-#                     print("C51 BIBLIOTEKOS SISTEMA")
-#                     print("-" * 50)
-#                     print(f"Sveiki prisijungę {librarian_login_user_name}!")
-#                 else:
-#                     print("Neteisingas slaptažodis!")
-#                     continue
-#             else:
-#                 print("-" * 50)
-#                 print("C51 BIBLIOTEKOS SISTEMA")
-#                 print("-" * 50)
-#                 print(f'"{librarian_login_user_name}" vartotojo nėra!')
-#                 continue
-#         elif choose_1_level == 2:
-#             print("-" * 50)
-#             print("C51 BIBLIOTEKOS SISTEMA")
-#             print("-" * 50)
-#             print("Norėdami prisijungti prie lankytojo aplinkos, įveskite savo duomenis")
-#             print("-" * 50)
-#             reader_login_user_name = input("Įveskite naudotojo vardą:\n ")
-#             if reader_login_user_name in passwords:
-#                 print("-" * 50)
-#                 print("C51 BIBLIOTEKOS SISTEMA")
-#                 print("-" * 50)
-#                 reader_login_password = input("Įveskite slaptažodį:\n ")
-#                 if reader_login_password in passwords:
-#                     print("-" * 50)
-#                     print("C51 BIBLIOTEKOS SISTEMA")
-#                     print("-" * 50)
-#                     print(f"Sveiki prisijungę {reader_login_user_name}!")
-#                 else:
-#                     print("Neteisingas slaptažodis!")
-#                     continue
-#             else:
-#                 print("-" * 50)
-#                 print("C51 BIBLIOTEKOS SISTEMA")
-#                 print("-" * 50)
-#                 print(f'"{reader_login_user_name}" vartotojo nėra!')
-#                 continue
-#         elif choose_1_level == 3:
-#                 print("-" * 50)
-#                 print("C51 BIBLIOTEKOS SISTEMA")
-#                 print("-" * 50)
-#                 print("Darbas su apribotomis funkcijomis. Be registracijos galite:")
-#                 print("1. Peržiūrėti leidinių sąrašą;")
-#                 print("2. Ieškoti leidinių.")
-#                 print("3. Grįžti į pagrindinį langą.")
-#                 print("4. Išeiti iš programos.")
-#                 anonymous_choose = int(input("Pasirinkite 1-4:\n"))
-#         elif choose_1_level == 4:
-#             while True:
-#                 print("-" * 50)
-#                 print("C51 BIBLIOTEKOS SISTEMA")
-#                 print("NAUJO SKAITYTOJO REGISTRACIJA")
-#                 print("-" * 50)
-#                 reader_name = input("Įveskite savo vardą:\n").strip().title()
-#                 if not reader_name.isalpha():
-#                     print(f"Vardą turi sudaryti tik raidės. Jūsų įvestas vardas {reader_name} yra netinkamas.")
-#                     continue
-#                 reader_last_name = input("Įveskite savo pavardę:\n").strip().title()
-#                 if not reader_last_name.isalpha():
-#                     print(f"Pavardę turi sudaryti tik raidės. Jūsų įvesta pavardė {reader_last_name} yra netinkama.")
-#                     continue
-#                 reader_email = input("Įveskite savo el. pašto adresą:\n")
-#                 if not reader_registration.is_valid_email(reader_email):
-#                     print(f"Jūsų įvestas el. pašto adresas {reader_email} neatitinka reikalavimų.")
-#                     continue
-#                 while True:
-#                     reader_phone = input("Įveskite savo telefono numerį: +370")
-#                     if not reader_registration.is_valid_phone(reader_phone):
-#                         print(f"Klaida! Patikrinkite telefono numerį. Jūsų įvestas numeris:\n{reader_phone}")
-#                     else:
-#                         reader_phone = "+370" + reader_phone
-#                         break
-#                 print(f"Registracija sėkminga. Jūsų duomenys:\n {reader_name} {reader_last_name},\n Telefono numeris: {reader_phone}\n Email: {reader_email}")
-#                 print(f"Jūsų skaitytojo kortelės numeris: {reader_registration.reader_card_number_generator()}")
-#                 reader_registration.save_reader_datas(reader_name, reader_last_name, reader_email, reader_phone, reader_registration.reader_card_number_generator())
-#                 break
-            
-#         elif choose_1_level == 5:
-#             print("Išeinama iš programos!")
-#             break
-#     except ValueError:
-#         print("Reikšmė turi būti 1-5")
+            reader_registration.save_reader_password(reader_name, reader_last_name, reader_email, "+370" + reader_phone, reader_card_number, new_username, new_password)
+            st.success(f"Sėkmingai užregistruotas {reader_name} {reader_last_name}. Jūsų skaitytojo kortelės numeris: {reader_card_number}")
+            st.info("Dabar galite prisijungti naudodami savo prisijungimo vardą ir slaptažodį.")
+            st.session_state.page = 'login'
+            st.experimental_rerun()
+    if st.button("Grįžti"):
+        navigate('login')
+
