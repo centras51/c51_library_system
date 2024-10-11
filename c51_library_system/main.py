@@ -6,6 +6,8 @@ import re
 import random
 
 
+st.set_page_config(layout="wide")
+
 class Librarian:
     def __init__(self) -> None:
         pass
@@ -125,11 +127,30 @@ reader_registration = ReaderRegistration()
 librarian = Librarian()
 reader = Reader()
 
-while True:
+st.title("C51 BIBLIOTEKOS SISTEMA")
+
+col1, col2, col3, col4 = st.columns([0.5, 0.5, 0.5, 0.5])
+
+with col1:
+    if st.button("Prisijungimas bibliotekininkui"):
+        st.write("Prisijungimas bibliotekininkui")
+
+with col2:
+    if st.button("Prisijungimas bibliotekos lankytojui"):
+        st.write("Prisijungimas bibliotekos lankytojui")
+
+with col3:
+    if st.button("Dirbti neprisijungus (apribotos funkcijos)"):
+        st.write("Dirbti neprisijungus (apribotos funkcijos)")
+        
+with col4:
+    if st.button("Naujo skaitytojo registracija"):
+        st.write("Naujo skaitytojo registracija")
+        
+        
     print("-" * 50)
     print("C51 BIBLIOTEKOS SISTEMA")
     print("-" * 50)
-    print("1. Prisijungimas bibliotekininkui.")
     print("2. Prisijungimas bibliotekos lankytojui.")
     print("3. Dirbti neprisijungus (apribotos funkcijos).")
     print("4. Naujo skaitytojo registracija.")
@@ -152,7 +173,6 @@ while True:
                 print("Neteisingas slaptažodis arba vartotojo vardas!")
             else:
                 print(f"Sveiki prisijungę, {librarian_login_user_name}!")
-                continue
         elif choose_1_level == 2:
             print("-" * 50)
             print("C51 BIBLIOTEKOS SISTEMA")
@@ -226,6 +246,5 @@ while True:
             
         elif choose_1_level == 5:
             print("Išeinama iš programos!")
-            break
     except ZeroDivisionError:
         print("Reikšmė turi būti 1-5")
