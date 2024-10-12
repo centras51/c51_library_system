@@ -17,16 +17,7 @@ class Librarian:
         for widget in self.root.winfo_children():
             widget.destroy()
 
-    def username_password_verification(self, username, password):
-        try:
-            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
-            user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
-            if not user_info.empty:
-                return user_info['password'].values[0] == password
-            return False
-        except FileNotFoundError:
-            messagebox.showerror("Klaida", "Duomenų bazė nerasta")
-            return False
+    
 
     def show_menu(self):
         self.clear_window()

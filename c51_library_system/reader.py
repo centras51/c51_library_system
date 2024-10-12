@@ -14,17 +14,7 @@ class Reader:
         for widget in self.root.winfo_children():
             widget.destroy()
 
-    def username_password_verification(self, username, password):
-        """Check if the username and password match the database."""
-        try:
-            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\passwords_db.csv")
-            user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
-            if not user_info.empty:
-                return user_info['password'].values[0] == password
-            return False
-        except FileNotFoundError:
-            messagebox.showerror("Error", "Passwords file not found.")
-            return False
+
 
     def login_screen(self):
         """Display login screen for username and password."""
@@ -39,17 +29,6 @@ class Reader:
         tk.Label(self.root, text="Password").pack(pady=5)
         password_entry = tk.Entry(self.root, show='*')
         password_entry.pack(pady=5)
-
-        def verify_login():
-            username = username_entry.get()
-            password = password_entry.get()
-            if self.username_password_verification(username, password):
-                self.username = username
-                self.password = password
-                messagebox.showinfo("Success", "Login successful!")
-                self.show_menu()  # Show reader's menu after successful login
-            else:
-                messagebox.showerror("Error", "Invalid username or password.")
 
         tk.Button(self.root, text="Login", command=verify_login).pack(pady=10)
         tk.Button(self.root, text="Exit", command=self.root.quit).pack(pady=10)
