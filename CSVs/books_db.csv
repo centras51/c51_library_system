@@ -1,4 +1,4 @@
-﻿autorius,knygos_pavadinimas,metai,ISBN,zanras,pastabos
+autorius,knygos_pavadinimas,metai,ISBN,zanras,pastabos
 Valentina Zeitler,Užmirštos nuodėmės,2013,9786094230127,Istorinis romanas,Pagrindinė romano gija – Žolkievskių šeimos likimas
 Valentina Zeitler,Mikalojus Radvila Juodasis Antrasis valdovo AŠ,2024,9786098219715,Istorinis romanas,Vis dar menkai pažįstamas Vilniaus vaivada ir Lietuvos Didžiosios Kunigaikštystės kancleris Mikalojus Radvila Juodasis
 Rimantas Kmita,Pietinia kronikas,2016,978-609-466-210-2,Popromanas,Romanas apie 90-ųjų Šiaulius. Parašyta Šiaulių šneka
@@ -262,7 +262,7 @@ Justinas Marcinkevičius,Voro vestuvės,2011,978-6098086519,Poezija,Vaikams skir
 Andrius Jakučiūnas,Lalagė,2016,978-6090125446,Grožinė literatūra,Psichologinis romanas apie žmogaus tapatybę
 Sigitas Geda,Žaliojo namo paslaptis,2009,978-6094037121,Poezija,Gamtos ir gyvenimo apmąstymai
 Gintaras Beresnevičius,Ant laiko ašmenų,2002,978-6094281295,Grožinė literatūra,Mitologija ir modernumas
-Vytautas Martinkus,Žemė 2014,978-6098142134,Grožinė literatūra,Romantiškas žvilgsnis į Lietuvos kaimą
+Vytautas Martinkus,Žemė 2014,978-6098142134,Grožinė literatūra,Romantiškas žvilgsnis į Lietuvos kaimą,
 Jurga Tumasonytė,Knygynas prie jūros,2018,978-6094275430,Grožinė literatūra,Psichologinis romanas apie šeimą ir praradimus
 Daina Opolskaitė,Ir vienąkart Riči,2018,978-6098198001,Jaunimo literatūra,Jaunimo istorijos apie paauglių išgyvenimus
 Antanas A. Jonynas,Nakties stulpai,2021,978-6094491205,Poezija,Egzistenciniai apmąstymai apie laiką ir žmogaus būvį
@@ -365,7 +365,7 @@ Hanya Yanagihara,Mažas gyvenimas,2015,978-0804172707,Grožinė literatūra,Skau
 Elizabeth Strout,Olive Kitteridge,2008,978-0812971835,Grožinė literatūra,Moteris mažame mieste susiduria su savo gyvenimo nuopuoliais ir triumfais
 Jesmyn Ward,Giesmė iš vandenyno dugno,2017,978-1501126062,Grožinė literatūra,Trijų kartų šeimos gyvenimo istorija Misisipės pakrantėje
 Kamila Shamsie,Sudegintas šešėlis,2009,978-1594489884,Istorinis romanas,Atominės bombos smūgis ir šeimos išgyvenančios pokyčius per tris kartas
-David Grossman,Žiūrėk kas bėga 2008,978-0307265791,Grožinė literatūra,Motina bando pabėgti nuo savo sūnaus karo likimo Izraelyje
+David Grossman,Žiūrėk kas bėga 2008,978-0307265791,Grožinė literatūra,Motina bando pabėgti nuo savo sūnaus karo likimo Izraelyje,
 Lauren Groff,Fates ir Furies,2015,978-1594634475,Grožinė literatūra,Sudėtingi santuokos ir likimo posūkiai per du požiūrius
 Rachel Cusk,Atsikratymas,2014,978-1250047199,Grožinė literatūra,Santykiai ir savęs atradimas po santuokos iširimo
 Emma Donoghue,Kambarys,2010,978-0316098335,Grožinė literatūra,Berniuko gyvenimas nelaisvėje ir jo atradimas išorinio pasaulio
@@ -430,7 +430,7 @@ Hanya Yanagihara,Įsivaizduojamas gyvenimas,2022,978-0735224315,Grožinė litera
 Sarah Winman,Kada Dievas buvo triušis,2011,978-1608196104,Grožinė literatūra,Brolio ir sesers ryšys per jų gyvenimo istorijas
 Kate Atkinson,Gyvenimas po gyvenimo,2013,978-0316176491,Grožinė literatūra,Moteris išgyvena daugybę gyvenimų per Antrąjį pasaulinį karą
 Rachel Cusk,Kontūrai,2014,978-0374228347,Grožinė literatūra,Savirefleksija ir žmonių gyvenimo istorijos pokalbiuose
-Patrick deWitt,Sesuo 2018,978-0062846922,Grožinė literatūra,Komiška kelionė įvykių pilname pasaulyje
+Patrick deWitt,Sesuo 2018,978-0062846922,Grožinė literatūra,Komiška kelionė įvykių pilname pasaulyje,
 Nana Kwame Adjei-Brenyah,Penktadienio juodumas,2018,978-1328911247,Grožinė literatūra,Satyra apie šiuolaikines visuomenės problemas
 Douglas Stuart,Shuggie Bain,2020,978-0802148049,Grožinė literatūra,Dramatiška berniuko kova su motinos priklausomybės problemomis Glazge
 Jeanine Cummins,Amerikos purvas,2020,978-1250209764,Grožinė literatūra,Meksikos moters ir jos sūnaus pabėgimas nuo narkotikų kartelio
@@ -869,7 +869,7 @@ Michelle Obama,Mano istorija,2018,978-6094273709,Autobiografija,Asmeniniai prisi
 Malala Yousafzai,Aš esu Malala,2014,978-6090113467,Autobiografija,Pakistano mergaitės kovojusios už mergaičių teisę į mokslą istorija
 Richard Branson,Nesėkmės ir sėkmės,2011,978-6094270181,Autobiografija,Verslininko ir „Virgin“ įkūrėjo gyvenimo ir verslo sėkmės istorijos
 Andre Agassi,Atvirai,2012,978-6094270426,Autobiografija,Teniso legendos prisiminimai apie sportinę karjerą ir asmeninius iššūkius
-"Steve Jobs,Steve Jobs: oficiali biografija,2011,978-6094270815,Autobiografija,""Apple"" įkūrėjo gyvenimo ir kūrybos istorija"
+"Steve Jobs,Steve Jobs: oficiali biografija,2011,978-6094270815,Autobiografija,""Apple"" įkūrėjo gyvenimo ir kūrybos istorija",,,,,
 Elon Musk,Elon Musk: Tesla SpaceX ir ateities vizija,2015,978-6094279351,Biografija,Technologijų verslininko ir inovatoriaus gyvenimo apžvalga
 Hillary Clinton,Sunkių sprendimų metas,2014,978-6090113450,Autobiografija,JAV valstybės sekretorės prisiminimai apie politinę karjerą ir pasaulio politiką
 David Attenborough,Gyvenimas planetoje,2020,978-6094278255,Autobiografija,Gamtininko ir dokumentinių filmų kūrėjo gyvenimo kelias
@@ -886,7 +886,7 @@ Mahatma Gandhi,Mano gyvenimo istorija,2000,978-9986563471,Autobiografija,Indijos
 Anna Politkovskaja,Mano kova už tiesą,2007,978-6094231348,Autobiografija,Rusijos žurnalistės prisiminimai apie kovą už žodžio laisvę
 Nelson Mandela,Pažadas laisvei,2012,978-9986567123,Autobiografija,Prisiminimai apie kovą už Pietų Afrikos laisvę
 Tony Blair,Kelias į valdžią,2009,978-9986568757,Autobiografija,Jungtinės Karalystės premjero politinės karjeros apžvalga
-"Sheryl Sandberg,Lean In: moterų karjeros kelias,2015,978-6090117929,Autobiografija,Verslininkės ir ""Facebook"" vadovės gyvenimo ir darbo patirtis"
+"Sheryl Sandberg,Lean In: moterų karjeros kelias,2015,978-6090117929,Autobiografija,Verslininkės ir ""Facebook"" vadovės gyvenimo ir darbo patirtis",,,,,
 Nelson Mandela,Beveik laisvas: mano gyvenimo istorija,2010,978-6090113549,Autobiografija,Mandela pasakoja apie asmeninį ir politinį gyvenimą
 Bob Dylan,Chronicles: Volume 1,2005,978-9986564539,Autobiografija,Muzikanto ir Nobelio premijos laureato prisiminimai apie kūrybą
 Muhammad Ali,Didysis: mano gyvenimo pasakojimai,2004,978-6090110135,Autobiografija,Boksininko gyvenimo ir sportinės karjeros prisiminimai
@@ -896,14 +896,14 @@ Bill Clinton,Mano gyvenimas,2005,978-9986569884,Autobiografija,Buvusio JAV prezi
 Margaret Thatcher,Mano gyvenimo kova,2003,978-9986561283,Autobiografija,Jungtinės Karalystės premjerės prisiminimai apie politiką
 Peter Drucker,Mano profesinės mintys,2008,978-9986563416,Autobiografija,Verslo vadybos teoretiko profesiniai apmąstymai
 Ernest Hemingway,Pavojinga vasara,2010,978-9986561222,Autobiografija,Rašytojo prisiminimai apie koridos tradicijas ir gyvenimą Ispanijoje
-"Robert Iger,Mano kelias į Disney sėkmę,2019,978-6094276523,Autobiografija,""Disney"" vadovo prisiminimai apie karjerą ir sėkmės strategijas"
+"Robert Iger,Mano kelias į Disney sėkmę,2019,978-6094276523,Autobiografija,""Disney"" vadovo prisiminimai apie karjerą ir sėkmės strategijas",,,,,
 Eric Clapton,Autobiografija,2008,978-9986562876,Autobiografija,Legendinio gitaristo prisiminimai apie muziką ir asmeninį gyvenimą
-"Phil Knight,Bėgimas su svajonėmis,2017,978-6090112313,Autobiografija,""Nike"" įkūrėjo prisiminimai apie verslą ir sportą"
+"Phil Knight,Bėgimas su svajonėmis,2017,978-6090112313,Autobiografija,""Nike"" įkūrėjo prisiminimai apie verslą ir sportą",,,,,
 Stephen King,Apie rašymą: memuarai apie amatą,2003,978-9986560446,Autobiografija,Rašytojo patarimai ir prisiminimai apie kūrybos procesą
-"Keith Richards,Mano gyvenimo natos,2010,978-9986567651,Autobiografija,""Rolling Stones"" gitaristo gyvenimo ir muzikinės karjeros aprašymas"
+"Keith Richards,Mano gyvenimo natos,2010,978-9986567651,Autobiografija,""Rolling Stones"" gitaristo gyvenimo ir muzikinės karjeros aprašymas",,,,,
 Patti Smith,Just Kids: apie gyvenimą ir kūrybą,2012,978-6090110141,Autobiografija,Muzikantės ir poetės prisiminimai apie kūrybinę kelionę
 Anne Frank,Anos Frank dienoraštis,2015,978-6090114750,Autobiografija,Žydų mergaitės dienoraštis apie Antrojo pasaulinio karo patirtis
-"Bono,Atsakymas į meilę,2022,978-6094277842,Autobiografija,""U2"" grupės lyderio prisiminimai apie muziką ir socialinę veiklą"
+"Bono,Atsakymas į meilę,2022,978-6094277842,Autobiografija,""U2"" grupės lyderio prisiminimai apie muziką ir socialinę veiklą",,,,,
 Maya Angelou,Aš žinau kodėl paukštis gieda narve,2004,978-9986569830,Autobiografija,Juodaodžių teisių aktyvistės ir rašytojos gyvenimo istorija
 Neil Young,Specialusis smėlis,2015,978-6090112985,Autobiografija,Roko legendos prisiminimai apie muziką ir gyvenimą
 George W. Bush,Mano kelias,2011,978-6094276222,Autobiografija,JAV prezidento prisiminimai apie karjerą ir politinius įvykius
@@ -913,7 +913,7 @@ Edward Snowden,Pastovus įrašas,2019,978-6094279110,Autobiografija,Vyriausybės
 Trevor Noah,Gimęs nusikaltėliu,2017,978-6090115467,Autobiografija,Pietų Afrikos komiko prisiminimai apie gyvenimą apartheidu
 Gabrielle Union,Mano kelias į laisvę,2021,978-6094567651,Autobiografija,Aktorės prisiminimai apie karjerą ir socialinę nelygybę
 Will Smith,Will: autobiografija,2021,978-6090119994,Autobiografija,Aktoriaus gyvenimo kelias per šlovę ir asmenines patirtis
-"Paul McCartney,Mano dainos,2016,978-6090111219,Autobiografija,""The Beatles"" legendos prisiminimai apie kūrybą ir muziką"
+"Paul McCartney,Mano dainos,2016,978-6090111219,Autobiografija,""The Beatles"" legendos prisiminimai apie kūrybą ir muziką",,,,,
 Yoko Ono,Mano gyvenimas su Johnu Lennonu,2010,978-6090113435,Autobiografija,John Lennono žmonos prisiminimai apie jų gyvenimą ir kūrybą
 Leonard Cohen,Aš mylėjau tave,2017,978-6090118218,Autobiografija,Kanadiečių dainininko ir poeto prisiminimai apie gyvenimą ir kūrybą
 David Bowie,Starman: mano kelias,2013,978-6090119987,Autobiografija,Britų muzikos ikonos prisiminimai apie gyvenimą ir karjerą
@@ -923,7 +923,7 @@ Anne Hathaway,Mano sėkmės istorija,2019,978-6090115674,Autobiografija,Hollywoo
 Sean Connery,Šnipas ir aktorius: mano prisiminimai,2008,978-9986564530,Autobiografija,Legendinio Džeimso Bondo aktoriaus gyvenimo aprašymas
 Michael Jackson,Mėnulio vaikščiojimas,1993,978-9986560137,Autobiografija,Muzikos karaliaus prisiminimai apie kūrybą ir asmeninį gyvenimą
 Richard Nixon,Politikos labirintai,1991,978-9986562230,Autobiografija,Buvusio JAV prezidento prisiminimai apie politinę karjerą
-"Jack Welch,Lyderystės kelias,2005,978-9986565781,Autobiografija,Legendinio ""General Electric"" vadovo mintys apie lyderystę ir verslą"
+"Jack Welch,Lyderystės kelias,2005,978-9986565781,Autobiografija,Legendinio ""General Electric"" vadovo mintys apie lyderystę ir verslą",,,,,
 Edith Piaf,Mano gyvenimo dainos,2002,978-9986568827,Autobiografija,Prancūzų dainininkės prisiminimai apie muziką ir gyvenimą
 Oskar Schindler,Mano kova už gyvybę,1995,978-9986564325,Autobiografija,Vokiečių verslininko išgelbėjusio žydus Holokausto metu prisiminimai
 Dalai Lama,Laimės kelias,1999,978-9986566457,Autobiografija,Tibeto dvasinio lyderio gyvenimo ir meditacijos apmąstymai
@@ -932,7 +932,7 @@ Oprah Winfrey,Mano tiesa,2014,978-6090112444,Autobiografija,Amerikos televizijos
 Michael Jordan,Mano pergalės ir pralaimėjimai,2005,978-9986565124,Autobiografija,Krepšinio legendos prisiminimai apie sportą ir asmeninį gyvenimą
 Alfred Hitchcock,Filmo meistro prisiminimai,1997,978-9986564349,Autobiografija,Garsaus režisieriaus prisiminimai apie filmų kūrimą
 Woody Allen,Visos mano nuodėmės,2018,978-6090118903,Autobiografija,Amerikos režisieriaus ir scenaristo prisiminimai apie kūrybą ir skandalus
-"Freddie Mercury,Mano gyvenimo melodijos,2004,978-9986565557,Autobiografija,""Queen"" grupės lyderio gyvenimo ir kūrybos aprašymas"
+"Freddie Mercury,Mano gyvenimo melodijos,2004,978-9986565557,Autobiografija,""Queen"" grupės lyderio gyvenimo ir kūrybos aprašymas",,,,,
 J.K. Rowling,Magijos užrašai,2013,978-6090113451,Autobiografija,Hario Poterio autorės prisiminimai apie kūrybos procesą
 Audrey Hepburn,Grožio ir gėrio kelias,1998,978-9986568767,Autobiografija,Aktorės prisiminimai apie gyvenimą ir humanitarinę veiklą
 Elizabeth Taylor,Meilė ir skandalai,2001,978-9986562451,Autobiografija,Legendinės aktorės gyvenimo ir asmeninių iššūkių aprašymas
@@ -947,7 +947,7 @@ Louis Armstrong,Mano džiazas,1995,978-9986561233,Autobiografija,Amerikos džiaz
 Frank Sinatra,Mano balsas,1998,978-9986565664,Autobiografija,Legendinio dainininko gyvenimo ir karjeros aprašymas
 Donald Trump,Mano kelias į sėkmę,2007,978-9986569872,Autobiografija,JAV prezidento ir verslininko prisiminimai apie verslo pasaulį
 John F. Kennedy,Mano Amerika,2003,978-9986561228,Autobiografija,Buvusio JAV prezidento prisiminimai apie politiką ir gyvenimą
-"Mark Zuckerberg,Socialinio tinklo kūrėjas,2017,978-6090114533,Autobiografija,""Facebook"" įkūrėjo gyvenimo ir verslo kelias"
+"Mark Zuckerberg,Socialinio tinklo kūrėjas,2017,978-6090114533,Autobiografija,""Facebook"" įkūrėjo gyvenimo ir verslo kelias",,,,,
 Melania Trump,Mano pirmosios damos dienos,2021,978-6094567893,Autobiografija,JAV pirmosios damos prisiminimai apie gyvenimą Baltuosiuose rūmuose
 Al Pacino,Mano vaidybos paslaptys,2005,978-9986561246,Autobiografija,Legendinio aktoriaus prisiminimai apie vaidybą ir karjerą
 Meryl Streep,Aktoriaus gyvenimo menas,2014,978-9986569918,Autobiografija,Hollywoodo aktorės prisiminimai apie gyvenimą ir kūrybą
@@ -1293,3 +1293,4 @@ Alessandra Torre,Juodasis lotosas,2019,978-6090119885,Romantinė erotika,Misteri
  Audrey Carlan,Kalendoriaus mergina,2017,978-6090114357,Erotinė literatūra,Moteris pasiryžusi susidurti su pasauliu per aistringas meilės istorijas
  Megan Hart,Pagunda,2016,978-6090112995,Erotinė literatūra,Meilės ir geismo istorija kur aistros susilieja su emocijomis
  Tiffany Reisz,Atvira knyga,2015,978-6090117652,Erotinė literatūra,Knyga apie seksualines fantazijas ir pavojingas ribas tarp meilės ir geismo
+Didelis šuo,didelio šuns knyga,2024,123456789,šuns atsiminimai,testinis įrašas

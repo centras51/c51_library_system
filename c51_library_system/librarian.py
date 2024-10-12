@@ -1,155 +1,164 @@
+import tkinter as tk
+from tkinter import messagebox
 import pandas as pd
-import streamlit as st
-from readeregistration import ReaderRegistration
- 
+from readerregistration import ReaderRegistration
+from books import Books
 
 class Librarian:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, root):
+        self.root = root
+        self.username = None
+        self.password = None
+        self.books_instance = Books(self.root)
+        self.button_width = 20
+        self.button_height = 2
+
+    def clear_window(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
     def username_password_verification(self, username, password):
-        usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
-        user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
-        if not user_info.empty:
-            return user_info['password'].values[0] == password
-        return False
-    
-    def show_books(self):
         try:
-            books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-            books_per_page = 50
-            if 'current_page' not in st.session_state:
-                st.session_state.current_page = 0
-            total_pages = (len(books_df) // books_per_page) + (1 if len(books_df) % books_per_page > 0 else 0)
-
-            start_idx = st.session_state.current_page * books_per_page
-            end_idx = start_idx + books_per_page
-            current_books = books_df.iloc[start_idx:end_idx]
-            
-            st.dataframe(current_books, use_container_width=True)
-            
-            col1, col2, col3 = st.columns([1, 1, 1])
-            
-            with col1:
-                if st.button("Atgal", disabled=st.session_state.current_page == 0):
-                    st.session_state.current_page -= 1
-                    
-            with col2:
-                st.write(f"Puslapis {st.session_state.current_page + 1} iš {total_pages}")
-                
-            with col3:
-                if st.button("Kitas", disabled=st.session_state.current_page >= total_pages - 1):
-                    st.session_state.current_page += 1
-                    
+            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
+            user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
+            if not user_info.empty:
+                return user_info['password'].values[0] == password
+            return False
         except FileNotFoundError:
-            st.error("Knygų sąrašas nerastas.")
+            messagebox.showerror("Klaida", "Duomenų bazė nerasta")
+            return False
 
-    def show_readers(self):
-        try:
-            readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-            return readers_df
-        except FileNotFoundError:
-            st.error("Skaitytojų sąrašas nerastas.")
+    def show_menu(self):
+        self.clear_window()
+        tk.Label(self.root, text="Bibliotekininko aplinka", font=("Arial", 20)).pack(pady=20)
+        tk.Button(self.root, text="Peržiūrėti knygas", width=self.button_width, height=self.button_height, command=self.books_instance.show_books).pack(pady=10)
+        tk.Button(self.root, text="Pridėti knygą", width=self.button_width, height=self.button_height, command=self.add_book).pack(pady=10)
+        tk.Button(self.root, text="Surasti knygą", width=self.button_width, height=self.button_height, command=self.search_for_book).pack(pady=10)
+        tk.Button(self.root, text="Surasti skaitytoją", width=self.button_width, height=self.button_height, command=self.find_reader).pack(pady=10)
+        tk.Button(self.root, text="Pašalinti knygą", width=self.button_width, height=self.button_height, command=self.remove_book).pack(pady=10)
+        tk.Button(self.root, text="Pridėti skaitytoją", width=self.button_width, height=self.button_height, command=lambda: ReaderRegistration(self.root)).pack(pady=10)
+        tk.Button(self.root, text="Skaitytojų sąrašas", width=self.button_width, height=self.button_height, command=self.reader_list).pack(pady=10)
+        tk.Button(self.root, text="Pašalinti skaitytoją", width=self.button_width, height=self.button_height, command=self.remove_reader).pack(pady=10)
+        tk.Button(self.root, text="Peržiūrėti darbuotojus", width=self.button_width, height=self.button_height, command=self.show_librarians).pack(pady=10)
+        tk.Button(self.root, text="Atgal", font=("Arial", 15), width=self.button_width, height=self.button_height, command=self.go_back_to_login).pack(pady=10)
+        tk.Button(self.root, text="Išeiti iš sistemos", font=("Arial", 15), width=self.button_width, height=self.button_height, command=self.root.quit).pack(pady=10)
+
+    def go_back_to_login(self):
+        from login import LibrarianLogin
+        librarian_login = LibrarianLogin(self.root)
+        librarian_login.librarian_login_screen(back_function=self.go_back_to_login)
+
+    def search_for_book(self):
+        self.clear_window()
+        tk.Label(self.root, text="Paieškos langas", font=("Arial", 20)).pack(pady=20)
+        tk.Label(self.root, text="Įveskite knygos pavadinimą, autorių, metus arba ISBN").pack(pady=5)
+        search_entry = tk.Entry(self.root)
+        search_entry.pack(pady=5)
+
+        def search():
+            search_query = search_entry.get()
+            search_results = self.books_instance.find_book(search_query)
+            if not search_results.empty:
+                for index, row in search_results.iterrows():
+                    book_info = f"Knygos pavadinimas: {row['knygos_pavadinimas']}, Rašytojas: {row['autorius']}, ISBN: {row['ISBN']}, Metai: {row['metai']}"
+                    book_label = tk.Label(self.root, text=book_info)
+                    book_label.pack(pady=5)
+                    book_label.bind("<Button-1>", lambda e, book=row: self.books_instance.show_book_profile(book))
+            else:
+                tk.Label(self.root, text="Knygų nerasta.").pack(pady=5)
+
+        tk.Button(self.root, text="Ieškoti", width=self.button_width, height=self.button_height, command=search).pack(pady=10)
+        tk.Button(self.root, text="Atgal", width=self.button_width, height=self.button_height, command=self.show_menu).pack(pady=10)
 
     def find_reader(self):
-        if 'search_query' not in st.session_state:
-            st.session_state.search_query = ''
-        search_query = st.text_input("Įveskite skaitytojo vardą, pavardę, skaitytojo kortelės numerį, email'ą arba telefoną", 
-                                    value=st.session_state.search_query)
+        messagebox.showinfo("Surasti skaitytoją", "Skaitytojo paieška neįgyvendinta.")
 
-        if st.button("Rasti skaitytoją", key="search_readers"):
-            st.session_state.search_query = search_query
-            
+    def remove_book(self):
+        self.clear_window()
+        tk.Label(self.root, text="Pašalinti knygą", font=("Arial", 20)).pack(pady=20)
+        tk.Label(self.root, text="Įveskite ISBN numerį").pack(pady=10)
+        isbn_entry = tk.Entry(self.root)
+        isbn_entry.pack(pady=10)
+
+        def delete_book():
+            isbn = isbn_entry.get()
+            if not isbn.isnumeric():
+                messagebox.showerror("Klaida", "ISBN numerį sudaro tik skaičiai.")
+                return
+
             try:
-                readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-                search_results = readers_df[
-                    readers_df['vardas'].str.contains(search_query, case=False, na=False) | 
-                    readers_df['pavardė'].str.contains(search_query, case=False, na=False) |
-                    readers_df['skaitytojo_kortelės_numeris'].astype(str).str.contains(search_query, case=False, na=False) |
-                    readers_df['telefonas'].astype(str).str.contains(search_query, case=False, na=False) |
-                    readers_df['email'].str.contains(search_query, case=False, na=False)
-                ]
-                if not search_results.empty:
-                    st.write("Rasti skaitytojai:")
-                    st.dataframe(search_results, use_container_width=True)
-                else:
-                    st.info("Pagal jūsų užklausą skaitytojas nerastas.")
-                    
+                books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
             except FileNotFoundError:
-                st.error("Skaitytojų sąrašas nerastas.")
+                messagebox.showerror("Klaida", "Knygų duomenų bazė nerasta")
+                return
 
-    def add_reader(self):
-        ReaderRegistration()
+            books_df_filtered = books_df[books_df["ISBN"] != isbn]
+            if len(books_df_filtered) == len(books_df):
+                messagebox.showwarning("Įspėjimas", f"Knyga su ISBN {isbn} nerasta.")
+            else:
+                books_df_filtered.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding="UTF-8")
+                messagebox.showinfo("Sėkmė", f"Knyga su ISBN {isbn} sėkmingai ištrinta.")
 
-    def find_book(self):
-        books_df = self.show_books()
-        if books_df is not None:
-            st.write(books_df)
-        search_query = st.text_input("Įveskite knygos pavadinimą")
-        if st.button("Ieškoti", key="search_books"):
-            search_results = books_df[books_df['knygos_pavadinimas'].str.contains(search_query, case=False, na=False)]
-        if not search_results.empty:
-            st.write(search_results)
-        else:
-            st.info("Pagal jūsų užklausą knygų nerasta.")
-            
-    def find_author(self):
-        books_df = self.show_books()
-        if books_df is not None:
-            st.write(books_df)
-        search_query = st.text_input("Įveskite autorių")
-        if st.button("Ieškoti", key="search_author"):
-            search_results = books_df[books_df['autorius'].str.contains(search_query, case=False, na=False)]
-        if not search_results.empty:
-            st.write(search_results)
-        else:
-            st.info("Pagal jūsų užklausą rašytojo nerasta.")
+        tk.Button(self.root, text="Ištrinti knygą", width=self.button_width, height=self.button_height, command=delete_book).pack(pady=10)
+        tk.Button(self.root, text="Atgal", width=self.button_width, height=self.button_height, command=self.show_menu).pack(pady=10)
 
+    def add_book(self):
+        self.clear_window()
+        tk.Label(self.root, text="Pridėti naują knygą į sistemą", font=("Arial", 20)).pack(pady=20)
+        tk.Label(self.root, text="Knygos autorius").pack(pady=5)
+        author_entry = tk.Entry(self.root)
+        author_entry.pack(pady=5)
+        tk.Label(self.root, text="Knygos pavadinimas").pack(pady=5)
+        title_entry = tk.Entry(self.root)
+        title_entry.pack(pady=5)
+        tk.Label(self.root, text="Knygos išleidimo metai").pack(pady=5)
+        year_entry = tk.Entry(self.root)
+        year_entry.pack(pady=5)
+        tk.Label(self.root, text="Knygos ISBN").pack(pady=5)
+        isbn_entry = tk.Entry(self.root)
+        isbn_entry.pack(pady=5)
+        tk.Label(self.root, text="Knygos žanras").pack(pady=5)
+        genre_entry = tk.Entry(self.root)
+        genre_entry.pack(pady=5)
+        tk.Label(self.root, text="Trumpas knygos aprašymas").pack(pady=5)
+        about_entry = tk.Entry(self.root)
+        about_entry.pack(pady=5)
 
-    def remove_book(self, value_del=None, criterion="ISBN"):
-        books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-        if books_df is not None:
-            st.write(books_df)
-            value_del = st.text_input("Įveskite ISBN numerį", value=value_del)
-            if st.button("Ištrinti knygą", key="delete_book"):
-                if not value_del.isnumeric():
-                    st.error("ISBN numerį sudaro tik skaičiai")
-                else:
-                    books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-                    books_df_filtered = books_df[books_df[criterion] != value_del]
+        def submit_book():
+            author = author_entry.get()
+            title = title_entry.get()
+            year = year_entry.get()
+            isbn = isbn_entry.get()
+            genre = genre_entry.get()
+            about = about_entry.get()
 
-                    if len(books_df_filtered) == len(books_df):
-                        st.warning(f"Knyga su ISBN {value_del} nerasta.")
-                    else:
-                        books_df_filtered.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding="UTF-8")
-                        st.success(f"Knyga su ISBN {value_del} sėkmingai ištrinta.")
-                        print(f"Knyga ISBN {value_del} buvo ištrinta.")
-        else:
-            st.info("Nėra knygos duomenų.")
-            
-    def add_book(self, book_author, book_title, book_release_date, book_isbn, book_genre, book_about):
-        st.subheader("Pridėti naują knygą")
-        book_author = st.text_input("Knygos autorius", key="autorius")
-        book_title = st.text_input("Knygos pavadinimas", key="knygos_pavadinimas")
-        book_release_date = st.text_input("Knygos išleidimo metai", key="metai")
-        book_isbn = st.text_input("Knygos ISBN", key="ISBN")
-        book_genre = st.text_input("Knygos žanras", key="zanras")
-        book_about = st.text_area("Pastabos apie knygą", key="pastabos")
-        if st.button("Patvirtinti pridėjimą"):
-            st.success(f"Knyga '{book_title}' sėkmingai pridėta!")
-        new_book = {'autorius': book_author, 'knygos_pavadinimas': book_title, 'metai': book_release_date, 'ISBN': book_isbn, 'zanras': book_genre, 'pastabos': book_about}
-        books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-        books_df = pd.concat([books_df, pd.DataFrame([new_book])], ignore_index=True)
-        books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
-        
+            new_book = {'autorius': author, 'knygos_pavadinimas': title, 'metai': year, 'ISBN': isbn, 'zanras': genre, 'pastabos': about}
+
+            try:
+                books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
+                books_df = pd.concat([books_df, pd.DataFrame([new_book])], ignore_index=True)
+                books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
+                messagebox.showinfo("Sėkmė", f"Knyga '{title}' sėkmingai pridėta!")
+            except FileNotFoundError:
+                messagebox.showerror("Klaida", "Knygų duomenų failas nerastas.")
+
+        tk.Button(self.root, text="Patvirtinti pridėjimą", width=self.button_width, height=self.button_height, command=submit_book).pack(pady=10)
+        tk.Button(self.root, text="Atgal", width=self.button_width, height=self.button_height, command=self.show_menu).pack(pady=10)
+
     def show_librarians(self):
         try:
             librarians_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
             selected_columns = librarians_df[['vardas', 'pavarde', 'email', 'telefonas']]
-            st.dataframe(selected_columns, use_container_width=True)
-        except FileNotFoundError:
-            st.error("Darbuotojų sąrašas nerastas.")
-        
-        
+            selected_columns = selected_columns.reset_index(drop=True)
 
-        
+            self.clear_window()
+            tk.Label(self.root, text="Bibliotekininkų sąrašas", font=("Arial", 20)).pack(pady=20)
+
+            for index, row in selected_columns.iterrows():
+                librarian_info = f"Vardas: {row['vardas']}, Pavardė: {row['pavarde']}, El. paštas: {row['email']}, Telefonas: {row['telefonas']}"
+                tk.Label(self.root, text=librarian_info).pack(pady=5)
+
+            tk.Button(self.root, text="Atgal", width=self.button_width, height=self.button_height, command=self.show_menu).pack(pady=10)
+
+        except FileNotFoundError:
+            messagebox.showerror("Klaida", "Bibliotekininkų sąrašas nerastas.")
