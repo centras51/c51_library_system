@@ -56,27 +56,31 @@ class Books:
         hsb = tk.Scrollbar(frame, orient="horizontal")
         hsb.pack(side="bottom", fill="x")
 
-        book_tree = ttk.Treeview(frame, columns=("Pavadinimas", "Autorius", "Metai", "Žanras", "ISBN", "Pastabos", "Knygos statusas"), show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        # Pakeisti stulpelių identifikatorius, kad sutaptų su DataFrame stulpelių pavadinimais
+        columns = ("knygos_pavadinimas", "autorius", "metai", "ISBN", "zanras", "pastabos", "knygos_statusas")
+        book_tree = ttk.Treeview(frame, columns=columns, show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
         book_tree.pack(fill=tk.BOTH, expand=True)
 
         vsb.config(command=book_tree.yview)
         hsb.config(command=book_tree.xview)
 
-        book_tree.heading("Pavadinimas", text="Pavadinimas")
-        book_tree.heading("Autorius", text="Autorius")
-        book_tree.heading("Metai", text="Metai")
+        # Nustatyti antraštes, naudojant duomenų rėmelio stulpelių pavadinimus kaip identifikatorius
+        book_tree.heading("knygos_pavadinimas", text="Pavadinimas")
+        book_tree.heading("autorius", text="Autorius")
+        book_tree.heading("metai", text="Metai")
         book_tree.heading("ISBN", text="ISBN")
-        book_tree.heading("Žanras", text="Žanras")
-        book_tree.heading("Pastabos", text="Pastabos")
-        book_tree.heading("Knygos_statusas", text="Knygos statusas")
+        book_tree.heading("zanras", text="Žanras")
+        book_tree.heading("pastabos", text="Pastabos")
+        book_tree.heading("knygos_statusas", text="Knygos statusas")
 
-        book_tree.column("Pavadinimas", width=200)
-        book_tree.column("Autorius", width=150)
-        book_tree.column("Metai", width=100)
-        book_tree.column("Žanras", width=150)
+        # Nustatyti stulpelių plotį
+        book_tree.column("knygos_pavadinimas", width=200)
+        book_tree.column("autorius", width=150)
+        book_tree.column("metai", width=100)
         book_tree.column("ISBN", width=150)
-        book_tree.column("Pastabos", width=350)
-        book_tree.column("Knygos_statusas", width=100)
+        book_tree.column("zanras", width=150)
+        book_tree.column("pastabos", width=350)
+        book_tree.column("knygos_statusas", width=100)
 
         book_tree.bind("<Double-1>", self.open_book_profile)
 
@@ -101,12 +105,16 @@ class Books:
             (self.books_df['knygos_statusas'].str.contains(search_term, case=False, na=False))
         ]
 
-        tree = window.winfo_children()[1].winfo_children()[2]  # Gauti Treeview iš naujo lango
+        # Gauti Treeview valdiklį
+        tree = window.children['!frame'].children['!treeview']
+
         for item in tree.get_children():
             tree.delete(item)
 
         for index, row in filtered_books.iterrows():
-            tree.insert("", "end", values=(row['knygos_pavadinimas'], row['autorius'], row['metai'], row['zanras'], row['ISBN'], row['pastabos'], row['knygos_statusas']))
+            tree.insert("", "end", values=(
+                row['knygos_pavadinimas'], row['autorius'], row['metai'], row['ISBN'], row['zanras'], row['pastabos'], row['knygos_statusas']
+            ))
 
     def open_book_profile(self, event):
         selected_item = event.widget.selection()[0]

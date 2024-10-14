@@ -5,6 +5,7 @@ import pandas as pd
 from books import Books
 from readerregistration import ReaderRegistration
 
+
 class Librarian:
     def __init__(self, root, librarian_info):
         self.root = root
@@ -83,9 +84,19 @@ class Librarian:
         messagebox.showinfo("Išduoti knygą", "Funkcija dar neįgyvendinta.")
 
     def reader_list(self):
+        # Sukuriame naują langą skaitytojų sąrašui
         new_window = tk.Toplevel(self.root)
         new_window.title("Skaitytojų sąrašas")
 
+        # Paieškos laukelis
+        search_label = tk.Label(new_window, text="Ieškoti skaitytojo:")
+        search_label.pack(pady=5)
+
+        search_entry = tk.Entry(new_window)
+        search_entry.pack(pady=5)
+        search_entry.bind("<KeyRelease>", lambda event: self.filter_readers(search_entry))
+
+        # Sukuriame rėmelį lentelės rodymui
         frame = tk.Frame(new_window)
         frame.pack(fill=tk.BOTH, expand=True)
 
@@ -95,35 +106,53 @@ class Librarian:
         hsb = tk.Scrollbar(frame, orient="horizontal")
         hsb.pack(side="bottom", fill="x")
 
-        reader_tree = ttk.Treeview(frame, columns=("Vardas", "Pavardė", "El. paštas", "Telefonas", "Skaitytojo kortelė", "Username"), show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
-        reader_tree.pack(fill=tk.BOTH, expand=True)
+        # Lentelė skaitytojams rodyti
+        self.reader_tree = ttk.Treeview(frame, columns=("Vardas", "Pavardė", "El. paštas", "Telefonas", "Skaitytojo kortelė", "Username"), show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        self.reader_tree.pack(fill=tk.BOTH, expand=True)
 
-        vsb.config(command=reader_tree.yview)
-        hsb.config(command=reader_tree.xview)
+        vsb.config(command=self.reader_tree.yview)
+        hsb.config(command=self.reader_tree.xview)
 
-        reader_tree.heading("Vardas", text="Vardas")
-        reader_tree.heading("Pavardė", text="Pavardė")
-        reader_tree.heading("El. paštas", text="El. paštas")
-        reader_tree.heading("Telefonas", text="Telefonas")
-        reader_tree.heading("Skaitytojo kortelė", text="Skaitytojo kortelė")
-        reader_tree.heading("Username", text="Username")
+        # Sukuriame lentelės antraštes
+        self.reader_tree.heading("Vardas", text="Vardas")
+        self.reader_tree.heading("Pavardė", text="Pavardė")
+        self.reader_tree.heading("El. paštas", text="El. paštas")
+        self.reader_tree.heading("Telefonas", text="Telefonas")
+        self.reader_tree.heading("Skaitytojo kortelė", text="Skaitytojo kortelė")
+        self.reader_tree.heading("Username", text="Username")
 
-        reader_tree.column("Vardas", width=150)
-        reader_tree.column("Pavardė", width=150)
-        reader_tree.column("El. paštas", width=200)
-        reader_tree.column("Telefonas", width=150)
-        reader_tree.column("Skaitytojo kortelė", width=150)
-        reader_tree.column("Username", width=150)
+        self.reader_tree.column("Vardas", width=150)
+        self.reader_tree.column("Pavardė", width=150)
+        self.reader_tree.column("El. paštas", width=200)
+        self.reader_tree.column("Telefonas", width=150)
+        self.reader_tree.column("Skaitytojo kortelė", width=150)
+        self.reader_tree.column("Username", width=150)
 
-        self.populate_readers(reader_tree)
+        # Užpildome lentelę skaitytojais
+        self.populate_readers(self.reader_tree)
 
     def populate_readers(self, tree):
+        # Įkrauname skaitytojų duomenų failą
         readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+
+        # Konvertuojame reikalingus stulpelius į tekstą
+        readers_df['telefonas'] = readers_df['telefonas'].astype(str)
+        readers_df['skaitytojo_kortele'] = readers_df['skaitytojo_kortele'].astype(str)
+        readers_df['username'] = readers_df['username'].astype(str)
+
         for item in tree.get_children():
             tree.delete(item)
 
         for index, row in readers_df.iterrows():
-            tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['email'], row['telefonas'], row['skaitytojo_kortele'], row['username']))
+            tree.insert("", "end", values=(
+                row['vardas'], 
+                row['pavarde'], 
+                row['email'], 
+                row['telefonas'], 
+                row['skaitytojo_kortele'], 
+                row['username']
+            ))
+
 
     def search_reader(self):
         new_window = tk.Toplevel(self.root)
@@ -133,29 +162,36 @@ class Librarian:
         self.search_entry = tk.Entry(new_window)
         self.search_entry.pack(pady=5)
 
-        tk.Button(new_window, text="Ieškoti", command=lambda: self.filter_readers(self.search_entry, new_window)).pack(pady=10)
+        tk.Button(new_window, text="Ieškoti", command=lambda: self.filter_readers(self.search_entry)).pack(pady=10)
 
-    def filter_readers(self, search_entry, window):
+    def filter_readers(self, search_entry):
         search_term = search_entry.get().lower()
         readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
 
+        # Konvertuojame visus reikalingus stulpelius į tekstą, įskaitant telefoną ir kortelę
+        readers_df['vardas'] = readers_df['vardas'].astype(str)
+        readers_df['pavarde'] = readers_df['pavarde'].astype(str)
+        readers_df['email'] = readers_df['email'].astype(str)
+        readers_df['telefonas'] = readers_df['telefonas'].astype(str)
+        readers_df['skaitytojo_kortele'] = readers_df['skaitytojo_kortele'].astype(str)
+
+        # Filtruojame skaitytojus pagal paieškos terminą
         filtered_readers = readers_df[
             (readers_df['vardas'].str.contains(search_term, case=False, na=False)) |
             (readers_df['pavarde'].str.contains(search_term, case=False, na=False)) |
             (readers_df['email'].str.contains(search_term, case=False, na=False)) |
             (readers_df['telefonas'].str.contains(search_term, case=False, na=False)) |
-            (readers_df['username'].str.contains(search_term, case=False, na=False)) |
-            (readers_df['korteles_numeris'].str.contains(search_term, case=False, na=False)) 
+            (readers_df['skaitytojo_kortele'].str.contains(search_term, case=False, na=False))
         ]
 
-        # Sukurkite naują TreeView komponentą, jei reikia, arba naudokite jau esamą
-        tree = window.winfo_children()[2]  # Tikriname, kad TreeView egzistuoja
-        if isinstance(tree, ttk.Treeview):
-            for item in tree.get_children():
-                tree.delete(item)
+        # Atnaujiname TreeView su filtruotais duomenimis
+        for item in self.reader_tree.get_children():
+            self.reader_tree.delete(item)
 
-            for index, row in filtered_readers.iterrows():
-                tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['el_pastas'], row['telefonas'], row['skaitytojo_kortele']))
+        for index, row in filtered_readers.iterrows():
+            self.reader_tree.insert("", "end", values=(
+                row['vardas'], row['pavarde'], row['email'], row['telefonas'], row['skaitytojo_kortele']
+            ))
 
     def remove_reader(self):
         new_window = tk.Toplevel(self.root)
@@ -178,6 +214,7 @@ class Librarian:
             filtered_readers = readers_df[
                 (readers_df['skaitytojo_kortele'].str.contains(search_term, case=False, na=False)) |
                 (readers_df['vardas'].str.contains(search_term, case=False, na=False)) |
+                (readers_df['skaitytojo_kortele'].str.contains(search_term, case=False, na=False)) |
                 (readers_df['pavarde'].str.contains(search_term, case=False, na=False))
             ]
 
@@ -283,6 +320,14 @@ class Librarian:
         search_term = search_entry.get().lower()
         librarians_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
 
+        # Konvertuojame visus reikalingus stulpelius į tekstą
+        librarians_df['vardas'] = librarians_df['vardas'].astype(str)
+        librarians_df['pavarde'] = librarians_df['pavarde'].astype(str)
+        librarians_df['email'] = librarians_df['email'].astype(str)
+        librarians_df['telefonas'] = librarians_df['telefonas'].astype(str)
+        librarians_df['username'] = librarians_df['username'].astype(str)
+
+        # Filtruojame bibliotekininkus pagal paieškos terminą
         filtered_librarians = librarians_df[
             (librarians_df['vardas'].str.contains(search_term, case=False, na=False)) |
             (librarians_df['pavarde'].str.contains(search_term, case=False, na=False)) |
@@ -297,3 +342,6 @@ class Librarian:
 
         for index, row in filtered_librarians.iterrows():
             tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['email'], row['telefonas'], row['username']))
+            
+            
+    

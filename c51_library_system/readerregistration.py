@@ -6,8 +6,9 @@ import re
 from PIL import Image, ImageTk
 
 class ReaderRegistration:
-    def __init__(self, root):
+    def __init__(self, root, is_librarian=False):
         self.root = root
+        self.is_librarian = is_librarian 
         self.button_width = 30
         self.button_height = 3
         self.entry_width = 30  
