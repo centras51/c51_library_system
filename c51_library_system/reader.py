@@ -2,12 +2,15 @@ import tkinter as tk
 from tkinter import messagebox
 from books import Books  
 import pandas as pd
+
+
 class Reader:
     def __init__(self, root):
         self.root = root
         self.username = None
         self.password = None
-        self.books_instance = Books(self.root)  # Initialize Books instance for book operations
+        self.books_instance = Books(self.root)
+        self.borrowed_books = {} 
 
     def clear_window(self):
         """Clear all widgets from the window."""
@@ -76,4 +79,10 @@ class Reader:
     def show_history(self):
         """Show the reader's borrowing history (can be implemented later)."""
         # You can implement this functionality later, based on a reader's borrowing history
+        pass
+    
+    def show_books(self):
+        pass
+    
+    def reserve_books(self):
         pass

@@ -6,7 +6,10 @@ import re
 
 class ReaderRegistration:
     def __init__(self):
-        pass
+        self.button_width = 60
+        self.button_height = 3
+        self.entry_width = 30  
+        self.entry_font = ("Arial", 18)
     
     def is_valid_email(self, reader_email):
         email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
@@ -55,33 +58,33 @@ class ReaderRegistration:
         """Reader registration form using Tkinter."""
         self.clear_window(root)
 
-        tk.Label(root, text="Naujo skaitytojo registracija", font=("Arial", 20)).pack(pady=20)
+        tk.Label(root, text="Naujo skaitytojo registracija", font=("Arial", 30)).pack(pady=20)
 
-        tk.Label(root, text="Vardas").pack(pady=5)
+        tk.Label(root, text="Vardas", font=("Arial", 20)).pack(pady=5)
         reader_name = tk.Entry(root)
         reader_name.pack(pady=5)
 
-        tk.Label(root, text="Pavardė").pack(pady=5)
+        tk.Label(root, text="Pavardė", font=("Arial", 20)).pack(pady=5)
         reader_last_name = tk.Entry(root)
         reader_last_name.pack(pady=5)
 
-        tk.Label(root, text="El. paštas").pack(pady=5)
+        tk.Label(root, text="El. paštas", font=("Arial", 20)).pack(pady=5)
         reader_email = tk.Entry(root)
         reader_email.pack(pady=5)
 
-        tk.Label(root, text="Telefono numeris (+370)").pack(pady=5)
+        tk.Label(root, text="Telefono numeris (+370)", font=("Arial", 20)).pack(pady=5)
         reader_phone = tk.Entry(root)
         reader_phone.pack(pady=5)
 
-        tk.Label(root, text="Prisijungimo vardas").pack(pady=5)
+        tk.Label(root, text="Prisijungimo vardas", font=("Arial", 20)).pack(pady=5)
         new_username = tk.Entry(root)
         new_username.pack(pady=5)
 
-        tk.Label(root, text="Slaptažodis").pack(pady=5)
+        tk.Label(root, text="Slaptažodis", font=("Arial", 20)).pack(pady=5)
         new_password = tk.Entry(root, show='*')
         new_password.pack(pady=5)
 
-        tk.Label(root, text="Pakartokite slaptažodį").pack(pady=5)
+        tk.Label(root, text="Pakartokite slaptažodį", font=("Arial", 20)).pack(pady=5)
         new_password2 = tk.Entry(root, show='*')
         new_password2.pack(pady=5)
 
@@ -112,10 +115,12 @@ class ReaderRegistration:
                     new_username.get(), 
                     new_password.get()
                 )
-                messagebox.showinfo("Sėkmė", f"Sėkmingai užregistruotas {reader_name.get()} {reader_last_name.get()}. Jūsų skaitytojo kortelės numeris: {reader_card_number}")
+                messagebox.showinfo("Naujas skaitytojas užregistruotas", f"Sėkmingai užregistruotas {reader_name.get()} {reader_last_name.get()}. Jūsų skaitytojo kortelės numeris: {reader_card_number}")
         
-        tk.Button(root, text="Registruotis", command=submit_registration).pack(pady=20)
-
+        tk.Button(root, text="Registruotis", font=("Arial", 15), width=self.button_width, height=self.button_height, command=submit_registration).pack(pady=20)
+        tk.Button(self.root, text="Atgal", font=("Arial", 15), width=self.button_width, height=self.button_height, command=back_function).pack(pady=10)
+        tk.Button(self.root, text="Išeiti iš sistemos", font=("Arial", 15), width=self.button_width, height=self.button_height, command=self.root.quit).pack(pady=10)
+        
     def clear_window(self, root):
         """Clear all widgets from the window."""
         for widget in root.winfo_children():

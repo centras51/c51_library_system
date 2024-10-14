@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from reader import Reader
 import pandas as pd
+from PIL import Image, ImageTk
 
 class ReaderLogin:
     def __init__(self, root):
@@ -12,26 +13,56 @@ class ReaderLogin:
         self.entry_font = ("Arial", 18)  
         self.reader = None  
 
+        # Įkeliamas paveikslėlis ir nustatomas jo fiksuotas dydis 1400x800
+        self.original_image = Image.open(r"D:\\CodeAcademy\\c51_library_system\\background\\library.png")
+        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
+        self.background_photo = ImageTk.PhotoImage(self.background_image)
+
+        # Sukuriame Canvas ir nustatome paveikslėlį kaip foną
+        self.canvas = tk.Canvas(self.root, width=1400, height=800)
+        self.canvas.pack(fill="both", expand=True)
+
+        # Nustatome paveikslėlį kaip fono paveikslėlį
+        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
+
     def reader_login_screen(self, back_function):
         self.clear_window()
 
-        tk.Label(self.root, text="Skaitytojo prisijungimas", font=("Arial", 20)).pack(pady=20)
+        # Sukuriame naują „Canvas“ po lango išvalymo
+        self.canvas = tk.Canvas(self.root, width=1400, height=800)
+        self.canvas.pack(fill="both", expand=True)
+        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
-        tk.Label(self.root, text="Vartotojo vardas", font=("Arial", 15)).pack(pady=5)
+        self.canvas.create_text(700, 100, text="Skaitytojo prisijungimas", font=("Arial", 30), fill="black")
+
+        self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20), fill="black")
         self.username_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
-        self.username_entry.pack(pady=5)
+        self.canvas.create_window(700, 250, window=self.username_entry)
 
-        tk.Label(self.root, text="Slaptažodis", font=("Arial", 15)).pack(pady=5)
+        self.canvas.create_text(700, 300, text="Slaptažodis", font=("Arial", 20), fill="black")
         self.password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
-        self.password_entry.pack(pady=5)
+        self.canvas.create_window(700, 350, window=self.password_entry)
 
-        tk.Button(self.root, text="Prisijungti", font=("Arial", 15), width=self.button_width, height=self.button_height, command=self.verify_reader).pack(pady=10)
-        tk.Button(self.root, text="Atgal", font=("Arial", 15), width=self.button_width, height=self.button_height, command=back_function).pack(pady=10)
-        tk.Button(self.root, text="Išeiti iš sistemos", font=("Arial", 15), width=self.button_width, height=self.button_height, command=self.root.quit).pack(pady=10)
+        # Mygtukų su hover efektais pridėjimas
+        self.add_button("Prisijungti", 400, self.verify_reader)
+        self.add_button("Atgal", 500, back_function)
+        self.add_button("Išeiti iš sistemos", 600, self.root.quit)
+
+    def add_button(self, text, y_position, command):
+        """Sukurti mygtuką su efektais"""
+        button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
+                           bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
+
+        # Įdedame mygtuką į drobę (canvas)
+        self.canvas.create_window(700, y_position, window=button)
+
+        # Pridedame "hover" efektus
+        button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
+        button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
 
     def username_password_verification(self, username, password):
         try:
-            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\passwords_db.csv")
+            usr_psw_df = pd.read_csv(r"D:\\CodeAcademy\\c51_library_system\\CSVs\\passwords_db.csv")
             user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
             if not user_info.empty:
                 return user_info['password'].values[0] == password

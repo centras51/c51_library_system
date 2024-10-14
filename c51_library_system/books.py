@@ -6,7 +6,7 @@ class Books:
     def __init__(self, root):
         self.root = root
         self.books_df = self.load_books()
-        self.create_widgets()
+        self.show_books()
 
     def load_books(self):
         try:
@@ -20,7 +20,7 @@ class Books:
             messagebox.showerror("Klaida", "Knygų sąrašo nepavyko rasti")
             return pd.DataFrame()
 
-    def create_widgets(self):
+    def show_books(self):
         # Paieškos laukas
         self.search_label = tk.Label(self.root, text="Ieškoti knygos:")
         self.search_label.pack(pady=5)
@@ -81,8 +81,8 @@ class Books:
             (self.books_df['knygos_pavadinimas'].str.contains(search_term, case=False, na=False)) |
             (self.books_df['autorius'].str.contains(search_term, case=False, na=False)) |
             (self.books_df['metai'].astype(str).str.contains(search_term, case=False, na=False)) |
-            (self.books_df['zanras'].str.contains(search_term, case=False, na=False))
-            (self.books_df['ISBN'].str.contains(search_term, case=False, na=False))
+            (self.books_df['zanras'].str.contains(search_term, case=False, na=False)) |
+            (self.books_df['ISBN'].str.contains(search_term, case=False, na=False)) |
             (self.books_df['pastabos'].str.contains(search_term, case=False, na=False))
         ]
 
@@ -99,11 +99,42 @@ class Books:
         selected_item = self.book_tree.selection()[0]
         selected_book = self.book_tree.item(selected_item, "values")
         
-        # Čia pateikiame išsamią knygos informaciją
-        messagebox.showinfo("Knygos profilis", f"Pavadinimas: {selected_book[0]}\nAutorius: {selected_book[1]}\nMetai: {selected_book[2]}\nŽanras: {selected_book[3]}\nISBN: {selected_book[4]}\nPastabos: {selected_book[5]}")
+        # Išvalyti langą, kad parodytume knygos profilį
+        self.clear_window()
+
+        self.canvas = tk.Canvas(self.root, width=1400, height=800)
+        self.canvas.pack(fill="both", expand=True)
+
+        self.canvas.create_text(700, 100, text="Knygos profilis", font=("Arial", 30), fill="black")
+
+        # Knygos profilio informacijos laukeliai
+        self.create_profile_field("Pavadinimas:", selected_book[0], 200)
+        self.create_profile_field("Autorius:", selected_book[1], 250)
+        self.create_profile_field("Metai:", selected_book[2], 300)
+        self.create_profile_field("Žanras:", selected_book[3], 350)
+        self.create_profile_field("ISBN:", selected_book[4], 400)
+        self.create_profile_field("Pastabos:", selected_book[5], 450)
+
+        # Mygtukas grįžti į knygų sąrašą
+        self.add_button("Atgal į knygų sąrašą", 600, self.show_books)
+
+    def create_profile_field(self, label_text, value, y_position):
+        """Sukurti profilio lauką su pavadinimu ir reikšme"""
+        label = tk.Label(self.root, text=label_text, font=("Arial", 15))
+        label.place(x=500, y=y_position)
+        entry = tk.Entry(self.root, font=("Arial", 15), width=40)
+        entry.place(x=700, y=y_position)
+        entry.insert(0, value)
+        entry.config(state='readonly')
+
+    def add_button(self, text, y_position, command):
+        """Sukurti mygtuką su efektais"""
+        button = tk.Button(self.root, text=text, font=("Arial", 15), width=20, height=2,
+                           bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
+        button.place(x=700, y=y_position)
 
     def clear_window(self):
-        """Clear all widgets from the window."""
+        """Išvalyti langą prieš peržiūrint naują turinį"""
         for widget in self.root.winfo_children():
             widget.destroy()
 

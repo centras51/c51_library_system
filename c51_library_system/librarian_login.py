@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, Toplevel
 from librarian import Librarian
 import pandas as pd
+from PIL import Image, ImageTk
 
 class LibrarianLogin:
     def __init__(self, root):
@@ -11,9 +12,21 @@ class LibrarianLogin:
         self.entry_width = 30  
         self.entry_font = ("Arial", 18)
 
+        # Įkeliamas paveikslėlis ir nustatomas jo fiksuotas dydis 1400x800
+        self.original_image = Image.open(r"D:\\CodeAcademy\\c51_library_system\\background\\library.png")
+        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
+        self.background_photo = ImageTk.PhotoImage(self.background_image)
+
+        # Sukuriame Canvas ir nustatome paveikslėlį kaip foną
+        self.canvas = tk.Canvas(self.root, width=1400, height=800)
+        self.canvas.pack(fill="both", expand=True)
+
+        # Nustatome paveikslėlį kaip fono paveikslėlį
+        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
+
     def username_password_verification(self, username, password):
         try:
-            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
+            usr_psw_df = pd.read_csv(r"D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
             user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
             if not user_info.empty:
                 return user_info['password'].values[0] == password
@@ -25,34 +38,51 @@ class LibrarianLogin:
     def librarian_login_screen(self, back_function):
         self.clear_window()
 
-        tk.Label(self.root, text="Bibliotekininko prisijungimas", font=("Arial", 30)).pack(pady=20)
+        # Sukuriame naują „Canvas“ po lango išvalymo
+        self.canvas = tk.Canvas(self.root, width=1400, height=800)
+        self.canvas.pack(fill="both", expand=True)
+        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
-        tk.Label(self.root, text="Vartotojo vardas", font=("Arial", 20)).pack(pady=5)
-        username_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
-        username_entry.pack(pady=5)
+        self.canvas.create_text(700, 100, text="Bibliotekininko prisijungimas", font=("Arial", 30), fill="black")
 
-        tk.Label(self.root, text="Slaptažodis", font=("Arial", 20)).pack(pady=5)
-        password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
-        password_entry.pack(pady=5)
+        self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20), fill="black")
+        self.username_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
+        self.canvas.create_window(700, 250, window=self.username_entry)
 
-        librarian = Librarian(self.root)
+        self.canvas.create_text(700, 300, text="Slaptažodis", font=("Arial", 20), fill="black")
+        self.password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
+        self.canvas.create_window(700, 350, window=self.password_entry)
 
         def verify_librarian():
-            username = username_entry.get()
-            password = password_entry.get()
+            username = self.username_entry.get()
+            password = self.password_entry.get()
 
             if self.username_password_verification(username, password):
-                self.show_custom_popup(f"Sveiki, {username.capitalize}!")  
+                self.show_custom_popup(f"Sveiki, {username.capitalize()}!")  
+                librarian = Librarian(self.root)  # Sukurti bibliotekininko objektą tik po sėkmingo prisijungimo
                 librarian.show_menu()
             else:
                 messagebox.showerror("Prisijungimas nepavyko", f"Neteisingas vartotojo {username} vardas arba slaptažodis.")
 
-        tk.Button(self.root, text="Prisijungti", font=("Arial", 15), width=self.button_width, height=self.button_height, command=verify_librarian).pack(pady=10)
-        tk.Button(self.root, text="Atgal", font=("Arial", 15), width=self.button_width, height=self.button_height, command=back_function).pack(pady=10)
-        tk.Button(self.root, text="Išeiti iš sistemos", font=("Arial", 15), width=self.button_width, height=self.button_height, command=self.root.quit).pack(pady=10)
+        # Mygtukų su hover efektais pridėjimas
+        self.add_button("Prisijungti", 400, verify_librarian)
+        self.add_button("Atgal", 500, back_function)  # „Atgal“ funkcija grąžina į pirmą langą
+        self.add_button("Išeiti iš sistemos", 600, self.root.quit)
+
+    def add_button(self, text, y_position, command):
+        """Sukurti mygtuką su efektais"""
+        button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
+                           bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
+
+        # Įdedame mygtuką į drobę (canvas)
+        self.canvas.create_window(700, y_position, window=button)
+
+        # Pridedame "hover" efektus
+        button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
+        button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
 
     def show_custom_popup(self, message):
-        """Sukuriamas pritaikytas iššokantis langas su didesniu dydžiu"""
+        # Sukuriamas pritaikytas iššokantis langas su didesniu dydžiu
         popup = Toplevel(self.root)
         popup.title("Prisijungimas sėkmingas")
 
