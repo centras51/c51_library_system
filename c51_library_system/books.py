@@ -8,7 +8,7 @@ class Books:
         self.root = root
         self.is_anonymous = is_anonymous  # Anonimiškumo flag'as
         self.books_df = self.load_books()
-        self.show_books()
+        self.readers_df = self.load_readers()
 
     def load_books(self):
         try:
@@ -22,192 +22,75 @@ class Books:
             messagebox.showerror("Klaida", "Knygų sąrašo nepavyko rasti")
             return pd.DataFrame()
 
+    def load_readers(self):
+        try:
+            df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+            required_columns = {'vardas', 'pavarde', 'email', 'telefonas', 'skaitytojo_kortele'}
+            if not required_columns.issubset(df.columns):
+                messagebox.showerror("Klaida", "Skaitytojų stulpeliai nerasti")
+                return pd.DataFrame()
+            return df
+        except FileNotFoundError:
+            messagebox.showerror("Klaida", "Skaitytojų sąrašo nepavyko rasti")
+            return pd.DataFrame()
+
     def show_books(self):
-        self.clear_window()
+        # Sukurti naują langą
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Knygų sąrašas")
 
-        self.search_label = tk.Label(self.root, text="Ieškoti knygos:")
-        self.search_label.pack(pady=5)
+        # Kiti komponentai kuriami naujame lange
+        search_label = tk.Label(new_window, text="Ieškoti knygos:")
+        search_label.pack(pady=5)
 
-        self.search_entry = tk.Entry(self.root)
-        self.search_entry.pack(pady=5)
-        self.search_entry.bind("<KeyRelease>", self.filter_books)
+        search_entry = tk.Entry(new_window)
+        search_entry.pack(pady=5)
+        search_entry.bind("<KeyRelease>", lambda event: self.filter_books(search_entry, new_window))
 
-        self.frame = tk.Frame(self.root)
-        self.frame.pack(fill=tk.BOTH, expand=True)
+        frame = tk.Frame(new_window)
+        frame.pack(fill=tk.BOTH, expand=True)
 
-        self.vsb = tk.Scrollbar(self.frame, orient="vertical")
-        self.vsb.pack(side="right", fill="y")
+        vsb = tk.Scrollbar(frame, orient="vertical")
+        vsb.pack(side="right", fill="y")
 
-        self.hsb = tk.Scrollbar(self.frame, orient="horizontal")
-        self.hsb.pack(side="bottom", fill="x")
+        hsb = tk.Scrollbar(frame, orient="horizontal")
+        hsb.pack(side="bottom", fill="x")
 
-        self.book_tree = ttk.Treeview(self.frame, columns=("Pavadinimas", "Autorius", "Metai", "Žanras", "ISBN", "Pastabos", "Knygos statusas"), show="headings", yscrollcommand=self.vsb.set, xscrollcommand=self.hsb.set)
-        self.book_tree.pack(fill=tk.BOTH, expand=True)
+        book_tree = ttk.Treeview(frame, columns=("Pavadinimas", "Autorius", "Metai", "Žanras", "ISBN", "Pastabos", "Knygos statusas"), show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        book_tree.pack(fill=tk.BOTH, expand=True)
 
-        self.vsb.config(command=self.book_tree.yview)
-        self.hsb.config(command=self.book_tree.xview)
+        vsb.config(command=book_tree.yview)
+        hsb.config(command=book_tree.xview)
 
-        self.book_tree.heading("Pavadinimas", text="Pavadinimas")
-        self.book_tree.heading("Autorius", text="Autorius")
-        self.book_tree.heading("Metai", text="Metai")
-        self.book_tree.heading("ISBN", text="ISBN")
-        self.book_tree.heading("Žanras", text="Žanras")
-        self.book_tree.heading("Pastabos", text="Pastabos")
-        self.book_tree.heading("Knygos statusas", text="Knygos statusas")
+        book_tree.heading("Pavadinimas", text="Pavadinimas")
+        book_tree.heading("Autorius", text="Autorius")
+        book_tree.heading("Metai", text="Metai")
+        book_tree.heading("ISBN", text="ISBN")
+        book_tree.heading("Žanras", text="Žanras")
+        book_tree.heading("Pastabos", text="Pastabos")
+        book_tree.heading("Knygos_statusas", text="Knygos statusas")
 
-        self.book_tree.column("Pavadinimas", width=200)
-        self.book_tree.column("Autorius", width=150)
-        self.book_tree.column("Metai", width=100)
-        self.book_tree.column("Žanras", width=150)
-        self.book_tree.column("ISBN", width=150)
-        self.book_tree.column("Pastabos", width=350)
-        self.book_tree.column("Knygos statusas", width=100)
+        book_tree.column("Pavadinimas", width=200)
+        book_tree.column("Autorius", width=150)
+        book_tree.column("Metai", width=100)
+        book_tree.column("Žanras", width=150)
+        book_tree.column("ISBN", width=150)
+        book_tree.column("Pastabos", width=350)
+        book_tree.column("Knygos_statusas", width=100)
 
-        self.book_tree.bind("<Double-1>", self.open_book_profile)
+        book_tree.bind("<Double-1>", self.open_book_profile)
 
-        self.populate_books()
+        self.populate_books(book_tree)
 
-    def populate_books(self):
-        for item in self.book_tree.get_children():
-            self.book_tree.delete(item)
+    def populate_books(self, tree):
+        for item in tree.get_children():
+            tree.delete(item)
 
         for index, row in self.books_df.iterrows():
-            self.book_tree.insert("", "end", values=(row['knygos_pavadinimas'], row['autorius'], row['metai'], row['zanras'], row['ISBN'], row['pastabos'], row['knygos_statusas']))
+            tree.insert("", "end", values=(row['knygos_pavadinimas'], row['autorius'], row['metai'], row['zanras'], row['ISBN'], row['pastabos'], row['knygos_statusas']))
 
-    def open_book_profile(self, event):
-        if not self.book_tree.selection():
-            return
-        selected_item = self.book_tree.selection()[0]
-        selected_book = self.book_tree.item(selected_item, "values")
-
-        # Išsaugoti pradinę informaciją
-        self.selected_book_data = selected_book
-
-        self.clear_window()
-
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-
-        self.canvas.create_text(700, 100, text="Knygos profilis", font=("Arial", 30), fill="black")
-
-        self.create_profile_field("Pavadinimas:", selected_book[0], 200)
-        self.create_profile_field("Autorius:", selected_book[1], 250)
-        self.create_profile_field("Metai:", selected_book[2], 300)
-        self.create_profile_field("Žanras:", selected_book[3], 350)
-        self.create_profile_field("ISBN:", selected_book[4], 400)
-        self.create_profile_field("Pastabos:", selected_book[5], 450)
-        self.create_profile_field("Knygos statusas:", selected_book[6], 500)
-
-        # Tik ne anoniminiai vartotojai gali redaguoti knygą
-        if not self.is_anonymous:
-            self.add_button("Išsaugoti pakeitimus", 550, self.save_book_edits)
-            self.add_button("Išduoti skaitytojui", 750, self.save_book_edits)
-        self.add_button("Atgal į knygų sąrašą", 650, self.show_books)
-        self.add_button("Rezervuoti knygą", 850, self.show_books)
-
-    def create_profile_field(self, label_text, value, y_position):
-        label = tk.Label(self.root, text=label_text, font=("Arial", 15))
-        label.place(x=500, y=y_position)
-        entry = tk.Entry(self.root, font=("Arial", 15), width=40)
-        entry.place(x=700, y=y_position)
-        entry.insert(0, value)
-        setattr(self, f"{label_text.strip(':').lower()}_entry", entry)
-
-    def add_button(self, text, y_position, command):
-        button = tk.Button(self.root, text=text, font=("Arial", 15), width=20, height=2, bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
-        button.place(x=700, y=y_position)
-
-    def save_book_edits(self):
-        """Išsaugoti redaguotus knygos duomenis ir išsaugoti redagavimo istoriją."""
-        new_data = {
-            'Pavadinimas': self.pavadinimas_entry.get(),
-            'Autorius': self.autorius_entry.get(),
-            'Metai': self.metai_entry.get(),
-            'Žanras': self.žanras_entry.get(),
-            'ISBN': self.isbn_entry.get(),
-            'Pastabos': self.pastabos_entry.get(),
-            'Knygos statusas': self.knygos_statusas_entry.get()
-        }
-
-        # Rasti knygą ir atnaujinti duomenis CSV faile
-        self.books_df.loc[self.books_df['ISBN'] == self.selected_book_data[4], new_data.keys()] = new_data.values()
-        self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
-
-        # Išsaugoti redagavimo istoriją
-        self.save_edit_history(self.selected_book_data, new_data)
-
-        messagebox.showinfo("Sėkmė", "Knygos duomenys sėkmingai atnaujinti!")
-        self.show_books()
-
-    def save_edit_history(self, old_data, new_data):
-        """Išsaugoti redagavimo istoriją CSV faile."""
-        changes = []
-        for key, new_value in new_data.items():
-            old_value = self.selected_book_data[list(new_data.keys()).index(key)]
-            if old_value != new_value:
-                changes.append({
-                    'Pakeista data': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    'Laukas': key,
-                    'Sena reikšmė': old_value,
-                    'Nauja reikšmė': new_value,
-                    'ISBN': self.selected_book_data[4]
-                })
-
-        if changes:
-            try:
-                history_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\edit_history.csv")
-            except FileNotFoundError:
-                history_df = pd.DataFrame(columns=['Pakeista data', 'Laukas', 'Sena reikšmė', 'Nauja reikšmė', 'ISBN'])
-
-            history_df = pd.concat([history_df, pd.DataFrame(changes)], ignore_index=True)
-            history_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\edit_history.csv", index=False, encoding='utf-8')
-
-    def remove_book(self):
-        """Pašalinti knygą pagal ISBN ir perkelti į ištrintų knygų sąrašą."""
-        self.clear_window()
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_text(700, 100, text="Pašalinti knygą", font=("Arial", 30), fill="black")
-        self.canvas.create_text(700, 200, text="Įveskite ISBN numerį", font=("Arial", 20), fill="black")
-        
-        isbn_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 250, window=isbn_entry)
-
-        def delete_book():
-            isbn = isbn_entry.get()
-            if not isbn.isnumeric():
-                messagebox.showerror("Klaida", "ISBN numerį sudaro tik skaičiai.")
-                return
-
-            try:
-                books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-            except FileNotFoundError:
-                messagebox.showerror("Klaida", "Knygų duomenų bazė nerasta")
-                return
-
-            book_to_delete = books_df[books_df["ISBN"] == isbn]
-            books_df_filtered = books_df[books_df["ISBN"] != isbn]
-
-            if book_to_delete.empty:
-                messagebox.showwarning("Įspėjimas", f"Knyga su ISBN {isbn} nerasta.")
-            else:
-                try:
-                    deleted_books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\deleted_books_db.csv")
-                except FileNotFoundError:
-                    deleted_books_df = pd.DataFrame(columns=books_df.columns)
-
-                deleted_books_df = pd.concat([deleted_books_df, book_to_delete], ignore_index=True)
-                deleted_books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\deleted_books_db.csv", index=False, encoding="UTF-8")
-
-                books_df_filtered.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding="UTF-8")
-                messagebox.showinfo("Sėkmė", f"Knyga su ISBN {isbn} sėkmingai ištrinta ir perkelta į ištrintų knygų sąrašą.")
-        
-        self.add_button("Ištrinti knygą", 400, delete_book)
-        self.add_button("Atgal", 500, self.show_books)
-
-    def filter_books(self, event=None):
-        search_term = self.search_entry.get().lower()
-
+    def filter_books(self, search_entry, window):
+        search_term = search_entry.get().lower()
         filtered_books = self.books_df[
             (self.books_df['knygos_pavadinimas'].str.contains(search_term, case=False, na=False)) |
             (self.books_df['autorius'].str.contains(search_term, case=False, na=False)) |
@@ -218,149 +101,155 @@ class Books:
             (self.books_df['knygos_statusas'].str.contains(search_term, case=False, na=False))
         ]
 
-        for item in self.book_tree.get_children():
-            self.book_tree.delete(item)
+        tree = window.winfo_children()[1].winfo_children()[2]  # Gauti Treeview iš naujo lango
+        for item in tree.get_children():
+            tree.delete(item)
 
         for index, row in filtered_books.iterrows():
-            self.book_tree.insert("", "end", values=(row['knygos_pavadinimas'], row['autorius'], row['metai'], row['zanras'], row['ISBN'], row['pastabos'], row['knygos_statusas']))
+            tree.insert("", "end", values=(row['knygos_pavadinimas'], row['autorius'], row['metai'], row['zanras'], row['ISBN'], row['pastabos'], row['knygos_statusas']))
+
+    def open_book_profile(self, event):
+        selected_item = event.widget.selection()[0]
+        selected_book = event.widget.item(selected_item, "values")
+
+        new_window = tk.Toplevel(self.root)
+        new_window.title(f"Knygos profilis: {selected_book[0]}")
+
+        self.create_profile_field(new_window, "Pavadinimas:", selected_book[0], 200)
+        self.create_profile_field(new_window, "Autorius:", selected_book[1], 250)
+        self.create_profile_field(new_window, "Metai:", selected_book[2], 300)
+        self.create_profile_field(new_window, "Žanras:", selected_book[3], 350)
+        self.create_profile_field(new_window, "ISBN:", selected_book[4], 400)
+        self.create_profile_field(new_window, "Pastabos:", selected_book[5], 450)
+        self.create_profile_field(new_window, "Knygos statusas:", selected_book[6], 500)
+
+        # Tik ne anonimiški vartotojai gali redaguoti knygą
+        if not self.is_anonymous:
+            self.add_button(new_window, "Išsaugoti pakeitimus", 550, self.save_book_edits)
+        self.add_button(new_window, "Uždaryti", 650, new_window.destroy)
+
+    def create_profile_field(self, window, label_text, value, y_position):
+        label = tk.Label(window, text=label_text, font=("Arial", 15))
+        label.place(x=100, y=y_position)
+        entry = tk.Entry(window, font=("Arial", 15), width=40)
+        entry.place(x=250, y=y_position)
+        entry.insert(0, value)
+        setattr(self, f"{label_text.strip(':').lower()}_entry", entry)
+
+    def add_button(self, window, text, y_position, command):
+        button = tk.Button(window, text=text, font=("Arial", 15), width=20, height=2, bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
+        button.place(x=250, y=y_position)
+
+    def save_book_edits(self):
+        # Implementuokite funkcionalumą išsaugoti knygos redagavimus, jei reikia
+        pass
 
     def add_book(self):
-        self.clear_window()
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Pridėti naują knygą")
 
-        self.canvas.create_text(700, 100, text="Pridėti naują knygą į sistemą", font=("Arial", 30), fill="black")
+        self.create_profile_field(new_window, "Pavadinimas:", "", 100)
+        self.create_profile_field(new_window, "Autorius:", "", 150)
+        self.create_profile_field(new_window, "Metai:", "", 200)
+        self.create_profile_field(new_window, "Zanras:", "", 250)
+        self.create_profile_field(new_window, "ISBN:", "", 300)
+        self.create_profile_field(new_window, "Pastabos:", "", 350)
+        self.create_profile_field(new_window, "Knygos_statusas:", "", 400)
 
-        self.canvas.create_text(700, 200, text="Knygos autorius", font=("Arial", 20), fill="black")
-        author_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 250, window=author_entry)
+        self.add_button(new_window, "Pridėti knygą", 500, lambda: self.submit_book(new_window))
 
-        self.canvas.create_text(700, 300, text="Knygos pavadinimas", font=("Arial", 20), fill="black")
-        title_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 350, window=title_entry)
+    def submit_book(self, window):
+        new_book = {
+            'autorius': self.autorius_entry.get(),
+            'knygos_pavadinimas': self.pavadinimas_entry.get(),
+            'metai': self.metai_entry.get(),
+            'ISBN': self.isbn_entry.get(),
+            'zanras': self.zanras_entry.get(),
+            'pastabos': self.pastabos_entry.get(),
+            'knygos_statusas': self.knygos_statusas_entry.get()
+        }
 
-        self.canvas.create_text(700, 400, text="Knygos išleidimo metai", font=("Arial", 20), fill="black")
-        year_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 450, window=year_entry)
-
-        self.canvas.create_text(700, 500, text="Knygos ISBN", font=("Arial", 20), fill="black")
-        isbn_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 550, window=isbn_entry)
-
-        self.canvas.create_text(700, 600, text="Knygos žanras", font=("Arial", 20), fill="black")
-        genre_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 650, window=genre_entry)
-
-        self.canvas.create_text(700, 700, text="Trumpas knygos aprašymas", font=("Arial", 20), fill="black")
-        about_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 750, window=about_entry)
-
-        self.canvas.create_text(700, 800, text="Knygos statusas", font=("Arial", 20), fill="black")
-        status_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 850, window=status_entry)
-
-        def submit_book():
-            author = author_entry.get()
-            title = title_entry.get()
-            year = year_entry.get()
-            isbn = isbn_entry.get()
-            genre = genre_entry.get()
-            about = about_entry.get()
-            status = status_entry.get()
-
-            new_book = {
-                'autorius': author,
-                'knygos_pavadinimas': title,
-                'metai': year,
-                'ISBN': isbn,
-                'zanras': genre,
-                'pastabos': about,
-                'knygos_statusas': status
-            }
-
-            try:
-                books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-                books_df = pd.concat([books_df, pd.DataFrame([new_book])], ignore_index=True)
-                books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
-                messagebox.showinfo("Sėkmė", f"Knyga '{title}' sėkmingai pridėta!")
-            except FileNotFoundError:
-                messagebox.showerror("Klaida", "Knygų duomenų failas nerastas.")
-
-        self.add_button("Patvirtinti pridėjimą", 900, submit_book)
-        self.add_button("Atgal", 950, self.show_books)
-
-    def search_for_book(self):
-        self.clear_window()
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-
-        self.canvas.create_text(700, 100, text="Paieškos langas", font=("Arial", 30), fill="black")
-        self.canvas.create_text(700, 200, text="Įveskite knygos pavadinimą, autorių, metus arba ISBN", font=("Arial", 20), fill="black")
-        search_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 250, window=search_entry)
-
-        def search():
-            search_query = search_entry.get()
-            search_results = self.books_df[
-                (self.books_df['knygos_pavadinimas'].str.contains(search_query, case=False, na=False)) |
-                (self.books_df['autorius'].str.contains(search_query, case=False, na=False)) |
-                (self.books_df['metai'].astype(str).str.contains(search_query, case=False, na=False)) |
-                (self.books_df['ISBN'].str.contains(search_query, case=False, na=False))
-            ]
-            if not search_results.empty:
-                for index, row in search_results.iterrows():
-                    book_info = f"Knygos pavadinimas: {row['knygos_pavadinimas']}, Rašytojas: {row['autorius']}, ISBN: {row['ISBN']}, Metai: {row['metai']}, Žanras: {row['zanras']}, KNygos statusas: {row['knygos_statusas']}"
-                    book_label = tk.Label(self.root, text=book_info)
-                    book_label.pack(pady=5)
-            else:
-                tk.Label(self.root, text="Knygų nerasta.").pack(pady=5)
-
-        self.add_button("Ieškoti", 400, search)
-        self.add_button("Atgal", 500, self.show_books)
+        try:
+            books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
+            books_df = pd.concat([books_df, pd.DataFrame([new_book])], ignore_index=True)
+            books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
+            messagebox.showinfo("Knyga pridėta sėkmingai", f"Knyga {new_book['knygos_pavadinimas']} sėkmingai pridėta!")
+        except FileNotFoundError:
+            messagebox.showerror("Klaida", "Knygų duomenų failas nerastas.")
+        window.destroy()
 
     def remove_book(self):
-        """Pašalinti knygą pagal ISBN ir perkelti į ištrintų knygų sąrašą."""
-        self.clear_window()
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Pašalinti knygą")
 
-        self.canvas.create_text(700, 100, text="Pašalinti knygą", font=("Arial", 30), fill="black")
-        self.canvas.create_text(700, 200, text="Įveskite ISBN numerį", font=("Arial", 20), fill="black")
-        isbn_entry = tk.Entry(self.root)
-        self.canvas.create_window(700, 250, window=isbn_entry)
+        # Įveskite ISBN laukelį su tinkama y_position
+        self.create_profile_field(new_window, "Įveskite ISBN:", "", 100)
+        
+        # Pridedame mygtuką "Pašalinti knygą"
+        self.add_button(new_window, "Rasti knygą", 200, lambda: self.show_book_before_delete(new_window))
 
-        def delete_book():
-            isbn = isbn_entry.get()
-            if not isbn.isnumeric():
-                messagebox.showerror("Klaida", "ISBN numerį sudaro tik skaičiai.")
-                return
+    def show_book_before_delete(self, window):
+        isbn = self.isbn_entry.get()
 
-            try:
-                books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-            except FileNotFoundError:
-                messagebox.showerror("Klaida", "Knygų duomenų bazė nerasta")
-                return
+        if not isbn.isnumeric():
+            messagebox.showerror("Klaida", "ISBN numerį sudaro tik skaičiai.")
+            return
 
-            book_to_delete = books_df[books_df["ISBN"] == isbn]
-            books_df_filtered = books_df[books_df["ISBN"] != isbn]
+        try:
+            books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
+        except FileNotFoundError:
+            messagebox.showerror("Klaida", "Knygų duomenų bazė nerasta")
+            return
 
-            if book_to_delete.empty:
-                messagebox.showwarning("Įspėjimas", f"Knyga su ISBN {isbn} nerasta.")
-            else:
-                try:
-                    deleted_books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\deleted_books_db.csv")
-                except FileNotFoundError:
-                    deleted_books_df = pd.DataFrame(columns=books_df.columns)
+        # Surandame knygą pagal ISBN
+        book_to_delete = books_df[books_df["ISBN"] == isbn]
 
-                deleted_books_df = pd.concat([deleted_books_df, book_to_delete], ignore_index=True)
-                deleted_books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\deleted_books_db.csv", index=False, encoding="UTF-8")
+        if book_to_delete.empty:
+            messagebox.showwarning("Įspėjimas", f"Knyga su ISBN {isbn} nerasta.")
+        else:
+            # Sukuriamas naujas langas, kuriame parodoma knygos informacija
+            book_data = book_to_delete.iloc[0]
+            confirm_window = tk.Toplevel(window)
+            confirm_window.title(f"Ištrinti knygą: {book_data['knygos_pavadinimas']}?")
 
-                books_df_filtered.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding="UTF-8")
-                messagebox.showinfo("Sėkmė", f"Knyga su ISBN {isbn} sėkmingai ištrinta ir perkelta į ištrintų knygų sąrašą.")
+            # Rodome knygos informaciją
+            tk.Label(confirm_window, text=f"Pavadinimas: {book_data['knygos_pavadinimas']}", font=("Arial", 12)).pack(pady=10)
+            tk.Label(confirm_window, text=f"Autorius: {book_data['autorius']}", font=("Arial", 12)).pack(pady=5)
+            tk.Label(confirm_window, text=f"Metai: {book_data['metai']}", font=("Arial", 12)).pack(pady=5)
+            tk.Label(confirm_window, text=f"Žanras: {book_data['zanras']}", font=("Arial", 12)).pack(pady=5)
+            tk.Label(confirm_window, text=f"ISBN: {book_data['ISBN']}", font=("Arial", 12)).pack(pady=5)
 
-        self.add_button("Ištrinti knygą", 400, delete_book)
-        self.add_button("Atgal", 500, self.show_books)
+            # Patvirtinimo ir atšaukimo mygtukai
+            tk.Button(confirm_window, text="Patvirtinti trynimą", command=lambda: self.confirm_delete(book_data, books_df, confirm_window)).pack(pady=10)
+            tk.Button(confirm_window, text="Atšaukti", command=confirm_window.destroy).pack(pady=10)
+
+    def confirm_delete(self, book_data, books_df, confirm_window):
+        # Šaliname knygą iš duomenų bazės
+        books_df_filtered = books_df[books_df["ISBN"] != book_data['ISBN']]
+
+        # Saugojame atnaujintą sąrašą
+        books_df_filtered.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding="UTF-8")
+
+        # Perkeliam knygą į ištrintų knygų sąrašą
+        try:
+            deleted_books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\deleted_books_db.csv")
+        except FileNotFoundError:
+            deleted_books_df = pd.DataFrame(columns=books_df.columns)
+
+        deleted_books_df = pd.concat([deleted_books_df, pd.DataFrame([book_data])], ignore_index=True)
+        deleted_books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\deleted_books_db.csv", index=False, encoding="UTF-8")
+
+        messagebox.showinfo("Sėkmė", f"Knyga {book_data['knygos_pavadinimas']} su ISBN {book_data['ISBN']} sėkmingai ištrinta.")
+        
+        # Uždaryti patvirtinimo langą
+        confirm_window.destroy()
+
+    def search_for_book(self):
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Paieška")
+
+        self.create_profile_field(new_window, "Įveskite paieškos tekstą:", "", 100)
+        self.add_button(new_window, "Ieškoti", 200, lambda: self.filter_books(self.isbn_entry, new_window))
 
     def clear_window(self):
         for widget in self.root.winfo_children():

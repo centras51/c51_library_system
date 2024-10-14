@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 from PIL import Image, ImageTk
 import pandas as pd
 from books import Books
@@ -8,24 +8,22 @@ from readerregistration import ReaderRegistration
 class Librarian:
     def __init__(self, root, librarian_info):
         self.root = root
-        self.librarian_info = librarian_info  # Gauta informacija iš prisijungimo: vardas, pavardė, telefonas, email
+        self.librarian_info = librarian_info
         self.books_instance = Books(self.root)
         self.readerregistration_instance = ReaderRegistration(self.root)
-        self.button_width = 35  
+        self.button_width = 30  
         self.button_height = 3  
 
         self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
+        self.background_image = self.original_image.resize((1400, 800), Image.LANCZOS)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
-        # Pridedame bibliotekininko informaciją apačioje
         self.add_librarian_info()
 
-        # Pagrindinio meniu iškvietimas paleidus klasę
         self.show_menu()
 
     def add_librarian_info(self):
@@ -33,7 +31,6 @@ class Librarian:
         librarian_info_text = f"Bibliotekininkas: {self.librarian_info[0]} {self.librarian_info[1]}, Tel: {self.librarian_info[2]}, El. paštas: {self.librarian_info[3]}"
         librarian_label = tk.Label(self.root, text=librarian_info_text, font=("Arial", 12), bg="lightgray", fg="black")
         
-        # Lipdukas apačioje
         self.canvas.create_window(700, 780, window=librarian_label, anchor="center")
 
     def clear_window(self):
@@ -53,12 +50,11 @@ class Librarian:
 
         self.add_button("Peržiūrėti knygas", 250, 200, self.books_instance.show_books)  
         self.add_button("Pridėti knygą", 250, 350, self.books_instance.add_book)  
-        self.add_button("Surasti knygą", 250, 500, self.books_instance.search_for_book)  
+        self.add_button("Išduoti knygą", 250, 500, self.lend_book)  
         self.add_button("Pašalinti knygą", 250, 650, self.books_instance.remove_book)  
-        self.add_button("Išduoti knygą", 250, 750, self.lend_book)  
 
         self.add_button("Skaitytojų sąrašas", 750, 200, self.reader_list)  
-        self.add_button("Surasti skaitytoją", 750, 350, self.find_reader)  
+        self.add_button("Surasti skaitytoją", 750, 350, self.search_reader)  
         self.add_button("Pridėti skaitytoją", 750, 500, self.readerregistration_instance.register)  
         self.add_button("Pašalinti skaitytoją", 750, 650, self.remove_reader)  
 
@@ -69,7 +65,7 @@ class Librarian:
     def add_button(self, text, x_position, y_position, command):
         """Sukurti mygtuką ir pridėti jį į `canvas`."""
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
-                        bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
+                           bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
 
         self.canvas.create_window(x_position, y_position, window=button)
 
@@ -87,36 +83,217 @@ class Librarian:
         messagebox.showinfo("Išduoti knygą", "Funkcija dar neįgyvendinta.")
 
     def reader_list(self):
-        """Placeholder funkcija skaitytojų sąrašui peržiūrėti."""
-        messagebox.showinfo("Skaitytojų sąrašas", "Funkcija dar neįgyvendinta.")
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Skaitytojų sąrašas")
 
-    def find_reader(self):
-        """Surasti skaitytoją pagal tam tikrus kriterijus."""
-        messagebox.showinfo("Surasti skaitytoją", "Skaitytojo paieška neįgyvendinta.")
+        frame = tk.Frame(new_window)
+        frame.pack(fill=tk.BOTH, expand=True)
+
+        vsb = tk.Scrollbar(frame, orient="vertical")
+        vsb.pack(side="right", fill="y")
+
+        hsb = tk.Scrollbar(frame, orient="horizontal")
+        hsb.pack(side="bottom", fill="x")
+
+        reader_tree = ttk.Treeview(frame, columns=("Vardas", "Pavardė", "El. paštas", "Telefonas", "Skaitytojo kortelė", "Username"), show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        reader_tree.pack(fill=tk.BOTH, expand=True)
+
+        vsb.config(command=reader_tree.yview)
+        hsb.config(command=reader_tree.xview)
+
+        reader_tree.heading("Vardas", text="Vardas")
+        reader_tree.heading("Pavardė", text="Pavardė")
+        reader_tree.heading("El. paštas", text="El. paštas")
+        reader_tree.heading("Telefonas", text="Telefonas")
+        reader_tree.heading("Skaitytojo kortelė", text="Skaitytojo kortelė")
+        reader_tree.heading("Username", text="Username")
+
+        reader_tree.column("Vardas", width=150)
+        reader_tree.column("Pavardė", width=150)
+        reader_tree.column("El. paštas", width=200)
+        reader_tree.column("Telefonas", width=150)
+        reader_tree.column("Skaitytojo kortelė", width=150)
+        reader_tree.column("Username", width=150)
+
+        self.populate_readers(reader_tree)
+
+    def populate_readers(self, tree):
+        readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+        for item in tree.get_children():
+            tree.delete(item)
+
+        for index, row in readers_df.iterrows():
+            tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['email'], row['telefonas'], row['skaitytojo_kortele'], row['username']))
+
+    def search_reader(self):
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Ieškoti skaitytojo")
+
+        tk.Label(new_window, text="Įveskite skaitytojo kortelės nr, vardą arba pavardę:").pack(pady=10)
+        self.search_entry = tk.Entry(new_window)
+        self.search_entry.pack(pady=5)
+
+        tk.Button(new_window, text="Ieškoti", command=lambda: self.filter_readers(self.search_entry, new_window)).pack(pady=10)
+
+    def filter_readers(self, search_entry, window):
+        search_term = search_entry.get().lower()
+        readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+
+        filtered_readers = readers_df[
+            (readers_df['vardas'].str.contains(search_term, case=False, na=False)) |
+            (readers_df['pavarde'].str.contains(search_term, case=False, na=False)) |
+            (readers_df['email'].str.contains(search_term, case=False, na=False)) |
+            (readers_df['telefonas'].str.contains(search_term, case=False, na=False)) |
+            (readers_df['username'].str.contains(search_term, case=False, na=False)) |
+            (readers_df['korteles_numeris'].str.contains(search_term, case=False, na=False)) 
+        ]
+
+        # Sukurkite naują TreeView komponentą, jei reikia, arba naudokite jau esamą
+        tree = window.winfo_children()[2]  # Tikriname, kad TreeView egzistuoja
+        if isinstance(tree, ttk.Treeview):
+            for item in tree.get_children():
+                tree.delete(item)
+
+            for index, row in filtered_readers.iterrows():
+                tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['el_pastas'], row['telefonas'], row['skaitytojo_kortele']))
 
     def remove_reader(self):
-        """Pašalinti skaitytoją."""
-        messagebox.showinfo("Pašalinti skaitytoją", "Funkcija dar neįgyvendinta.")
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Pašalinti skaitytoją")
+
+        # Laukas įvesti skaitytojo kortelės numerį, vardą arba pavardę
+        tk.Label(new_window, text="Įveskite kortelės numerį, vardą arba pavardę:").pack(pady=10)
+        search_entry = tk.Entry(new_window)
+        search_entry.pack(pady=5)
+
+        def search_reader():
+            search_term = search_entry.get().strip().lower()
+            if not search_term:
+                messagebox.showerror("Klaida", "Įveskite kortelės numerį, vardą arba pavardę")
+                return
+            
+            readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+
+            # Ieškoti skaitytojo pagal kortelės numerį, vardą arba pavardę
+            filtered_readers = readers_df[
+                (readers_df['skaitytojo_kortele'].str.contains(search_term, case=False, na=False)) |
+                (readers_df['vardas'].str.contains(search_term, case=False, na=False)) |
+                (readers_df['pavarde'].str.contains(search_term, case=False, na=False))
+            ]
+
+            if filtered_readers.empty:
+                messagebox.showwarning("Įspėjimas", f"Skaitytojas su paieškos terminu '{search_term}' nerastas")
+            else:
+                if len(filtered_readers) > 1:
+                    self.display_multiple_readers(new_window, filtered_readers)
+                else:
+                    reader_data = filtered_readers.iloc[0]
+                    self.display_reader_data(new_window, reader_data, readers_df)
+
+        tk.Button(new_window, text="Ieškoti", command=search_reader).pack(pady=10)
+
+    def display_reader_data(self, parent_window, reader_data, readers_df):
+        """Funkcija rodanti skaitytojo duomenis prieš ištrynimą ir reikalaujanti slaptažodžio patvirtinimo."""
+        reader_info = f"Vardas: {reader_data['vardas']}\nPavardė: {reader_data['pavarde']}\nEl. paštas: {reader_data['email']}\nTelefonas: {reader_data['telefonas']}\nSkaitytojo kortelė: {reader_data['skaitytojo_kortele']}\nUsername: {reader_data['username']}"
+        tk.Label(parent_window, text=reader_info, justify="left").pack(pady=10)
+
+        tk.Label(parent_window, text="Įveskite savo slaptažodį, kad patvirtintumėte trynimą:").pack(pady=10)
+        password_entry = tk.Entry(parent_window, show="*")
+        password_entry.pack(pady=5)
+
+        def confirm_delete():
+            entered_password = password_entry.get()
+            correct_password = self.librarian_info[-1]
+
+            if entered_password == correct_password:
+                readers_df_filtered = readers_df[readers_df["skaitytojo_kortele"] != reader_data['skaitytojo_kortele']]
+                readers_df_filtered.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv", index=False, encoding="utf-8")
+                messagebox.showinfo("Sėkmė", "Skaitytojas sėkmingai ištrintas!")
+                parent_window.destroy()
+            else:
+                messagebox.showerror("Klaida", "Neteisingas slaptažodis")
+
+        tk.Button(parent_window, text="Patvirtinti trynimą", command=confirm_delete).pack(pady=10)
+
+    def display_multiple_readers(self, parent_window, filtered_readers):
+        """Funkcija rodanti kelis rastus skaitytojus pasirinkimui."""
+        tk.Label(parent_window, text="Pasirinkite skaitytoją:").pack(pady=10)
+
+        for index, reader in filtered_readers.iterrows():
+            reader_info = f"{reader['vardas']} {reader['pavarde']}, Kortelė: {reader['skaitytojo_kortele']}"
+            tk.Button(parent_window, text=reader_info, command=lambda r=reader: self.display_reader_data(parent_window, r, filtered_readers)).pack(pady=5)
 
     def show_librarians(self):
-        """Parodyti bibliotekininkų sąrašą."""
-        try:
-            librarians_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
-            selected_columns = librarians_df[['vardas', 'pavarde', 'email', 'telefonas']]
-            selected_columns = selected_columns.reset_index(drop=True)
+        # Sukuriame naują langą bibliotekininkų sąrašui
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Bibliotekininkų sąrašas")
 
-            self.clear_window()
-            self.canvas = tk.Canvas(self.root, width=1400, height=800)
-            self.canvas.pack(fill="both", expand=True)
-            self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
+        # Paieškos laukelis
+        search_label = tk.Label(new_window, text="Ieškoti bibliotekininko:")
+        search_label.pack(pady=5)
 
-            self.canvas.create_text(700, 100, text="Bibliotekininkų sąrašas", font=("Arial", 30), fill="black")
+        search_entry = tk.Entry(new_window)
+        search_entry.pack(pady=5)
+        search_entry.bind("<KeyRelease>", lambda event: self.filter_librarians(search_entry, new_window))
 
-            for index, row in selected_columns.iterrows():
-                librarian_info = f"Vardas: {row['vardas']}, Pavardė: {row['pavarde']}, El. paštas: {row['email']}, Telefonas: {row['telefonas']}"
-                tk.Label(self.root, text=librarian_info).pack(pady=5)
+        # Sukuriame rėmelį lentelės rodymui
+        frame = tk.Frame(new_window)
+        frame.pack(fill=tk.BOTH, expand=True)
 
-            self.add_button("Atgal", 500, self.show_menu)
+        vsb = tk.Scrollbar(frame, orient="vertical")
+        vsb.pack(side="right", fill="y")
 
-        except FileNotFoundError:
-            messagebox.showerror("Klaida", "Bibliotekininkų sąrašas nerastas.")
+        hsb = tk.Scrollbar(frame, orient="horizontal")
+        hsb.pack(side="bottom", fill="x")
+
+        # Lentelė bibliotekininkams rodyti
+        librarian_tree = ttk.Treeview(frame, columns=("Vardas", "Pavardė", "El. paštas", "Telefonas", "Username"), show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        librarian_tree.pack(fill=tk.BOTH, expand=True)
+
+        vsb.config(command=librarian_tree.yview)
+        hsb.config(command=librarian_tree.xview)
+
+        # Sukuriame lentelės antraštes
+        librarian_tree.heading("Vardas", text="Vardas")
+        librarian_tree.heading("Pavardė", text="Pavardė")
+        librarian_tree.heading("El. paštas", text="El. paštas")
+        librarian_tree.heading("Telefonas", text="Telefonas")
+        librarian_tree.heading("Username", text="Username")
+
+        librarian_tree.column("Vardas", width=150)
+        librarian_tree.column("Pavardė", width=150)
+        librarian_tree.column("El. paštas", width=200)
+        librarian_tree.column("Telefonas", width=150)
+        librarian_tree.column("Username", width=150)
+
+        # Užpildome lentelę bibliotekininkais
+        self.populate_librarians(librarian_tree)
+
+    def populate_librarians(self, tree):
+        # Įkrauname bibliotekininkų duomenų failą
+        librarians_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
+        
+        for item in tree.get_children():
+            tree.delete(item)
+
+        for index, row in librarians_df.iterrows():
+            tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['email'], row['telefonas'], row['username']))
+
+    def filter_librarians(self, search_entry, window):
+        search_term = search_entry.get().lower()
+        librarians_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
+
+        filtered_librarians = librarians_df[
+            (librarians_df['vardas'].str.contains(search_term, case=False, na=False)) |
+            (librarians_df['pavarde'].str.contains(search_term, case=False, na=False)) |
+            (librarians_df['email'].str.contains(search_term, case=False, na=False)) |
+            (librarians_df['telefonas'].str.contains(search_term, case=False, na=False)) |
+            (librarians_df['username'].str.contains(search_term, case=False, na=False))
+        ]
+
+        tree = window.winfo_children()[1].winfo_children()[2]  # Gauti Treeview iš naujo lango
+        for item in tree.get_children():
+            tree.delete(item)
+
+        for index, row in filtered_librarians.iterrows():
+            tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['email'], row['telefonas'], row['username']))

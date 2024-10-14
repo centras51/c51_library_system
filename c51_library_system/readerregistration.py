@@ -8,7 +8,7 @@ from PIL import Image, ImageTk
 class ReaderRegistration:
     def __init__(self, root):
         self.root = root
-        self.button_width = 60
+        self.button_width = 30
         self.button_height = 3
         self.entry_width = 30  
         self.entry_font = ("Arial", 18)
@@ -35,70 +35,56 @@ class ReaderRegistration:
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
+        # Pavadinimas
         self.canvas.create_text(700, 50, text="Naujo skaitytojo registracija", font=("Arial", 30, "bold"), fill="green")
 
-        tk.Label(self.root, text="Vardas", font=("Arial", 20)).pack(pady=5)
-        reader_name = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
-        reader_name.pack(pady=5)
+        # Vardas
+        self.canvas.create_text(200, 150, text="Vardas", font=("Arial", 20, "bold"), fill="green")
+        self.reader_name_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
+        self.canvas.create_window(700, 150, window=self.reader_name_entry)
 
-        tk.Label(self.root, text="Pavardė", font=("Arial", 20)).pack(pady=5)
-        reader_last_name = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
-        reader_last_name.pack(pady=5)
+        # Pavardė
+        self.canvas.create_text(200, 200, text="Pavardė", font=("Arial", 20, "bold"), fill="green")
+        self.reader_last_name_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
+        self.canvas.create_window(700, 200, window=self.reader_last_name_entry)
 
-        tk.Label(self.root, text="El. paštas", font=("Arial", 20)).pack(pady=5)
-        reader_email = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
-        reader_email.pack(pady=5)
+        # El. paštas
+        self.canvas.create_text(200, 250, text="El. paštas", font=("Arial", 20, "bold"), fill="green")
+        self.reader_email_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
+        self.canvas.create_window(700, 250, window=self.reader_email_entry)
 
-        tk.Label(self.root, text="Telefono numeris (+370)", font=("Arial", 20)).pack(pady=5)
-        reader_phone = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
-        reader_phone.pack(pady=5)
+        # Telefono numeris
+        self.canvas.create_text(200, 300, text="Telefono numeris (+370)", font=("Arial", 20, "bold"), fill="green")
+        self.reader_phone_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
+        self.canvas.create_window(700, 300, window=self.reader_phone_entry)
 
-        tk.Label(self.root, text="Prisijungimo vardas", font=("Arial", 20)).pack(pady=5)
-        new_username = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
-        new_username.pack(pady=5)
+        # Prisijungimo vardas
+        self.canvas.create_text(200, 350, text="Prisijungimo vardas", font=("Arial", 20, "bold"), fill="green")
+        self.new_username_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
+        self.canvas.create_window(700, 350, window=self.new_username_entry)
 
-        tk.Label(self.root, text="Slaptažodis", font=("Arial", 20)).pack(pady=5)
-        new_password = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
-        new_password.pack(pady=5)
+        # Slaptažodis
+        self.canvas.create_text(200, 400, text="Slaptažodis", font=("Arial", 20, "bold"), fill="green")
+        self.new_password_entry = tk.Entry(self.root, font=("Arial", 18), width=30, show='*')
+        self.canvas.create_window(700, 400, window=self.new_password_entry)
 
-        tk.Label(self.root, text="Pakartokite slaptažodį", font=("Arial", 20)).pack(pady=5)
-        new_password2 = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
-        new_password2.pack(pady=5)
+        # Pakartokite slaptažodį
+        self.canvas.create_text(200, 450, text="Pakartokite slaptažodį", font=("Arial", 20, "bold"), fill="green")
+        self.new_password2_entry = tk.Entry(self.root, font=("Arial", 18), width=30, show='*')
+        self.canvas.create_window(700, 450, window=self.new_password2_entry)
 
-        def submit_registration():
-            if not reader_name.get().isalpha() or not reader_last_name.get().isalpha():
-                messagebox.showerror("Klaida", "Vardą ir pavardę turi sudaryti tik raidės!")
-            elif not self.is_valid_email(reader_email.get()):
-                messagebox.showerror("Klaida", "Neteisingas el. pašto formatas!")
-            elif not self.is_valid_phone(reader_phone.get()):
-                messagebox.showerror("Klaida", "Neteisingas telefono numeris! Numeris turi būti 8 skaitmenų, prasidedantis 6.")
-            elif new_password.get() != new_password2.get():
-                messagebox.showerror("Klaida", "Slaptažodžiai nesutampa!")
-            else:
-                reader_card_number = self.reader_card_number_generator()
-                self.save_reader_datas(
-                    reader_name.get(), 
-                    reader_last_name.get(), 
-                    reader_email.get(), 
-                    "+370" + reader_phone.get(), 
-                    reader_card_number
-                )
-                self.save_reader_password(
-                    reader_name.get(), 
-                    reader_last_name.get(), 
-                    reader_email.get(), 
-                    "+370" + reader_phone.get(), 
-                    reader_card_number, 
-                    new_username.get(), 
-                    new_password.get()
-                )
-                messagebox.showinfo("Naujas skaitytojas užregistruotas", f"Sėkmingai užregistruotas {reader_name.get()} {reader_last_name.get()}. Jūsų skaitytojo kortelės numeris: {reader_card_number}")
-        
-        tk.Button(self.root, text="Registruotis", font=("Arial", 15), width=self.button_width, height=self.button_height, command=submit_registration).pack(pady=20)
+        # Mygtukas Registruotis
+        self.register_button = tk.Button(self.canvas, text="Registruotis", font=("Arial", 18), width=28, height=2, command=self.save_reader_datas)
+        self.canvas.create_window(700, 550, window=self.register_button)
 
-        # Atgal ir Išeiti mygtukai
-        tk.Button(self.root, text="Atgal", font=("Arial", 15), width=self.button_width, height=self.button_height, command=self.go_back_to_login).pack(pady=10)
-        tk.Button(self.root, text="Išeiti iš sistemos", font=("Arial", 15), width=self.button_width, height=self.button_height, command=self.root.quit).pack(pady=10)
+        # Mygtukas Atgal
+        back_button = tk.Button(self.canvas, text="Atgal", font=("Arial", 15), width=16, height=2, command=self.go_back_to_login)
+        self.canvas.create_window(600, 700, window=back_button)
+
+        # Mygtukas Išeiti
+        exit_button = tk.Button(self.canvas, text="Išeiti iš sistemos", font=("Arial", 15), width=16, height=2, command=self.root.quit)
+        self.canvas.create_window(800, 700, window=exit_button)
+
 
     def is_valid_email(self, reader_email):
         email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
@@ -116,31 +102,52 @@ class ReaderRegistration:
             if reader_card_number not in existing_reader_card_numbers:
                 return reader_card_number
 
-    def save_reader_datas(self, reader_name, reader_last_name, reader_email, reader_phone, reader_card_number):
-        new_reader_line = {
-            'vardas': reader_name, 
-            'pavarde': reader_last_name, 
-            'email': reader_email, 
-            'telefonas': reader_phone, 
-            'skaitytojo_kortele': reader_card_number
-        }
-        reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-        reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
-        reader_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv", index=False, encoding='utf-8')
+    def save_reader_datas(self):
+        """Išsaugoti skaitytojo registracijos duomenis."""
+        reader_name = self.reader_name_entry.get()
+        reader_last_name = self.reader_last_name_entry.get()
+        reader_email = self.reader_email_entry.get()
+        reader_phone = self.reader_phone_entry.get()
+        new_username = self.new_username_entry.get()
+        new_password = self.new_password_entry.get()
+        new_password2 = self.new_password2_entry.get()
+        reader_card_number = self.reader_card_number_generator()
 
-    def save_reader_password(self, reader_name, reader_last_name, reader_email, reader_phone, reader_card_number, new_username, new_password):
+        # Validacijos tikrinimas
+        if not reader_name or not reader_last_name:
+            messagebox.showerror("Klaida", "Vardas ir pavardė privalomi.")
+            return
+
+        if not self.is_valid_email(reader_email):
+            messagebox.showerror("Klaida", "Neteisingas el. pašto formatas.")
+            return
+
+        if not self.is_valid_phone(reader_phone):
+            messagebox.showerror("Klaida", "Neteisingas telefono numeris. Turėtų prasidėti su '6' ir turėti 8 skaitmenis.")
+            return
+
+        if new_password != new_password2:
+            messagebox.showerror("Klaida", "Slaptažodžiai nesutampa.")
+            return
+
+        # Išsaugoti duomenis
         new_reader_line = {
-            'vardas': reader_name, 
-            'pavarde': reader_last_name, 
-            'email': reader_email, 
-            'telefonas': reader_phone, 
-            'skaitytojo_kortele': reader_card_number, 
-            'username': new_username, 
+            'vardas': reader_name,
+            'pavarde': reader_last_name,
+            'email': reader_email,
+            'telefonas': reader_phone,
+            'skaitytojo_kortele': reader_card_number,
+            'username': new_username,
             'password': new_password
         }
-        reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-        reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
-        reader_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv", index=False, encoding='utf-8')
+
+        try:
+            reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+            reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
+            reader_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv", index=False, encoding='utf-8')
+            messagebox.showinfo("Registracija baigta", f"Skaitytojas {new_reader_line['vardas']} {new_reader_line['pavarde']} sėkmingai užregistruotas!")
+        except FileNotFoundError:
+            messagebox.showerror("Klaida", "Nepavyko rasti skaitytojų duomenų failo.")
 
     def go_back_to_login(self):
         """Grįžti į prisijungimo ekraną."""

@@ -10,12 +10,13 @@ class LibraryApp:
         self.root = root
         self.root.title("C51 BIBLIOTEKOS SISTEMA")
         self.root.geometry("1400x800")
+        self.readerregistration_instance = ReaderRegistration(self.root)
         self.button_width = 60
         self.button_height = 3
 
         # Įkeliamas paveikslėlis ir nustatomas jo fiksuotas dydis 1400x800
         self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
+        self.background_image = self.original_image.resize((1600, 1000), Image.Resampling.LANCZOS)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 
         # Sukuriame Canvas ir nustatome paveikslėlį kaip foną
@@ -37,7 +38,7 @@ class LibraryApp:
         self.add_button("Bibliotekininko prisijungimas", 200, self.librarian_login)
         self.add_button("Skaitytojo prisijungimas", 300, self.reader_login)
         self.add_button("Dirbti neprisijungus", 400, self.anonymous_environment)
-        self.add_button("Naujo skaitytojo registracija", 500, self.register_reader)
+        self.add_button("Naujo skaitytojo registracija", 500, self.readerregistration_instance.register)
         self.add_button("Išeiti iš sistemos", 600, self.root.quit)
 
     def add_button(self, text, y_position, command):
