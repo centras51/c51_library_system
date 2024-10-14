@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 from readerregistration import ReaderRegistration
 from librarian_login import LibrarianLogin
 from reader_login import ReaderLogin
+from reader import Reader
 
 class LibraryApp:
     def __init__(self, root):
@@ -30,7 +31,7 @@ class LibraryApp:
         """Pagrindinis langas"""
         self.clear_window()
         
-        self.canvas.create_text(700, 100, text="C51 BIBLIOTEKOS SISTEMA", font=("Arial", 30), fill="black")
+        self.canvas.create_text(700, 100, text="C51 BIBLIOTEKOS SISTEMA", font=("Arial", 30, "bold"), fill="green")
 
         # Mygtukai su efektais
         self.add_button("Bibliotekininko prisijungimas", 200, self.librarian_login)

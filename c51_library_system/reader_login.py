@@ -14,7 +14,7 @@ class ReaderLogin:
         self.reader = None  
 
         # Įkeliamas paveikslėlis ir nustatomas jo fiksuotas dydis 1400x800
-        self.original_image = Image.open(r"D:\\CodeAcademy\\c51_library_system\\background\\library.png")
+        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
         self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 
@@ -33,13 +33,13 @@ class ReaderLogin:
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
-        self.canvas.create_text(700, 100, text="Skaitytojo prisijungimas", font=("Arial", 30), fill="black")
+        self.canvas.create_text(700, 100, text="Skaitytojo prisijungimas", font=("Arial", 30, "bold"), fill="green")
 
-        self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20), fill="black")
+        self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20, "bold"), fill="black")
         self.username_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
         self.canvas.create_window(700, 250, window=self.username_entry)
 
-        self.canvas.create_text(700, 300, text="Slaptažodis", font=("Arial", 20), fill="black")
+        self.canvas.create_text(700, 300, text="Slaptažodis", font=("Arial", 20, "bold"), fill="black")
         self.password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
         self.canvas.create_window(700, 350, window=self.password_entry)
 
@@ -62,7 +62,7 @@ class ReaderLogin:
 
     def username_password_verification(self, username, password):
         try:
-            usr_psw_df = pd.read_csv(r"D:\\CodeAcademy\\c51_library_system\\CSVs\\passwords_db.csv")
+            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\passwords_db.csv")
             user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
             if not user_info.empty:
                 return user_info['password'].values[0] == password
