@@ -32,7 +32,7 @@ class LibraryApp:
         """Pagrindinis langas"""
         self.clear_window()
         
-        self.canvas.create_text(700, 100, text="C51 BIBLIOTEKOS SISTEMA", font=("Arial", 30, "bold"), fill="black")
+        self.canvas.create_text(700, 100, text="C51 BIBLIOTEKOS SISTEMA", font=("Arial", 30, "bold"), fill="white")
 
         # Mygtukai su efektais
         self.add_button("Bibliotekininko prisijungimas", 200, self.librarian_login)

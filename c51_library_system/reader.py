@@ -9,7 +9,7 @@ class Reader:
         self.root = root
         self.username = None
         self.password = None
-        self.books_instance = Books(self.root, is_anonymous=True)
+        self.books_instance = Books(self.root, is_reader=True)
 
     def clear_window(self):
         """Clear all widgets from the window."""
