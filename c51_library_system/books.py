@@ -3,7 +3,6 @@ from tkinter import messagebox, ttk
 import pandas as pd
 from datetime import datetime
 import re
-import numpy as np
 
 class Books:
     def __init__(self, root, is_anonymous=False, is_reader=False):
@@ -15,17 +14,18 @@ class Books:
         self.reading_history_df = self.load_reading_history()
         self.selected_book = None  # Pasirinkta knyga
 
-
     def load_books(self):
         try:
             df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
             required_columns = {'knygos_pavadinimas', 'autorius', 'metai', 'ISBN', 'zanras', 'pastabos', 'statusas'}
             if not required_columns.issubset(df.columns):
-                messagebox.showerror("Klaida", "Stulpeliai nerasti")
+                messagebox.showerror("Klaida", "Trūksta būtinų stulpelių knygų duomenų bazėje.")
                 return pd.DataFrame()
+            # Normalizuojame knygos pavadinimus
+            df['knygos_pavadinimas'] = df['knygos_pavadinimas'].str.strip().str.title()
             return df
         except FileNotFoundError:
-            messagebox.showerror("Klaida", "Knygų sąrašo nepavyko rasti")
+            messagebox.showerror("Klaida", "Knygų duomenų bazės failas nerastas.")
             return pd.DataFrame()
 
     def load_readers(self):
@@ -33,11 +33,11 @@ class Books:
             df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
             required_columns = {'vardas', 'pavarde', 'email', 'telefonas', 'skaitytojo_kortele'}
             if not required_columns.issubset(df.columns):
-                messagebox.showerror("Klaida", "Skaitytojų stulpeliai nerasti")
+                messagebox.showerror("Klaida", "Trūksta būtinų stulpelių skaitytojų duomenų bazėje.")
                 return pd.DataFrame()
             return df
         except FileNotFoundError:
-            messagebox.showerror("Klaida", "Skaitytojų sąrašo nepavyko rasti")
+            messagebox.showerror("Klaida", "Skaitytojų duomenų bazės failas nerastas.")
             return pd.DataFrame()
 
     def load_reading_history(self):
@@ -48,33 +48,45 @@ class Books:
                 encoding='utf-8',
                 delimiter=','
             )
+            # Normalizuojame knygos pavadinimus
+            df['knygos_pavadinimas'] = df['knygos_pavadinimas'].str.strip().str.title()
             return df
         except FileNotFoundError:
-            messagebox.showerror("Klaida", "Knygų istorijos failo nepavyko rasti")
+            messagebox.showerror("Klaida", "Skaitymo istorijos failas nerastas.")
             return pd.DataFrame()
 
     def get_current_reader(self, knygos_pavadinimas):
-        # Filtruojame skaitymo istoriją pagal knygos pavadinimą ir kur 'knygos_grazinimo_data' yra tuščia (knyga dar negrąžinta)
+        knygos_pavadinimas = knygos_pavadinimas.strip().title()
+        # Konvertuojame datas į datetime formatą
+        self.reading_history_df['knygos_paemimo_data'] = pd.to_datetime(
+            self.reading_history_df['knygos_paemimo_data'], errors='coerce')
+        self.reading_history_df['knygos_grazinimo_data'] = pd.to_datetime(
+            self.reading_history_df['knygos_grazinimo_data'], errors='coerce')
+
+        today = pd.Timestamp(datetime.now().date())
+
+        # Filtruojame įrašus, kur knyga yra paskolinta šiuo metu
         current_reading = self.reading_history_df[
             (self.reading_history_df['knygos_pavadinimas'] == knygos_pavadinimas) &
-            (self.reading_history_df['knygos_grazinimo_data'].isnull())
+            (self.reading_history_df['knygos_paemimo_data'] <= today) &
+            (self.reading_history_df['knygos_grazinimo_data'] >= today)
         ]
+
         if not current_reading.empty:
-            # Gauname skaitytojo kortelės numerį
-            skaitytojo_kortele = current_reading.iloc[0]['skaitytojo_kortele']
-            # Surandame skaitytoją 'readers_df' duomenų rėmelyje
+            # Paimame naujausią įrašą
+            current_reading = current_reading.sort_values('knygos_paemimo_data', ascending=False).iloc[0]
+            skaitytojo_kortele = current_reading['skaitytojo_kortele']
             reader = self.readers_df[self.readers_df['skaitytojo_kortele'] == skaitytojo_kortele]
             if not reader.empty:
                 return reader.iloc[0]
         return None
-
 
     def show_books(self):
         # Sukurti naują langą
         new_window = tk.Toplevel(self.root)
         new_window.title("Knygų sąrašas")
 
-        # Kiti komponentai kuriami naujame lange
+        # Paieškos laukelis
         search_label = tk.Label(new_window, text="Ieškoti knygos:")
         search_label.pack(pady=5)
 
@@ -117,6 +129,7 @@ class Books:
         book_tree.column("pastabos", width=350)
         book_tree.column("statusas", width=100)
 
+        # Pridedame dvigubo paspaudimo įvykio tvarkyklę
         book_tree.bind("<Double-1>", self.open_book_profile)
 
         self.populate_books(book_tree)
@@ -137,7 +150,7 @@ class Books:
             ))
 
     def filter_books(self, search_entry, window):
-        search_term = search_entry.get().lower()
+        search_term = search_entry.get().title()
         filtered_books = self.books_df[
             (self.books_df['knygos_pavadinimas'].str.contains(search_term, case=False, na=False)) |
             (self.books_df['autorius'].str.contains(search_term, case=False, na=False)) |
@@ -196,7 +209,7 @@ class Books:
         else:
             tk.Label(new_window, text="Niekas šiuo metu neskolinasi šios knygos", font=("Arial", 15)).place(x=250, y=450)
             # Tik jei knygos statusas yra 'laisva', leidžiame priskirti skaitytoją
-            if selected_book[6].lower() == 'laisva' and not self.is_anonymous:
+            if selected_book[6].title().startswith('laisva') and not self.is_anonymous:
                 # Priskirti skaitytoją
                 tk.Label(new_window, text="Priskirti skaitytoją:", font=("Arial", 15)).place(x=100, y=480)
                 reader_names = self.readers_df['vardas'] + ' ' + self.readers_df['pavarde']
@@ -218,9 +231,6 @@ class Books:
             self.add_button(new_window, "Išsaugoti pakeitimus", 570, self.save_book_edits)
         self.add_button(new_window, "Uždaryti", 620, new_window.destroy)
 
-
-
-
     def create_profile_field(self, window, label_text, value, y_position):
         label = tk.Label(window, text=label_text, font=("Arial", 15))
         label.place(x=100, y=y_position)
@@ -228,7 +238,7 @@ class Books:
         entry.place(x=250, y=y_position)
         entry.insert(0, value)
         # Sukuriame tinkamą atributų pavadinimą be specialiųjų simbolių
-        attribute_name = re.sub(r'\W+', '', label_text).lower() + '_entry'
+        attribute_name = re.sub(r'\W+', '', label_text).title() + '_entry'
         setattr(self, attribute_name, entry)
 
     def add_button(self, window, text, y_position, command):
@@ -238,8 +248,83 @@ class Books:
         button.place(x=250, y=y_position)
 
     def save_book_edits(self):
-        # Įgyvendinkite funkcionalumą išsaugoti knygos redagavimus, jei reikia
-        pass
+        # Gaukite atnaujintas reikšmes iš įvesties laukų
+        pavadinimas = self.pavadinimas_entry.get()
+        autorius = self.autorius_entry.get()
+        metai = self.metai_entry.get()
+        zanras = self.zanras_entry.get()
+        isbn = self.isbn_entry.get()
+        pastabos = self.pastabos_entry.get()
+        statusas = self.statusas_entry.get()
+
+        # Atnaujinkite `books_df` su naujomis reikšmėmis
+        self.books_df.loc[self.books_df['ISBN'] == isbn, ['knygos_pavadinimas', 'autorius', 'metai', 'zanras', 'pastabos', 'statusas']] = [
+            pavadinimas.strip().title(), autorius, metai, zanras, pastabos, statusas
+        ]
+
+        # Išsaugokite atnaujintą `books_df` į CSV failą
+        self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
+
+        messagebox.showinfo("Sėkmė", f"Knygos '{pavadinimas}' duomenys buvo sėkmingai atnaujinti.")
+
+    def assign_book_to_reader(self, knygos_pavadinimas, skaitytojo_kortele, window):
+        # Patikriname, ar knyga nėra jau priskirta
+        if self.get_current_reader(knygos_pavadinimas) is not None:
+            messagebox.showerror("Klaida", "Ši knyga jau yra priskirta kitam skaitytojui.")
+            return
+
+        # Nustatome planuojamą grąžinimo datą (pvz., po 30 dienų)
+        planuojama_grazinimo_data = datetime.now() + pd.Timedelta(days=30)
+
+        # Pridedame naują įrašą į skaitymo istoriją
+        new_entry = {
+            'skaitytojo_kortele': skaitytojo_kortele,
+            'knygos_pavadinimas': knygos_pavadinimas.strip().title(),
+            'knygos_paemimo_data': datetime.now().strftime('%Y-%m-%d'),
+            'knygos_grazinimo_data': planuojama_grazinimo_data.strftime('%Y-%m-%d')
+        }
+        self.reading_history_df = pd.concat([self.reading_history_df, pd.DataFrame([new_entry])], ignore_index=True)
+        # Išsaugome atnaujintą skaitymo istoriją
+        self.reading_history_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv", index=False, encoding='utf-8')
+
+        # Atnaujiname knygos 'statusas' lauką į 'užimta iki {data}'
+        statusas_naujas = f"užimta iki {planuojama_grazinimo_data.strftime('%Y-%m-%d')}"
+        self.books_df.loc[self.books_df['knygos_pavadinimas'] == knygos_pavadinimas.strip().title(), 'statusas'] = statusas_naujas
+        # Išsaugome knygų duomenų bazę
+        self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
+
+        messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' priskirta skaitytojui iki {planuojama_grazinimo_data.strftime('%Y-%m-%d')}.")
+
+        # Atnaujiname knygos profilį
+        window.destroy()
+        self.open_book_profile(None)
+
+    def return_book(self, knygos_pavadinimas, window):
+        # Randame paskutinį įrašą skaitymo istorijoje šiai knygai, kur planuojama grąžinimo data dar nepasiekta
+        self.reading_history_df['knygos_grazinimo_data'] = pd.to_datetime(
+            self.reading_history_df['knygos_grazinimo_data'], errors='coerce')
+        today = pd.Timestamp(datetime.now().date())
+
+        mask = (self.reading_history_df['knygos_pavadinimas'].str.strip().str.title() == knygos_pavadinimas.strip().title()) & \
+            (self.reading_history_df['knygos_grazinimo_data'] >= today)
+
+        if not self.reading_history_df.loc[mask].empty:
+            index = self.reading_history_df.loc[mask].index[-1]
+            # Pridedame naują stulpelį 'faktine_grazinimo_data', jei jo dar nėra
+            if 'faktine_grazinimo_data' not in self.reading_history_df.columns:
+                self.reading_history_df['faktine_grazinimo_data'] = pd.NaT
+            self.reading_history_df.at[index, 'faktine_grazinimo_data'] = datetime.now().strftime('%Y-%m-%d')
+            # Išsaugome atnaujintą skaitymo istoriją
+            self.reading_history_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv", index=False, encoding='utf-8')
+            # Atnaujiname knygos 'statusas' lauką į 'laisva'
+            self.books_df.loc[self.books_df['knygos_pavadinimas'].str.strip().str.title() == knygos_pavadinimas.strip().title(), 'statusas'] = 'laisva'
+            self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
+            messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' sėkmingai grąžinta.")
+            # Atnaujiname knygos profilį
+            window.destroy()
+            self.open_book_profile(None)
+        else:
+            messagebox.showerror("Klaida", "Knyga nėra paskolinta arba grąžinimo data jau praėjo.")
 
     def add_book(self):
         new_window = tk.Toplevel(self.root)
@@ -257,7 +342,7 @@ class Books:
 
     def submit_book(self, window):
         new_book = {
-            'knygos_pavadinimas': self.pavadinimas_entry.get(),
+            'knygos_pavadinimas': self.pavadinimas_entry.get().strip().title(),
             'autorius': self.autorius_entry.get(),
             'metai': self.metai_entry.get(),
             'zanras': self.zanras_entry.get(),
@@ -270,7 +355,7 @@ class Books:
             books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
             books_df = pd.concat([books_df, pd.DataFrame([new_book])], ignore_index=True)
             books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
-            messagebox.showinfo("Knyga pridėta sėkmingai", f"Knyga {new_book['knygos_pavadinimas']} sėkmingai pridėta!")
+            messagebox.showinfo("Knyga pridėta sėkmingai", f"Knyga '{new_book['knygos_pavadinimas']}' sėkmingai pridėta!")
         except FileNotFoundError:
             messagebox.showerror("Klaida", "Knygų duomenų failas nerastas.")
         window.destroy()
@@ -280,7 +365,7 @@ class Books:
         new_window.title("Skaitymo statistika")
 
         # Konvertuojame datas su klaidų tvarkymu
-        date_format = '%Y-%m-%d'  # Pakeiskite į jūsų datos formatą, jei reikia
+        date_format = '%Y-%m-%d'
         self.reading_history_df['knygos_paemimo_data'] = pd.to_datetime(
             self.reading_history_df['knygos_paemimo_data'], format=date_format, errors='coerce'
         )
@@ -362,37 +447,6 @@ class Books:
                 book_data, books_df, confirm_window, deletion_reason_entry.get())).pack(pady=10)
             tk.Button(confirm_window, text="Atšaukti", command=confirm_window.destroy).pack(pady=10)
 
-    def assign_book_to_reader(self, knygos_pavadinimas, skaitytojo_kortele, window):
-        # Patikriname, ar knyga nėra jau priskirta
-        if self.get_current_reader(knygos_pavadinimas) is not None:
-            messagebox.showerror("Klaida", "Ši knyga jau yra priskirta kitam skaitytojui.")
-            return
-
-        # Pridedame naują įrašą į skaitymo istoriją
-        new_entry = {
-            'skaitytojo_kortele': skaitytojo_kortele,
-            'knygos_pavadinimas': knygos_pavadinimas,
-            'knygos_paemimo_data': datetime.now().strftime('%Y-%m-%d'),
-            'knygos_grazinimo_data': pd.NaT  # Knyga dar negrąžinta
-        }
-        self.reading_history_df = self.reading_history_df.append(new_entry, ignore_index=True)
-        # Išsaugome atnaujintą skaitymo istoriją
-        self.reading_history_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv", index=False, encoding='utf-8')
-
-        # Atnaujiname knygos 'statusas' lauką į 'užimta'
-        self.books_df.loc[self.books_df['knygos_pavadinimas'] == knygos_pavadinimas, 'statusas'] = 'užimta'
-        # Išsaugome knygų duomenų bazę
-        self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
-
-        messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' priskirta skaitytojui.")
-
-        # Atnaujiname knygos profilį
-        window.destroy()
-        self.open_book_profile(None)
-
-
-
-    
     def confirm_delete(self, book_data, books_df, confirm_window, deletion_reason):
         # Šaliname knygą iš duomenų bazės
         books_df_filtered = books_df[books_df["ISBN"] != book_data['ISBN']]
@@ -417,29 +471,11 @@ class Books:
         deleted_books_df = pd.concat([deleted_books_df, pd.DataFrame([book_data])], ignore_index=True)
         deleted_books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\removed_books_db.csv", index=False, encoding="UTF-8")
 
-        messagebox.showinfo("Ištrynimas sėkmingas", f"Knyga {book_data['knygos_pavadinimas']} su ISBN {book_data['ISBN']} sėkmingai ištrinta.")
+        messagebox.showinfo("Ištrynimas sėkmingas", f"Knyga '{book_data['knygos_pavadinimas']}' su ISBN {book_data['ISBN']} sėkmingai ištrinta.")
 
         # Uždaryti patvirtinimo langą
         confirm_window.destroy()
 
-    def return_book(self, knygos_pavadinimas, window):
-        # Randame paskutinį įrašą skaitymo istorijoje šiai knygai, kur 'knygos_grazinimo_data' yra tuščia
-        mask = (self.reading_history_df['knygos_pavadinimas'] == knygos_pavadinimas) & (self.reading_history_df['knygos_grazinimo_data'].isnull())
-        if not self.reading_history_df.loc[mask].empty:
-            self.reading_history_df.loc[mask, 'knygos_grazinimo_data'] = datetime.now().strftime('%Y-%m-%d')
-            # Išsaugome atnaujintą skaitymo istoriją
-            self.reading_history_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv", index=False, encoding='utf-8')
-            # Atnaujiname knygos 'statusas' lauką į 'laisva'
-            self.books_df.loc[self.books_df['knygos_pavadinimas'] == knygos_pavadinimas, 'statusas'] = 'laisva'
-            self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
-            messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' sėkmingai grąžinta.")
-            # Atnaujiname knygos profilį
-            window.destroy()
-            self.open_book_profile(None)
-        else:
-            messagebox.showerror("Klaida", "Knyga nėra paskolinta.")
-
-    
     def show_removed_books(self):
         new_window = tk.Toplevel(self.root)
         new_window.title("Nurašytos knygos")
@@ -507,6 +543,5 @@ class Books:
 # Pagrindinės funkcijos paleidimas
 if __name__ == "__main__":
     root = tk.Tk()
-    app = Books(root, is_anonymous=False)  # Nustatome, ar vartotojas anonimas
-    app = Books(root, is_reader=False)  # Nustatome, ar vartotojas anonimas
+    app = Books(root, is_anonymous=False, is_reader=False)
     root.mainloop()

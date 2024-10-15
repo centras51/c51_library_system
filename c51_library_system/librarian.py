@@ -38,19 +38,19 @@ class Librarian:
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
-        self.canvas.create_text(250, 50, text=f"Bibliotekininkas: {self.librarian_info[0]} {self.librarian_info[1]}, Tel: {self.librarian_info[2]}, El. paštas: {self.librarian_info[3]}", font=("Arial", 15, "bold"), fill="green", anchor="nw")
+        self.canvas.create_text(250, 50, text=f"Bibliotekininkas: {self.librarian_info[0]} {self.librarian_info[1]}, Tel: {self.librarian_info[2]}, El. paštas: {self.librarian_info[3]}", font=("Arial", 15, "bold"), fill="black", anchor="nw")
 
         self.add_button("Peržiūrėti knygas", 250, 200, self.books_instance.show_books)  
         self.add_button("Pridėti knygą", 250, 350, self.books_instance.add_book)  
         self.add_button("Knygų statistika", 250, 500, self.books_instance.show_statistics)  
 
-        self.add_button("Skaitytojų sąrašas", 750, 200, self.reader_list)  
-        self.add_button("Pridėti skaitytoją", 750, 350, self.readerregistration_instance.register)  
-        self.add_button("Pašalinti knygą", 750, 500, self.books_instance.remove_book)  
+        self.add_button("Skaitytojų sąrašas", 700, 200, self.reader_list)  
+        self.add_button("Pridėti skaitytoją", 700, 350, self.readerregistration_instance.register)  
+        self.add_button("Pašalinti knygą", 700, 500, self.books_instance.remove_book)  
 
-        self.add_button("Peržiūrėti darbuotojus", 1250, 200, self.show_librarians)  
-        self.add_button("Atgal į prisijungimo langą", 1250, 350, self.go_back_to_login)  
-        self.add_button("Išeiti iš sistemos", 1250, 500, self.root.quit)  
+        self.add_button("Peržiūrėti darbuotojus", 1150, 200, self.show_librarians)  
+        self.add_button("Atgal į prisijungimo langą", 1150, 350, self.go_back_to_login)  
+        self.add_button("Išeiti iš sistemos", 1150, 500, self.root.quit)  
 
     def add_button(self, text, x_position, y_position, command):
         """Sukurti mygtuką ir pridėti jį į `canvas`."""

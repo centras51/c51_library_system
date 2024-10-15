@@ -37,40 +37,40 @@ class ReaderRegistration:
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
         # Pavadinimas
-        self.canvas.create_text(700, 50, text="Naujo skaitytojo registracija", font=("Arial", 30, "bold"), fill="green")
+        self.canvas.create_text(700, 50, text="Naujo skaitytojo registracija", font=("Arial", 30, "bold"), fill="black")
 
         # Vardas
-        self.canvas.create_text(200, 150, text="Vardas", font=("Arial", 20, "bold"), fill="green")
+        self.canvas.create_text(200, 150, text="Vardas", font=("Arial", 20, "bold"), fill="black")
         self.reader_name_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
         self.canvas.create_window(700, 150, window=self.reader_name_entry)
 
         # Pavardė
-        self.canvas.create_text(200, 200, text="Pavardė", font=("Arial", 20, "bold"), fill="green")
+        self.canvas.create_text(200, 200, text="Pavardė", font=("Arial", 20, "bold"), fill="black")
         self.reader_last_name_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
         self.canvas.create_window(700, 200, window=self.reader_last_name_entry)
 
         # El. paštas
-        self.canvas.create_text(200, 250, text="El. paštas", font=("Arial", 20, "bold"), fill="green")
+        self.canvas.create_text(200, 250, text="El. paštas", font=("Arial", 20, "bold"), fill="black")
         self.reader_email_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
         self.canvas.create_window(700, 250, window=self.reader_email_entry)
 
         # Telefono numeris
-        self.canvas.create_text(200, 300, text="Telefono numeris (+370)", font=("Arial", 20, "bold"), fill="green")
+        self.canvas.create_text(200, 300, text="Telefono numeris (+370)", font=("Arial", 20, "bold"), fill="black")
         self.reader_phone_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
         self.canvas.create_window(700, 300, window=self.reader_phone_entry)
 
         # Prisijungimo vardas
-        self.canvas.create_text(200, 350, text="Prisijungimo vardas", font=("Arial", 20, "bold"), fill="green")
+        self.canvas.create_text(200, 350, text="Prisijungimo vardas", font=("Arial", 20, "bold"), fill="black")
         self.new_username_entry = tk.Entry(self.root, font=("Arial", 18), width=30)
         self.canvas.create_window(700, 350, window=self.new_username_entry)
 
         # Slaptažodis
-        self.canvas.create_text(200, 400, text="Slaptažodis", font=("Arial", 20, "bold"), fill="green")
+        self.canvas.create_text(200, 400, text="Slaptažodis", font=("Arial", 20, "bold"), fill="black")
         self.new_password_entry = tk.Entry(self.root, font=("Arial", 18), width=30, show='*')
         self.canvas.create_window(700, 400, window=self.new_password_entry)
 
         # Pakartokite slaptažodį
-        self.canvas.create_text(200, 450, text="Pakartokite slaptažodį", font=("Arial", 20, "bold"), fill="green")
+        self.canvas.create_text(200, 450, text="Pakartokite slaptažodį", font=("Arial", 20, "bold"), fill="black")
         self.new_password2_entry = tk.Entry(self.root, font=("Arial", 18), width=30, show='*')
         self.canvas.create_window(700, 450, window=self.new_password2_entry)
 

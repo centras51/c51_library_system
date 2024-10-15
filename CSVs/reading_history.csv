@@ -1,11 +1,500 @@
 vardas,pavarde,skaitytojo_kortele,autorius,knygos_pavadinimas,ISBN,knygos_paemimo_data,knygos_grazinimo_data
-Karolis,Urbonas,61529516,Icchokas Meras,Du romanai,5415008721.0,2024-05-12,2024-05-30,,
-,,K11486800,,,,,,Pietinia kronikas,2024-10-15 08:22:50.779563
-Žygimantas,Žaliauskas,K11486800,Rimantas Kmita,Pietinia kronikas,978-609-466-210-2,2024-10-15,2024-10-29,Pietinia kronikas,2024-10-15 09:15:04.317862
-Lina,Jonaitė,48855869,Rebecca Yarros,Ketvirtasis sparnas,9786090160565,2024-10-15,2024-10-29,Ketvirtasis sparnas,2024-10-15 09:20:14.098167
-Lina,Jonaitė,48855869,Janina Degutytė,Baltas gulbių sostas,9789986341963,2024-10-15,2024-10-29,Baltas gulbių sostas,2024-10-15 09:21:59.747864
-Lina,Jonaitė,48855869,Bronius Radzevičius,Priešaušrio vieškeliai,978-6094326891,2024-10-15,2024-10-29,Priešaušrio vieškeliai,2024-10-15 09:22:17.490523
-Lina,Jonaitė,48855869,Viljamas Šekspyras,Hamletas,978-6094569811,2024-10-15,2024-10-29,Hamletas,2024-10-15 09:22:25.983544
-Lina,Jonaitė,48855869,Alvydas Šlepikas,Lietaus dievas,978-6098276125,2024-10-15,2024-10-29,Lietaus dievas,2024-10-15 09:22:34.872690
-Ona,Baranauskaitė,89796519,Valentina Zeitler,Užmirštos nuodėmės,9786094230127,2024-10-15,2024-10-29,Užmirštos nuodėmės,2024-10-15 09:23:43.434275
-Žygimantas,Žaliauskas,K11486800,Valentina Zeitler,Mikalojus Radvila Juodasis Antrasis valdovo AŠ,9786098219715,2024-10-15,2024-10-29,Mikalojus Radvila Juodasis Antrasis valdovo AŠ,2024-10-15 09:55:08.789824
+Rasa,Jonaitė,33442141,Stephen Kotkin,Stalinas: Teroras ir triumfas,978-6090116542,2016-03-21,2016-05-05 
+Žygimantas,Žaliauskas,84284014,Vydūnas,Laimės vaikas,978-6094717631,2004-05-23,2004-05-31 
+Rasa,Jonaitė,80202847,Ričardas Gavelis,Vilniaus pokeris,978-6090108862,2006-11-05,2006-11-09 
+Žygimantas,Žaliauskas,31999655,Emilis Zola,Germinalis,978-6094335413,2024-02-09,2024-03-30 
+Jonas,Jonaitis,46139849,Michael Howard,Pasaulio karai: XX amžiaus konfliktai,978-9986563419,2023-12-17,2024-02-08 
+Gabija,Petrauskaitė,46426530,Marlon James,Juodasis leopardas raudonasis vilkas,978-0735220179,2021-03-30,2021-04-24 
+Rasa,Jonaitė,51470568,Evelina Daciūtė ir Aušra Kiudulaitė,Laimė yra lapė,9786098142310,2018-06-18,2018-08-05 
+Petras,Petrauskas,87146264,Olga Tokarczuk,Bėgūnai,978-1910695531,2018-08-23,2018-09-19 
+Ieva,Jankauskaitė,53112753,Pauline Réage,O grįžta: tęsinys,978-9986567549,2021-11-11,2021-12-14 
+Karolis,Urbonas,38122305,Mykolas Karčiauskas,Sniegynų kelias,978-6094567811,2005-06-07,2005-06-18 
+Ieva,Jankauskaitė,72929597,Frank Sinatra,Mano balsas,978-9986565664,2014-07-11,2014-08-03 
+Gabija,Jankauskaitė,16921547,Alfonsas Nyka-Niliūnas,Tylos paukštė,978-6094568769,2009-08-16,2009-08-17 
+ali,bali,93252287,Jolanta Kryževičienė,Liudvika Didžiulienė-Žmona: moters gyvenimo ir kūrybos kelias,978-9986392349,2019-10-05,2019-10-23 
+Gabija,Jankauskaitė,16921547,Gintautas Zabiela,Žemaitijos istorija: XIV–XVII amžiai,978-9986393228,2023-02-26,2023-03-06 
+Ona,Petrauskaitė,80502968,Jonathan Safran Foer,Čia aš esu,978-0374280024,2020-08-01,2020-09-27 
+Dominykas,Urbonas,10178055,Adam Hochschild,Vaiduoklių karalius: Belgijos Liudvikas II ir Kongo imperija,978-6090113347,2012-03-02,2012-04-05 
+Jonas,Jonaitis,32951570,Alfonsas Maldonis,Dangaus laiptai,978-6094566548,2023-04-21,2023-06-07 
+Greta,Jankauskaitė,58926305,Michael Howard,Pasaulio karai: XX amžiaus konfliktai,978-9986563419,2018-07-23,2018-09-19 
+Jonas,Jonaitis,74386690,Antanas Tyla,Lietuvių valstybės raida tarpukariu,978-9986394315,2011-03-06,2011-04-15 
+Lina,Jonaitė,84806770,Andre Morua,Klimato šešėlis,978-6094438725,2001-07-13,2001-08-16 
+Dominykas,Urbonas,86004039,Rimvydas Valatka,Lietuvos kelias į Nepriklausomybę: politikų prisiminimai,978-6098234458,2022-05-28,2022-06-24 
+Gabija,Jankauskaitė,16921547,Fiodoras Dostojevskis,Nusikaltimas ir bausmė,978-6094100143,2019-05-06,2019-06-02 
+Ona,Petrauskaitė,81628400,Hermanas Hesė,Stepinis vilkas,978-0312278670,2009-11-15,2009-12-19 
+Greta,Kazlauskaitė,98422947,Norman Lewis,Paskutiniai Gvatemalos kaimai: Centrinės Amerikos kelionės,978-9986567549,2011-07-10,2011-08-28 
+Ona,Baranauskaitė,77880328,Ieva Simonaitytė,Aukštujų Šimonių likimas,978-6094730846,2007-08-05,2007-09-07 
+Ona,Vasiliauskaitė,77319405,Vladas Braziūnas,Alyvmedžiai,978-6094568118,2000-05-07,2000-06-15 
+Gabija,Jankauskaitė,72086604,Antony Beevor,Stalingradas: Antrojo pasaulinio karo lūžis,978-9986568721,2012-10-19,2012-12-14 
+Marius,Pupinis,89174259,Justinas Marcinkevičius,Pavasario balsai,978-6094547329,2017-02-01,2017-02-04 
+Karolis,Urbonas,98075296,Robert Service,Stalinas: teroro meistras,978-6090119933,2008-10-27,2008-11-08 
+Greta,Kazlauskaitė,58478107,Gražina Mareckaitė,Maironis: poeto gyvenimo kelias,978-6094601452,2019-03-22,2019-04-24 
+Dominykas,Urbonas,93481055,Salomėja Nėris,Eglė žalčių karalienė,978-6094112782,2007-03-05,2007-04-22 
+Petras,Petrauskas,95339749,Valentina Zeitler,Užmirštos nuodėmės,9786094230127,2011-05-15,2011-06-09 
+Lina,Jonaitė,85256781,Yoko Ono,Mano gyvenimas su Johnu Lennonu,978-6090113435,2023-09-03,2023-10-27 
+Ona,Petrauskaitė,86524891,Helen Oyeyemi,Baltoji ragana,978-1594631399,2021-08-06,2021-08-12 
+Dominykas,Urbonas,25432245,Frensis Skotas Ficdžeraldas,Didysis Getsbis,978-0743273565,2016-07-27,2016-09-22 
+Lina,Jonaitė,99739965,Nijolė Oželytė,Tremties kronika: biografiniai užrašai,978-6094591234,2008-12-26,2009-01-19 
+Marius,Pupinis,40564288,Helen Macdonald,H tiek kaip sakalas,978-0805095164,2004-09-05,2004-09-06 
+Ieva,Jankauskaitė,72929597,John Lewis Gaddis,Šaltojo karo laimėtojai: Vakarų ir Rytų kovos,978-6090116675,2008-03-14,2008-03-20 
+Marius,Pupinis,56471161,Giovanni Boccaccio,Dekameronas,978-6094321230,2023-01-17,2023-02-21 
+Ieva,Jankauskaitė,37231865,Morgan Freeman,Mano gyvenimo vaidmenys,978-6090112347,2010-07-11,2010-07-16 
+Ona,Vasiliauskaitė,35176788,Richard Branson,Nesėkmės ir sėkmės,978-6094270181,2022-05-25,2022-06-10 
+Marius,Pupinis,40564288,Haruki Murakami,1Q84,978-0307593313,2005-01-31,2005-03-10 
+Greta,Kazlauskaitė,98422947,Dalia Grybauskaitė,Dalia Grybauskaitė: Prezidentės portretas,978-6094542156,2001-09-23,2001-11-10 
+Lina,Jonaitė,37163375,Kim Kardashian,Mano gyvenimas viešumoje,978-6090113657,2017-07-20,2017-08-24 
+Karolis,Urbonas,37830039,Tim Severin,Sinbado kelias: jūrų kelionės po Indijos vandenyną,978-9986563131,2020-05-23,2020-06-18 
+Gabija,Jankauskaitė,61902848,Sigitas Parulskis,Prieš vėją,978-6094565432,2000-07-19,2000-07-26 
+Ona,Baranauskaitė,97899149,Markus Zusak,Knygų vagilė,978-0375842207,2018-12-01,2018-12-14 
+Ona,Petrauskaitė,27310081,Julian Barnes,Laiko triukšmas,978-1101947258,2022-07-27,2022-09-18 
+Gabija,Petrauskaitė,64382462,Raimundas Mieželis,Lietuvos mokslo žmonės: jų gyvenimo istorijos,978-9986399998,2002-12-13,2003-01-11 
+Ona,Vasiliauskaitė,20924933,Tim Cahill,Kelionės į ekstremalias vietas,978-9986563923,2022-01-28,2022-02-25 
+Petras,Petrauskas,33279475,Marlon James,Juodasis leopardas raudonasis vilkas,978-0735220179,2015-03-20,2015-05-05 
+Petras,Petrauskas,30837595,Vytautas Landsbergis,Lūžiai: Politinės autobiografijos apmatai,978-9986395549,2015-04-24,2015-05-28 
+Žygimantas,Žaliauskas,84284014,Alberas Kamiu,Maras,978-6092105676,2000-07-17,2000-08-21 
+Gabija,Jankauskaitė,36375656,Chris Hemsworth,Herojaus užkulisiai: mano karjeros istorija,978-6090118763,2004-07-14,2004-09-10 
+Ona,Petrauskaitė,67072161,Antanas Venclova,Gražina,978-6094118890,2013-12-19,2014-01-14 
+Piktas,Katinas,48617732,Kristijonas Donelaitis,Metai,978-6098086116,2023-12-17,2024-01-25 
+Ona,Baranauskaitė,77880328,Yoko Ogawa,Atminties policija,978-1101911814,2011-09-20,2011-09-28 
+Gabija,Baranauskaitė,38602244,Vytautas Landsbergis,Šiek tiek ne tokie,978-6094418561,2009-11-26,2010-01-04 
+Karolis,Urbonas,28396397,Arūnas Streikus,Bažnyčia ir sovietinė valdžia Lietuvoje 1940–1990,978-9986390674,2010-03-03,2010-03-27 
+Gabija,Petrauskaitė,71951653, Sylvia Day,Geidulingos nuodėmės,978-6090117652,2017-04-30,2017-06-02 
+Ieva,Jankauskaitė,17652909,Tim Marshall,Geografijos kalėjimai: kaip geografija formuoja politiką,978-6090116875,2016-04-12,2016-04-23 
+Marius,Pupinis,52865336,Tina Fey,Bossypants: mano istorija,978-6090117652,2020-02-04,2020-02-26 
+Jonas,Žaliauskas,83428143,James Cameron,Filmų meistras: mano gyvenimo istorija,978-9986567221,2022-10-11,2022-11-08 
+Gabija,Jankauskaitė,36375656,Maironis,Pavasario balsai,978-6094547329,2014-11-04,2014-12-04 
+Greta,Kazlauskaitė,49577809,Norman Davies,Europa: civilizacijos kaita ir likimas,978-6090119324,2023-11-24,2024-01-18 
+Marius,Pupinis,48068808,Vytautas Martinkus,Aš atėjau iš kaimo: autobiografiniai fragmentai,978-9986391237,2022-02-19,2022-03-15 
+Gabija,Petrauskaitė,94539079,Elena Ferrante,Neapolietiška saga: Nuostabioji draugė,978-1609450786,2010-07-30,2010-09-01 
+Ona,Petrauskaitė,80502968,Zadie Smith,Grand Union,978-0525558996,2020-10-04,2020-11-30 
+Marius,Pupinis,13861547,Saulius Skvernelis,Vyriausybės darbai: premjero autobiografija,978-6094445679,2004-07-20,2004-08-01 
+Ona,Baranauskaitė,32423641,Jonathan Spence,Kinijos imperatorių kronikos,978-6090113325,2008-09-08,2008-09-17 
+Marius,Pupinis,20036555,Elizabeth Gilbert,Valgyk melskis mylėk,978-6090112342,2009-10-13,2009-12-10 
+Petras,Petrauskas,30837595,John Lewis Gaddis,Šaltojo karo laimėtojai: Vakarų ir Rytų kovos,978-6090116675,2004-10-04,2004-11-01 
+Gabija,Petrauskaitė,94539079,Jurgis Kunčinas,Baltasis kvadratas,978-6094321874,2012-03-18,2012-03-23 
+Lina,Jonaitė,14960385,Vytautas Landsbergis,Lūžiai: Politinės autobiografijos apmatai,978-9986395549,2001-09-29,2001-11-25 
+Gabija,Petrauskaitė,46426530,Michael Asher,Raudonoji dykuma: kelionės po Egipto dykumas,978-9986567747,2012-05-29,2012-07-20 
+Rasa,Jonaitė,86701957, Jodi Ellen Malpas,Tai yra meilė,978-6090119651,2004-08-11,2004-09-14 
+Karolis,Urbonas,28396397,Robert Kaplan,Balkanų šešėliai: Balkanų istorija,978-9986562146,2016-05-01,2016-06-03 
+Gabija,Baranauskaitė,44101862,Yaa Gyasi,Kelionė namo,978-1101947135,2020-09-14,2020-10-31 
+Greta,Kazlauskaitė,35057165,Sigitas Parulskis,Tamsa ir partneriai,978-6094665113,2013-06-26,2013-08-07 
+Ona,Baranauskaitė,73765338,Valdas Daškevičius,Sąvartyne,978-6094126711,2010-09-10,2010-10-16 
+Piktas,Šuo,59609292,Agnė Daukšaitė,Kai mes išsiskyrėme,978-6094647328,2015-11-04,2016-01-02 
+Žygimantas,Žaliauskas,58376253,Vanda Zaborskaitė,Šiaurės vasara: prisiminimai apie Vytautą Mačernį,978-9986393114,2010-04-04,2010-05-22 
+Ona,Baranauskaitė,73765338,Antony Beevor,Stalingradas: mūšis kuris pakeitė pasaulį,978-9986565654,2024-06-03,2024-07-04 
+Gabija,Petrauskaitė,30390936,Vytautas Sirijos Gira,Kuprelis,978-6093363445,2006-10-14,2006-10-29 
+Ona,Petrauskaitė,86524891,Barbara W. Tuchman,Beprotiškas rugpjūtis: Pirmojo pasaulinio karo pradžia,978-9986567677,2006-03-18,2006-05-15 
+Jonas,Žaliauskas,74907458,Zenonas Norkus,Lietuvos Didžiosios Kunigaikštystės nuosmukis,978-9986390156,2018-04-03,2018-04-11 
+Greta,Jankauskaitė,58926305,Antanas Vienuolis,Išdavikas,978-6094721451,2022-03-06,2022-03-20 
+Ona,Petrauskaitė,52548252,Laimonas Tapinas,Antanas Smetona ir jo aplinka,978-9986393012,2022-07-19,2022-07-20 
+Gabija,Petrauskaitė,60677543,Valdas Daškevičius,Sąvartyne,978-6094126711,2003-05-24,2003-06-05 
+Ona,Baranauskaitė,40709643,Kazys Saja,Devyni broliai,978-6090123213,2000-02-01,2000-03-25 
+Greta,Jankauskaitė,58926305,Balys Sruoga,Dainavos šalies senų žmonių padavimai,978-6094562782,2003-03-01,2003-04-14 
+Greta,Jankauskaitė,58926305,Fiodoras Dostojevskis,Broliai Karamazovai,978-0140449242,2018-09-09,2018-10-03 
+Jonas,Jonaitis,84169506,Aleksandras Solženicynas,Viena diena Ivano Denisovičiaus gyvenime,978-6094107346,2020-12-05,2021-01-27 
+Ona,Baranauskaitė,89796519,Oskar Schindler,Mano kova už gyvybę,978-9986564325,2015-12-09,2015-12-11 
+Greta,Kazlauskaitė,96218378,Kazys Saja,Devyni broliai,978-6090123213,2021-07-01,2021-07-09 
+Gabija,Baranauskaitė,47107169,Louis Armstrong,Mano džiazas,978-9986561233,2006-07-06,2006-08-10 
+Piktas,Šuo,59609292,Nelson Mandela,Laisvės kovos metai,978-9986567357,2014-02-25,2014-04-09 
+Jonas,Žaliauskas,68877594,Adam Hochschild,Vaiduoklių karalius: Belgijos Liudvikas II ir Kongo imperija,978-6090113347,2002-09-11,2002-10-11 
+Gabija,Jankauskaitė,72086604,Robert Kagan,Amerikos pasaulinė galia: nuo šaltojo karo iki XXI amžiaus,978-6090119885,2003-09-22,2003-10-04 
+Jonas,Žaliauskas,83428143,Leigh Bardugo,Šešetas varnų,9786090162637,2001-10-25,2001-12-12 
+Gabija,Baranauskaitė,19990623,Peter Drucker,Mano profesinės mintys,978-9986563416,2013-09-11,2013-10-03 
+Rasa,Jonaitė,48365414,Bronislovas Genzelis,Antanas Smetona ir Lietuvos nepriklausomybės pradžia,978-9986390093,2019-04-15,2019-05-08 
+Petras,Petrauskas,95339749,Antanas Drilinga,Širdis po lapais,978-6094560984,2007-09-15,2007-11-09 
+Gabija,Petrauskaitė,94539079,Hermanas Melvilis,Mobis Dikas,978-6091224686,2000-10-05,2000-11-04 
+kala,mala,29069028,Usain Bolt,Greitesnis už žaibą: mano gyvenimo istorija,978-6090113450,2000-03-08,2000-04-08 
+Rasa,Jonaitė,79212063,Paul Salopek,Per Afrikos sausumas: ilgos kelionės aprašymai,978-6090123424,2022-03-03,2022-04-09 
+Marius,Pupinis,98882457,Timothy Snyder,Juodoji žemė: Holokausto ir Antrojo pasaulinio karo istorija,978-6090119983,2017-12-26,2018-01-30 
+Ona,Vasiliauskaitė,51740758,Edmundas Rimša,Lietuvos heraldika,978-9986390148,2009-07-21,2009-08-02 
+Greta,Jankauskaitė,13716918,Jared Diamond,Ginklai mikrobai ir plienas: visuomenių likimai,978-9986569822,2020-08-02,2020-09-09 
+Marius,Pupinis,57737747,Juozas Erlickas,Pristatymai,978-6094321232,2001-06-05,2001-07-17 
+Greta,Kazlauskaitė,96218378,Aldona Ruseckaitė,Salomėja Nėris: mano gyvenimo dienoraštis,978-6094467656,2002-10-05,2002-12-04 
+Ona,Petrauskaitė,86524891,Ali Smith,Vasaros laikai,978-0241207076,2022-08-07,2022-08-22 
+Gabija,Petrauskaitė,60677543,Bronius Radzevičius,Priešaušrio vieškeliai,978-6094326890,2022-02-06,2022-02-10 
+Rasa,Jonaitė,51470568,Algirdas Brazauskas,Aš pats: politiko gyvenimo kronika,978-9986396329,2022-12-23,2023-01-04 
+Petras,Petrauskas,57114003,Marselis Prustas,Prarasto laiko beieškant,978-0812969641,2008-07-31,2008-09-18 
+Ieva,Jankauskaitė,91243749,Henrikas Radauskas,Pavasaris,978-6094325634,2014-06-10,2014-08-09 
+Gabija,Petrauskaitė,11570109,Vytautas Landsbergis,Kovo 11: mano gyvenimo istorija,978-9986392346,2010-09-30,2010-11-25 
+Gabija,Baranauskaitė,47107169,Michelle Obama,Tampa,978-6094272212,2011-11-04,2011-12-23 
+Lina,Jonaitė,82825544,Valdas Daškevičius,Sąvartyne,978-6094126711,2003-01-10,2003-02-12 
+Gabija,Petrauskaitė,14250244,Alvydas Šlepikas,Lietaus dievas,978-6098276125,2022-10-15,2022-11-09 
+ali,bali,93252287,Gabrielis Garsija Markesas,Meilė choleros metu,978-6094223545,2024-06-27,2024-07-15 
+Rasa,Jonaitė,93083938,Richard Scarry,Ką žmonės dirba visą dieną,9789955089636,2016-10-04,2016-10-14 
+Jonas,Žaliauskas,83428143,Daiva Čepauskaitė,Pieno virimas,978-6094553241,2007-08-09,2007-09-18 
+Gabija,Jankauskaitė,36375656,Viktorija Daujotytė,Septyni užrašai,978-6094351034,2013-11-08,2013-12-11 
+Žygimantas,Žaliauskas,84284014,Ričardas Gavelis,Vilniaus pokeris,978-6090108862,2002-09-21,2002-10-30 
+Petras,Petrauskas,57114003,Paul Theroux,Patagonijos ekspresas: kelionės po Pietų Ameriką,978-9986564730,2011-11-14,2012-01-05 
+Ona,Petrauskaitė,44822472,Algirdas Jakštas,Lietuvių inteligentija: gyvenimo ir veiklos pėdsakai,978-9986395465,2023-03-22,2023-05-15 
+Lina,Jonaitė,74535388,Robert Conquest,Stalino teroras: Didysis valymas 1937–1938 m.,978-9986561267,2015-09-28,2015-09-29 
+Greta,Jankauskaitė,70366554,Hanya Yanagihara,Mažas gyvenimas,978-0804172707,2023-09-10,2023-10-07 
+Lina,Jonaitė,85256781,Gintautas Vėlius,Lietuvos mitologijos ištakos,978-9986390331,2021-11-20,2021-12-29 
+Lina,Jonaitė,37163375,Migelis de Servantesas,Don Kichotas,978-0060934347,2005-02-10,2005-02-22 
+Jonas,Jonaitis,16249431,Vytautas V. Landsbergis,Algimantas Kezys: Fotografijos kronikos,978-9986399815,2011-11-19,2011-12-12 
+Jonas,Jonaitis,40632226,Nijolė Sadūnaitė,Neleisk man pražūti: tremties metai,978-9986399923,2000-08-19,2000-09-15 
+Jonas,Jonaitis,16249431,Serena Williams,Teniso karalienė: mano istorija,978-6090119026,2012-03-12,2012-04-30 
+Petras,Petrauskas,63971560,Tim Severin,Jūrų valdovai: kelionės Viduržemio jūros piratų keliais,978-6090118961,2009-10-25,2009-12-01 
+Lina,Jonaitė,48855869, Megan Maxwell,Norėčiau tavęs,978-6090121447,2009-08-19,2009-09-27 
+Gabija,Baranauskaitė,38602244,Aldona Ruseckaitė,Šiapus ir anapus Vilniaus vartų: Salomėjos Nėries biografija,978-6094372331,2020-09-05,2020-09-14 
+Lina,Jonaitė,74535388,Christopher Andrew,KGB: Sovietų slaptoji tarnyba,978-9986562344,2018-10-31,2018-11-25 
+Ona,Baranauskaitė,69749321,Saulius Sužiedėlis,Raudonasis teroras Lietuvoje: 1940–1953,978-9986391870,2015-07-27,2015-09-18 
+Gabija,Petrauskaitė,49645353,Giedrė Beinoriūtė,Kibirkštys ir tamsa,978-6094568875,2017-07-27,2017-09-13 
+Ona,Vasiliauskaitė,77319405,Hermanas Hesė,Narcizas ir Auksaburnis,978-0141189120,2002-11-25,2002-12-24 
+Ona,Vasiliauskaitė,20924933,Rimantas Miknys,Lietuvių tautos tapatybės formavimas XIX amžiuje,978-9986391446,2020-12-24,2021-01-02 
+Gabija,Petrauskaitė,27671989,Elizabeth Strout,Olive Kitteridge,978-0812971835,2012-04-18,2012-05-29 
+Greta,Jankauskaitė,55717961,Patrick Leigh Fermor,Keliautojo žingsniai: Viduržemio jūros kelionės,978-9986563413,2002-06-26,2002-07-28 
+Ona,Petrauskaitė,52548252,Sigitas Geda,Mėlynoji paukštė,978-6092347865,2009-03-26,2009-04-20 
+Gabija,Petrauskaitė,49645353,Vytautas Bubnys,Alkana žemė,978-6094111295,2006-10-03,2006-10-24 
+Greta,Kazlauskaitė,42668623,Andrius Tapinas,Vilko valanda,978-6094037451,2002-01-30,2002-02-28 
+Lina,Jonaitė,82825544,Liudas Gira,Giedra diena,978-6094723233,2014-06-19,2014-08-10 
+Ona,Petrauskaitė,81628400,Andrius Jakučiūnas,Lalagė,978-6090125446,2014-01-09,2014-03-10 
+Greta,Kazlauskaitė,98422947,Janina Degutytė,Baltas gulbių sostas,9789986341963,2020-08-06,2020-08-17 
+Karolis,Urbonas,38122305,Viktoras Katilius,Mūza,978-6094322764,2017-09-29,2017-11-03 
+Ona,Baranauskaitė,77880328,Zenonas Butkus,Lietuvos okupacija ir rezistencija 1940–1990 m.,978-9986395431,2015-06-20,2015-07-15 
+Gabija,Petrauskaitė,11570109,Viktorija Daujotytė,Henrikas Radauskas: poetas ir jo laikas,978-9986392352,2024-01-31,2024-02-05 
+Žygimantas,Žaliauskas,31999655,Bill Gates,Ateities vizijos,978-9986568995,2004-11-06,2004-12-24 
+Gabija,Baranauskaitė,44101862,Juozas Grušas,Barbora Radvilaitė,978-6093120732,2014-07-29,2014-09-16 
+Gabija,Petrauskaitė,94539079,Niall Ferguson,Karo architektai: XX amžiaus pasaulinės strategijos,978-6090115692,2014-11-02,2014-11-20 
+Greta,Jankauskaitė,58926305,Dalia Grybauskaitė,Prezidentės užrašai: mano asmeninė istorija,978-6094567880,2022-03-18,2022-04-08 
+Marius,Pupinis,89174259,Petras Cvirka,Frank Kruk,978-6093247128,2019-09-19,2019-11-10 
+Marius,Pupinis,57164001,Alvydas Šlepikas,Mano vardas Marytė,978-6094415095,2009-01-27,2009-03-13 
+Ona,Baranauskaitė,26003760,Emily St. John Mandel,Stoties vienuolikta,978-0385353304,2021-06-18,2021-07-19 
+Gabija,Petrauskaitė,84474002,Saulius Šaltenis,Grįžimas į Vilnių: memuarai,978-9986395457,2011-09-29,2011-11-08 
+Lina,Jonaitė,85256781,Džonas Čeveris,Falconeris,978-6094221141,2009-05-04,2009-05-18 
+Gabija,Petrauskaitė,60677543,Hermanas Brochas,Mirtis ir vėjas,978-6094563416,2016-01-03,2016-01-06 
+Lina,Jonaitė,10329316,Džozefas Konradas,Tamsos širdis,978-6094314544,2009-08-08,2009-08-30 
+Lina,Jonaitė,82825544,Egidijus Aleksandravičius,Nepriklausomybės atkūrimo kronika,978-9986392345,2009-10-30,2009-11-25 
+Lina,Jonaitė,10329316,Juozas Glinskis,Juozas Miltinis: kūrėjo kelias,978-9986393281,2008-07-02,2008-07-03 
+Ona,Baranauskaitė,89796519,Kate Atkinson,Gyvenimas po gyvenimo,978-0316176491,2014-12-24,2015-02-22 
+Ona,Baranauskaitė,40709643,Edward Abbey,Dykumos vienišius: kelionės po Amerikos dykumas,978-9986562132,2006-04-09,2006-04-15 
+Greta,Jankauskaitė,58926305,Astrid Lindgren,Mažylis ir Karlsonas kuris gyvena ant stogo,9789955883531,2004-05-08,2004-05-17 
+Rasa,Jonaitė,80202847,Marlon James,Trumpa septynių žmogžudysčių istorija,978-1594486006,2020-05-26,2020-07-03 
+Greta,Kazlauskaitė,35057165,Laurence Rees,Auschwitz: nacistų mirties stovykla,978-9986568893,2001-01-26,2001-02-22 
+Ona,Petrauskaitė,27310081,David Remnick,Lenino kapas: Sovietų Sąjungos pabaiga,978-9986561271,2008-07-24,2008-09-10 
+Karolis,Urbonas,98075296,Jesmyn Ward,Dainuok nemirtingasis,978-1501126062,2022-01-07,2022-01-14 
+Karolis,Urbonas,38122305,Anne Applebaum,Raudonasis badas: Stalino genocidas Ukrainoje,978-6090111240,2024-01-30,2024-03-12 
+Karolis,Urbonas,K46766538,Rimantas Kmita,Pietinia kronikas,978-609-466-210-2,2009-12-12,2010-01-21 
+Gabija,Baranauskaitė,44260232,Tomas Venclova,Vilniaus keliai: autobiografiniai eskizai,978-6094564511,2019-07-25,2019-08-16 
+Ona,Petrauskaitė,30315262,Tomas Moras,Utopija,978-6094656347,2017-03-07,2017-04-16 
+Žygimantas,Žaliauskas,58376253,Jolanta Kryževičienė,Liudvika Didžiulienė-Žmona: moters gyvenimo ir kūrybos kelias,978-9986392349,2016-07-23,2016-08-11 
+Dominykas,Urbonas,32363322,Chigozie Obioma,Zuvys valgo mus gyvus,978-0316336185,2018-06-01,2018-07-12 
+Jonas,Žaliauskas,23360395,Algis Kasperavičius,Lietuvos Didžioji Kunigaikštystė: geopolitika ir diplomatinės kovos,978-9986395545,2003-10-29,2003-11-27 
+Ieva,Jankauskaitė,96835764,Leonardo DiCaprio,Pasaulio gelbėtojas,978-6094231236,2022-05-30,2022-06-06 
+Žygimantas,Žaliauskas,98316441,Tim Severin,Atlantidos paieškos: kelionės Viduržemio jūros regione,978-9986568899,2011-05-27,2011-06-12 
+Jonas,Žaliauskas,68877594,Gabija Grušaitė,Stasys Šaltoka: vieneri metai,978-6094567121,2024-10-03,2024-10-12 
+Rasa,Jonaitė,79212063,Lionel Messi,Žvaigždės kelias: mano futbolo pasiekimai,978-6090116737,2006-02-23,2006-04-20 
+Lina,Jonaitė,37163375,Richard J. Evans,Reicho imperija: Hitlerio Vokietijos išsiplėtimas ir žlugimas,978-6090114594,2016-09-03,2016-10-12 
+Ieva,Jankauskaitė,17652909,Juozas Erlickas,Bijau varlės,978-9986393544,2001-02-07,2001-02-26 
+Greta,Jankauskaitė,68495167,Vytautas Petkevičius,Durnių laivas,978-6094327292,2024-06-18,2024-07-26 
+Piktas,Šuo,59609292,Cheryl Strayed,Laukinė: kelionė per Šiaurės Amerikos kalnus,978-6090111788,2011-03-19,2011-05-18 
+Ona,Petrauskaitė,27310081,Hilary Mantel,Vilkų dvaras,978-0312429988,2002-10-05,2002-11-19 
+Marius,Pupinis,92498061,Juozas Baltušis,Sakmė apie Juzą,978-6094681599,2002-10-24,2002-11-03 
+Žygimantas,Žaliauskas,98316441,Gabrielle Union,Mano kelias į laisvę,978-6094567651,2008-02-13,2008-02-28 
+Ona,Petrauskaitė,30315262,Donna Tartt,Dagilis,978-0316055437,2009-09-17,2009-11-02 
+Karolis,Urbonas,28396397,Anna Politkovskaja,Mano kova už tiesą,978-6094231348,2021-03-11,2021-04-22 
+Žygimantas,Žaliauskas,58376253,Juozas Glinskis,Grasos namai,978-6093152349,2019-12-27,2020-01-28 
+Ieva,Jankauskaitė,96835764,Vytautas Kavolis,Laisvės keliai: gyvenimo aprašymai,978-9986391981,2006-02-19,2006-04-15 
+Gabija,Petrauskaitė,71951653,Gintautas Sliesoriūnas,Lietuvių ir lenkų santykiai XVII amžiuje,978-9986393216,2020-03-02,2020-03-08 
+Karolis,Urbonas,38122305,Aldona Ruseckaitė,Ieva Simonaitytė: autobiografinė esė,978-6094469846,2008-08-22,2008-09-27 
+kala,mala,29069028,Michael Palin,Kelionės aplink Šiaurės ašigalį,978-6090121367,2007-09-04,2007-09-30 
+Karolis,Urbonas,98075296,Colin Thubron,Šilko kelias: Vidurinės Azijos kelionės,978-9986566746,2016-12-04,2016-12-16 
+Gabija,Petrauskaitė,78145525,Vincas Mykolaitis-Putinas,Kelias į save,978-6094731242,2006-05-08,2006-06-16 
+Žygimantas,Žaliauskas,36061723,Claire-Louise Bennett,Vandens grožis,978-0099590088,2003-08-13,2003-08-19 
+Karolis,Urbonas,38122305,Simonas de Bovuara,Antra lytis,978-6094212357,2002-12-08,2003-01-08 
+Rasa,Jonaitė,70829136,Herkus Kunčius,Paskutinioji diena prieš mirštant,978-6090108862,2022-02-02,2022-02-08 
+Gabija,Petrauskaitė,89459442,Sally Rooney,Gražus pasaulis kur tu esi,978-0374602602,2021-03-18,2021-04-23 
+Jonas,Jonaitis,85035061,Alfonsas Nyka-Niliūnas,Žvilgsnis į tylą,978-6094328797,2013-07-11,2013-08-10 
+Gabija,Petrauskaitė,52572100,Bill Bryson,Žemynai ir salos: pasaulio geografijos stebuklai,978-6090122113,2002-12-30,2003-01-21 
+Gabija,Petrauskaitė,14250244,Eric Newby,Šviesos kraštas: Himalajų tyrinėjimai,978-6090113453,2023-05-14,2023-06-07 
+Gabija,Petrauskaitė,84474002,Dž. K. Rouling,Haris Poteris ir paslapčių kambarys,978-0747538486,2014-02-07,2014-04-07 
+Gabija,Baranauskaitė,37088855,Lawrence Durrell,Jonijos sala: kelionės ir gyvenimas Graikijoje,978-9986564542,2018-05-05,2018-06-03 
+Dominykas,Urbonas,25432245,Tara Westover,Išsilavinimas,978-0399590504,2001-08-27,2001-09-25 
+Jonas,Jonaitis,85035061,Saulius Sužiedėlis,Raudonasis teroras Lietuvoje: 1940–1953,978-9986391870,2020-01-05,2020-01-14 
+Ieva,Jankauskaitė,91243749,Icchokas Meras,Du romanai,5415008721,2013-11-02,2013-12-09 
+Gabija,Jankauskaitė,91305612,Maironis,Pavasario balsai,978-6094547329,2016-01-06,2016-02-21 
+Karolis,Urbonas,92086548,Thomas Mannas,Mirtis Venecijoje,978-6094410296,2022-03-28,2022-04-16 
+Karolis,Urbonas,K46766538,Chloe Walsh,Pargriauti 13,9786090162842,2009-06-19,2009-07-08 
+Gabija,Petrauskaitė,11570109,Dalia Staponkutė,Iš dviejų renkuosi trečią,978-6094551455,2012-08-28,2012-10-17 
+Marius,Pupinis,80732945,Vytautas Kazakevičius,Lietuvos miestų ekonominė raida XIX amžiuje,978-9986393781,2009-02-12,2009-02-16 
+Greta,Jankauskaitė,70366554,Džonas Ronaldas Reuelis Tolkinas,Hobitas,978-6092107893,2012-03-10,2012-04-13 
+Dominykas,Urbonas,10178055,Margaret Atwood,Liudijimai,978-0385543781,2002-07-19,2002-08-30 
+Gabija,Petrauskaitė,52572100,Elena Ferrante,Neapolietiška saga: Nuostabioji draugė,978-1609450786,2019-01-21,2019-03-19 
+Dominykas,Urbonas,32363322,Saulius Šaltenis,Riešutų duona,978-6098099209,2024-05-31,2024-07-04 
+Žygimantas,Žaliauskas,57556936,Džeinė Ostin,Puikybė ir prietarai,978-1503290563,2017-08-04,2017-09-22 
+Gabija,Petrauskaitė,89459442,Alfredas Žary,Karalius Ubu,978-6094456781,2007-08-31,2007-09-03 
+Gabija,Baranauskaitė,37088855,Džordžas Orvelas,Gyvulių ūkis,978-6094551267,2022-07-20,2022-09-06 
+Gabija,Baranauskaitė,19990623,Jonas Aničas,Antanas Vienuolis ir jo laikmetis,978-9986392018,2017-10-16,2017-11-02 
+Greta,Jankauskaitė,70366554,Adolfas Šapoka,Lietuvos valstybės atkūrimo istorija,978-9986395554,2005-01-02,2005-02-19 
+Marius,Pupinis,57737747,Jonas Aničas,Antanas Vienuolis ir jo laikmetis,978-9986392018,2000-11-14,2001-01-08 
+Gabija,Petrauskaitė,27671989,Balys Sruoga,Dievų miškas,978-6099562596,2023-03-18,2023-03-28 
+Lina,Jonaitė,99739965,Evelina Daciūtė ir Aušra Kiudulaitė,Laimė yra lapė,9786098142310,2008-02-29,2008-04-07 
+Gabija,Jankauskaitė,36375656,Richard Evans,Nacių imperija: Vokietijos užkariavimai ir žlugimas,978-6090115569,2009-12-16,2010-01-18 
+Marius,Pupinis,45575936,Saulius Šaltenis,Šiandien ir visada,978-6094561297,2003-03-28,2003-04-22 
+Dominykas,Urbonas,39486944,Tony Blair,Kelias į valdžią,978-9986568757,2024-09-29,2024-11-26 
+Greta,Jankauskaitė,13716918,Džeimsas Džoisas,Ulisas,978-6094510312,2006-08-28,2006-09-29 
+Žygimantas,Žaliauskas,31999655,Roxane Gay,Nebylus balsas,978-0062362599,2020-07-15,2020-08-07 
+Karolis,Urbonas,32875294,David Diop,Nakties broliai,978-0374266974,2003-02-21,2003-03-13 
+Ona,Vasiliauskaitė,31664864,Vytautas Ališauskas,Lietuvos krikštas,978-9986393778,2021-04-22,2021-04-27 
+Gabija,Petrauskaitė,81133089,Lina Ever,Ruduo Berlyne,978-6094547292,2023-12-14,2023-12-31 
+Gabija,Jankauskaitė,56772970,Juozas Tumas-Vaižgantas,Nemuno šalies knygnešiai,978-6094546536,2019-02-10,2019-04-02 
+Karolis,Urbonas,38122305,Ngugi wa Thiong'o,Svajojant anglų kalba,978-1620970046,2002-02-15,2002-04-03 
+Karolis,Urbonas,K46766538,Julia Child,Mano gyvenimas Prancūzijoje,978-9986569898,2001-03-28,2001-04-01 
+Lina,Jonaitė,84806770,Šatrijos Ragana,Sename dvare,978-6094270335,2018-09-12,2018-10-08 
+Marius,Pupinis,57164001,Albertas Koen,Puikusis Saliamonas,978-6094334768,2001-01-03,2001-01-05 
+Gabija,Petrauskaitė,36519742,Hugh Laurie,Doktor House užkulisiai: mano gyvenimas,978-6090119999,2008-01-26,2008-02-05 
+Petras,Petrauskas,30837595,Romualdas Granauskas,Davės testamentas,978-6094563447,2020-05-10,2020-07-06 
+Petras,Petrauskas,12076213,Romualdas Granauskas,Davės testamentas,978-6094563447,2009-04-27,2009-05-21 
+Karolis,Urbonas,28396397,Rimvydas Valatka,Lietuvos kelias į Nepriklausomybę: politikų prisiminimai,978-6098234458,2020-06-24,2020-08-07 
+Žygimantas,Žaliauskas,80822337,Fransas Kafka,Pilies,978-0805211061,2021-01-22,2021-02-27 
+Ona,Vasiliauskaitė,77319405,Leonardo DiCaprio,Pasaulio gelbėtojas,978-6094231236,2006-06-03,2006-06-27 
+Petras,Petrauskas,87146264,Douglas Smith,Rasputinas: mitas ir tikrovė,978-6090115677,2015-08-30,2015-10-08 
+Gabija,Jankauskaitė,57562103, Audrey Carlan,Kalendoriaus mergina,978-6090114357,2014-02-22,2014-04-18 
+Petras,Petrauskas,87146264,Salomėja Nėris,Eglė žalčių karalienė,978-6094112782,2009-06-24,2009-06-25 
+Petras,Petrauskas,12076213,Michelle Obama,Tampa,978-6094272212,2006-07-20,2006-08-05 
+Žygimantas,Žaliauskas,31999655,Birutė Ciplijauskaitė,Salomėja Nėris: gyvensime ir mirsime drauge,978-9986398897,2018-04-23,2018-05-31 
+Jonas,Jonaitis,85035061,Tomas Dirgėla,Apie raganą Šiokią Tokią,978-6094516787,2018-06-10,2018-07-17 
+Rasa,Jonaitė,38048427,Tony Blair,Kelias į valdžią,978-9986568757,2011-10-20,2011-11-14 
+Žygimantas,Žaliauskas,K11486800,Juozas Baltušis,Pilnatis,978-6094566234,2001-10-20,2001-12-13 
+Greta,Jankauskaitė,13716918,Ieva Simonaitytė,Aukštujų Šimonių likimas,978-6094730846,2021-12-29,2022-02-21 
+Marius,Pupinis,13552368,Henris Džeimsas,Portretas,978-6094559320,2015-12-30,2016-01-02 
+Dominykas,Urbonas,10178055,Andrew Roberts,Churchillis: didysis XX amžiaus lyderis,978-6090119338,2001-08-14,2001-08-18 
+Gabija,Baranauskaitė,37088855,Vytautas Merkius,Lietuvos politinės kovos XIX amžiuje,978-9986392154,2008-05-05,2008-06-17 
+Petras,Petrauskas,12076213,Algirdas Brazauskas,Aš atėjau iš tautos: politinės autobiografijos fragmentai,978-9986394555,2021-10-01,2021-10-11 
+Gabija,Jankauskaitė,16921547,Vytautas Bubnys,Be krantų,978-6094562385,2007-02-21,2007-04-10 
+Dominykas,Urbonas,25432245,Gal Gadot,Wonder Woman užkulisiai: mano istorija,978-6090114547,2024-07-01,2024-08-29 
+Marius,Pupinis,56471161,Simon Reeve,Kelionės aplink pasaulį,978-6090115671,2000-03-03,2000-03-24 
+Greta,Kazlauskaitė,39545669,Nijolė Oželytė,Nijolė: mano kova,978-6094618127,2024-03-21,2024-04-14 
+storas,katinas,89677128,Richard Overy,Nacistinė Vokietija: karinė galybė ir žlugimas,978-9986561231,2019-09-16,2019-11-13 
+Gabija,Petrauskaitė,43082810,Alfonsas Eidintas,Vokietijos įtaka Lietuvos politikai tarpukariu,978-9986393129,2008-12-07,2008-12-18 
+Ona,Baranauskaitė,68288494,Jurga Ivanauskaitė,Mano Tibetiečių draugai,978-9986397654,2006-01-08,2006-02-05 
+Greta,Kazlauskaitė,96218378,Jhumpa Lahiri,Vardas,978-0618485222,2024-04-11,2024-05-13 
+Žygimantas,Žaliauskas,84284014,Jonas Biliūnas,Laimės žiburys,978-6094418232,2021-05-05,2021-06-30 
+Gabija,Baranauskaitė,38602244,Antanas Škėma,Saulėlydis vakarų fronte,978-6094563320,2012-02-28,2012-03-13 
+Greta,Kazlauskaitė,71376662,John Legend,Muzikos kelionė: mano sėkmės istorija,978-6090118653,2021-09-03,2021-09-14 
+Lina,Jonaitė,14960385,Richard J. Evans,Reichas ir Trečiasis reichas: nacių Vokietijos istorija,978-6090114525,2009-05-04,2009-06-30 
+Karolis,Urbonas,K46766538,Adele,Mano gyvenimas ir muzika,978-6090114560,2013-11-28,2014-01-22 
+Ona,Petrauskaitė,52548252,Patrick Leigh Fermor,Keliautojo žingsniai: Viduržemio jūros kelionės,978-9986563413,2014-07-07,2014-07-24 
+Dominykas,Urbonas,93481055,Patrick Suskind,Kvapas,978-6094335673,2022-10-08,2022-10-13 
+Petras,Petrauskas,42508403,Marcelijus Martinaitis,Kukučio baladės,978-9986390137,2002-03-25,2002-03-31 
+Ona,Vasiliauskaitė,57533943,Audronė Petrauskienė,Lietuvos moterų istorija,978-9986397776,2009-05-23,2009-07-04 
+kala,mala,29069028,Jonas Genys,Lietuvos diplomatijos istorija tarpukariu,978-9986393242,2014-10-13,2014-10-24 
+Petras,Petrauskas,33279475,Jonathan Franzen,Laisvė,978-0374158460,2001-10-27,2001-12-14 
+Marius,Pupinis,41030897,Zita Medišauskienė,Lietuvos kaimo raida XIX amžiuje,978-9986392146,2000-01-28,2000-03-10 
+Petras,Petrauskas,12076213,Valdas Papievis,Odilė arba Oro uostų vienatvė,978-6094567617,2016-01-23,2016-03-05 
+Marius,Pupinis,89174259,Alfredas Bumblauskas,Senoji Lietuva (1009–1795),978-9986393249,2020-05-30,2020-06-25 
+Gabija,Petrauskaitė,78145525,Helen Oyeyemi,Baltoji ragana,978-1594631399,2012-10-23,2012-11-30 
+Gabija,Baranauskaitė,35959476,Vytautas Landsbergis,Kovo 11: mano gyvenimo istorija,978-9986392346,2016-04-09,2016-04-10 
+Gabija,Petrauskaitė,46426530,Antanas Kulakauskas,Lietuvos politinis elitas tarpukariu,978-9986394671,2010-11-09,2010-12-21 
+Gabija,Petrauskaitė,84474002,Bitė Vilimaitė,Paprasti žodžiai,978-9986391027,2021-05-29,2021-07-02 
+Piktas,Katinas,48617732,Mel Gibson,Mano kovos su likimu,978-9986564523,2018-01-08,2018-01-21 
+Jonas,Žaliauskas,85209344,Margaret Atwood,Aklasis žudikas,978-0385720953,2014-04-30,2014-06-02 
+Ona,Baranauskaitė,40709643,Nijolė Sadūnaitė,Neleisk man pražūti: tremties metai,978-9986399923,2008-09-09,2008-11-01 
+Ona,Petrauskaitė,80502968,Juozas Aputis,Vieno miesto istorijos,978-6094325988,2009-01-25,2009-02-12 
+Ona,Vasiliauskaitė,20924933,Lady Gaga,Mano ekscentriška gyvenimo kelionė,978-6090115677,2017-09-09,2017-10-15 
+Greta,Kazlauskaitė,58478107,Alexandra Fuller,Neišmanėliai dykumoje: Afrikos kelionių prisiminimai,978-6090113425,2011-02-10,2011-03-05 
+Greta,Kazlauskaitė,39545669,Balys Sruoga,Dievų miškas,978-6099562596,2018-01-07,2018-02-20 
+ali,bali,93252287,Antanas Škėma,Balta drobulė,978-6090123345,2009-08-18,2009-08-22 
+Jonas,Jonaitis,40632226,Gintautas Sliesoriūnas,Lietuvių ir lenkų santykiai XVII amžiuje,978-9986393216,2015-10-29,2015-11-20 
+Greta,Kazlauskaitė,13533669,Juozas Aputis,Keleivio novelės,978-6094562458,2013-09-17,2013-11-04 
+Greta,Jankauskaitė,55717961,Gintaras Beresnevičius,Dangus be Dievo: rašytojo gyvenimo užrašai,978-9986398217,2013-12-19,2014-01-27 
+Ona,Vasiliauskaitė,60992420,Migelis de Servantesas,Persileidusio romano herojus,978-6094532345,2008-02-14,2008-03-30 
+Gabija,Jankauskaitė,56772970,Lauren Groff,Fates ir Furies,978-1594634475,2014-03-16,2014-04-20 
+Lina,Jonaitė,85256781,Elena Ferrante,Neapolietiška saga: Nuostabioji draugė,978-1609450786,2012-08-26,2012-08-29 
+Petras,Petrauskas,30837595,Vytautas Mačernis,Vasaros sonetai,978-6094479122,2000-02-29,2000-04-07 
+Karolis,Urbonas,92086548,Oskar Schindler,Mano kova už gyvybę,978-9986564325,2016-11-29,2017-01-12 
+Karolis,Urbonas,98075296,Audronė Petrauskienė,Tremties istorija: lietuvių tremtys Sibire,978-9986392345,2000-07-08,2000-08-07 
+Gabija,Petrauskaitė,46426530,Alberas Kamiu,Kritimas,978-6094123669,2015-01-06,2015-01-23 
+Greta,Jankauskaitė,17030985,Bruce Springsteen,Born to Run: mano kelias,978-6090119878,2021-10-28,2021-11-09 
+Jonas,Jonaitis,84169506,William L. Shirer,Trečiojo reicho iškilimas ir žlugimas,978-9986567233,2006-05-03,2006-06-04 
+Ona,Petrauskaitė,52548252,Adam Hochschild,Vaiduoklių karalius: Belgijos Liudvikas II ir Kongo imperija,978-6090113347,2002-01-22,2002-02-13 
+Dominykas,Urbonas,10178055,Bruce Springsteen,Born to Run: mano kelias,978-6090119878,2022-11-27,2023-01-10 
+Karolis,Urbonas,37830039,Jane Fonda,Mano gyvenimo šuolis,978-9986561339,2023-06-26,2023-08-10 
+Karolis,Urbonas,64430892,Henris Džeimsas,Sraigės kreida,978-6094303213,2017-06-07,2017-07-10 
+Dominykas,Urbonas,86004039,Robert Service,Stalinas: teroro meistras,978-6090119933,2016-03-15,2016-04-26 
+Marius,Pupinis,98882457,Stephen Kotkin,Stalinas: Teroras ir triumfas,978-6090116542,2000-12-01,2000-12-16 
+Žygimantas,Žaliauskas,36061723,Yaa Gyasi,Kelias namo,978-1101947135,2000-05-03,2000-06-22 
+Ona,Baranauskaitė,77880328,Yuval Noah Harari,21 pamoka XXI amžiui,978-6090113467,2022-04-10,2022-04-27 
+Gabija,Jankauskaitė,36375656,Colin Thubron,Amžių dykumos: kelionės po Viduržemio jūros dykumas,978-6090114551,2023-06-24,2023-07-06 
+Gabija,Petrauskaitė,89459442,Jhumpa Lahiri,Vardas,978-0618485222,2011-02-23,2011-04-12 
+Greta,Jankauskaitė,17030985,Vytautas Kavolis,Sunkūs pasirinkimai: intelektualo gyvenimo kelias,978-9986392296,2018-09-24,2018-10-07 
+Ona,Baranauskaitė,73765338,Kęstutis Petrauskas,Lietuvos Didžiosios Kunigaikštystės politikos ir visuomenės raida,978-9986391346,2007-07-05,2007-08-16 
+Karolis,Urbonas,61529516,Richard Branson,Nesėkmės ir sėkmės,978-6094270181,2005-03-07,2005-05-01 
+Gabija,Petrauskaitė,78145525,Niall Ferguson,Vakarų civilizacijos nuosmukis: demokratijos ir laisvės iššūkiai,978-6090122561,2011-03-13,2011-05-10 
+Marius,Pupinis,81401855,Elena Ferrante,Neapolietiška saga: Nuostabioji draugė,978-1609450786,2007-12-06,2008-02-04 
+Marius,Pupinis,98882457,Algirdas Matulevičius,Lietuvos bajorija XVI–XVIII amžiuje,978-9986393013,2014-02-26,2014-04-22 
+Greta,Kazlauskaitė,96218378,Lady Gaga,Mano ekscentriška gyvenimo kelionė,978-6090115677,2009-06-06,2009-08-03 
+Dominykas,Urbonas,32363322,Vytautas Sirijos Gira,Kultūros veikėjai: jų gyvenimo kelias,978-9986391212,2008-05-19,2008-06-07 
+Žygimantas,Žaliauskas,13174026,Yaa Gyasi,Kelias namo,978-1101947135,2008-10-03,2008-10-27 
+Gabija,Jankauskaitė,57562103,Jonathan Spence,Kinijos imperatorių kronikos,978-6090113325,2016-02-08,2016-02-26 
+Dominykas,Urbonas,39486944,Vytautas Sirijos Gira,Kultūros veikėjai: jų gyvenimo kelias,978-9986391212,2005-04-14,2005-04-28 
+Petras,Petrauskas,12076213,Tim Severin,Atlantidos paieškos: kelionės Viduržemio jūros regione,978-9986568899,2011-01-13,2011-03-09 
+Piktas,Katinas,48617732,Albertas Koen,Puikusis Saliamonas,978-6094334768,2002-12-09,2002-12-22 
+Žygimantas,Žaliauskas,31999655,Sally Rooney,Gražus pasaulis kur tu esi,978-0374602602,2007-07-23,2007-09-08 
+Jonas,Žaliauskas,31411230,Saulius Šaltenis,Riešutų duona,978-6098099209,2015-12-05,2015-12-13 
+Greta,Kazlauskaitė,87036163,Kazys Uscila,Mykolas Krupavičius: kunigo ir politiko kelias,978-6094443247,2016-12-27,2017-02-07 
+Greta,Kazlauskaitė,58478107,Gintautas Vėlius,Lietuvos mitologijos ištakos,978-9986390331,2016-09-01,2016-10-18 
+Ona,Petrauskaitė,52548252,Saul Friedländer,Nacių valdžios kilimas ir Holokaustas,978-9986567838,2001-07-09,2001-08-09 
+Gabija,Jankauskaitė,72086604,Andrejus Platonovas,Chevenguras,978-6094442192,2002-10-16,2002-10-21 
+Greta,Kazlauskaitė,96218378,Madeline Miller,Achilo giesmė,978-1408816035,2021-01-06,2021-02-24 
+Petras,Petrauskas,12076213,Michael Palin,Sacharos kelionė,978-9986567891,2005-04-08,2005-05-06 
+Greta,Kazlauskaitė,71376662,Ellen DeGeneres,Šypsenos galia: mano gyvenimo pasakojimai,978-6090116772,2023-05-01,2023-06-17 
+Gabija,Jankauskaitė,85979339,Robert Kagan,Amerikos pasaulinė galia: nuo šaltojo karo iki XXI amžiaus,978-6090119885,2017-07-20,2017-08-03 
+Ona,Vasiliauskaitė,77319405,Valeria Luiselli,Knygos apie vaikus pabėgėlius,978-0525520619,2011-04-24,2011-05-19 
+Gabija,Petrauskaitė,43082810,Jane Fonda,Mano gyvenimo šuolis,978-9986561339,2002-04-23,2002-06-05 
+Gabija,Jankauskaitė,16921547,Vidmantė Jasukaitytė,Kraujas ir pelenai,978-6094323342,2008-05-28,2008-07-24 
+Ona,Vasiliauskaitė,57533943,Alison Bechdel,Fun Home: šeimos tragedija,978-0618871711,2018-12-29,2019-02-17 
+Jonas,Žaliauskas,94567974,Colin Thubron,Šilko kelias: Vidurinės Azijos kelionės,978-9986566746,2019-03-14,2019-04-15 
+Jonas,Žaliauskas,20499645,Jonathan Safran Foer,Čia aš esu,978-0374280024,2019-07-29,2019-09-19 
+Dominykas,Urbonas,39486944,Herbertas Džordžas Velsas,Nematomas žmogus,978-6095221312,2014-05-05,2014-05-25 
+Gabija,Jankauskaitė,16921547,Vytautas Merkys,Žemaitijos kultūros raida XIV–XVIII amžiuje,978-9986393321,2021-01-01,2021-01-10 
+Gabija,Jankauskaitė,85979339,Margaret MacMillan,Karo ir taikos metai: pasaulio istorija nuo Napoleono iki šaltojo karo,978-6090119873,2006-08-02,2006-08-11 
+Greta,Kazlauskaitė,42668623,Bill Bryson,Aplink pasaulį per 80 dienų,978-9986568911,2018-06-21,2018-07-23 
+Marius,Pupinis,48068808,Giedra Radvilavičiūtė,Šiąnakt aš miegosiu prie sienos,978-6094418720,2014-03-11,2014-05-05 
+Greta,Kazlauskaitė,96218378,intaras Grajauskas,Erezija,978-6094634564,2003-01-18,2003-02-03 
+Ona,Baranauskaitė,40709643,Nana Kwame Adjei-Brenyah,Piktųjų genų laboratorija,978-1328911247,2005-09-13,2005-11-04 
+Greta,Kazlauskaitė,96218378,Dervla Murphy,Laosiečio keliu: kelionės po Pietryčių Aziją,978-6090116677,2003-08-23,2003-09-10 
+Gabija,Petrauskaitė,84474002,Mel Gibson,Mano kovos su likimu,978-9986564523,2011-09-18,2011-10-31 
+Greta,Jankauskaitė,37298338,Džeimsas Džoisas,Ulisas,978-6094510312,2013-10-16,2013-10-31 
+Gabija,Jankauskaitė,57562103,Jorgė Luisas Borchesas,Fikcijos,978-6094358999,2021-05-31,2021-06-21 
+Dominykas,Urbonas,86004039,E. L. James,Tamsesnis: Penkiasdešimt atspalvių išlaisvinta,978-6090115670,2013-03-02,2013-03-12 
+Greta,Jankauskaitė,17030985,Kazys Boruta,Perkūno sakmės,978-6094563457,2010-05-28,2010-07-08 
+pirmas,pirmas,12246779,Petras Cvirka,Vaikų karas,9986026326,2008-06-15,2008-06-18 
+Gabija,Jankauskaitė,72086604,Alvydas Nikžentaitis,Mindaugas ir jo epocha,978-9986392769,2012-11-14,2012-11-26 
+Žygimantas,Žaliauskas,84284014,Ed Sheeran,Mano muzikos kelias,978-6090116781,2021-06-01,2021-06-27 
+Ona,Vasiliauskaitė,60992420,Justinas Žilinskas,Kaukas Gugis ir Kerų karas,978-6098119211,2020-11-25,2020-12-22 
+Ieva,Jankauskaitė,39466701,Eduardas Mieželaitis,Kosmose,978-9986391219,2013-10-25,2013-12-06 
+Greta,Kazlauskaitė,39545669,Fransua Moriakas,Tėvas Gorijo,978-6094529871,2023-01-21,2023-02-17 
+Marius,Pupinis,13861547,Icchokas Meras,Lygiosios trunka akimirką,9789955230403,2007-09-11,2007-10-05 
+Ona,Vasiliauskaitė,31664864,Kazys Saja,Skruzdėlynas Prūsijoje,978-9986393343,2009-06-08,2009-06-11 
+Jonas,Jonaitis,84169506,Jesmyn Ward,Giesmė iš vandenyno dugno,978-1501126062,2010-11-28,2011-01-02 
+Ona,Petrauskaitė,13595899,Michael Jordan,Mano pergalės ir pralaimėjimai,978-9986565124,2000-04-17,2000-05-04 
+Dominykas,Urbonas,10178055,Aleksandras Solženicynas,Vėžio korpusas,978-6094552344,2015-08-23,2015-09-12 
+Ieva,Jankauskaitė,39466701,Fransua Moriakas,Tėvas Gorijo,978-6094529871,2010-06-13,2010-07-29 
+Ona,Vasiliauskaitė,60992420,Giovanni Boccaccio,Dekameronas,978-6094321230,2002-01-14,2002-02-12 
+Gabija,Petrauskaitė,30390936,John Legend,Muzikos kelionė: mano sėkmės istorija,978-6090118653,2010-11-28,2011-01-09 
+Ona,Petrauskaitė,92653170,Algimantas Zurba,Rudens pašvaistės,978-6094567653,2010-06-10,2010-08-04 
+Ona,Petrauskaitė,86524891,Algirdas Toliatas,Tylos spalvos: gyvenimo ir pašaukimo užrašai,978-6094591230,2012-09-26,2012-11-15 
+Jonas,Žaliauskas,85209344,Juozas Girnius,Kazys Bradūnas: poeto ir patrioto gyvenimas,978-9986393151,2021-05-27,2021-06-28 
+Ona,Baranauskaitė,73765338,Woody Allen,Visos mano nuodėmės,978-6090118903,2010-10-02,2010-10-11 
+Ona,Baranauskaitė,26003760,Paul Kennedy,Didžiųjų galių iškilimas ir žlugimas,978-9986564764,2017-06-27,2017-07-02 
+Jonas,Žaliauskas,85209344,Elon Musk,Elon Musk: Tesla SpaceX ir ateities vizija,978-6094279351,2024-03-19,2024-03-27 
+Gabija,Petrauskaitė,60677543,Algirdas Matulevičius,Lietuvos Didžiosios Kunigaikštystės valdovai,978-9986393024,2019-12-03,2020-01-12 
+Jonas,Jonaitis,74386690,Gabrielis Garsija Markesas,Šimtas metų vienatvės,978-6094562347,2022-10-08,2022-11-22 
+Jonas,Jonaitis,32951570,Henris Džeimsas,Portretas,978-6094559320,2003-11-20,2003-12-29 
+Jonas,Žaliauskas,18195278,Michael Asher,Sachara: dykumos tyrimai ir kelionės,978-9986564325,2012-01-04,2012-02-08 
+Žygimantas,Žaliauskas,83133636,Leila Slimani,Miegančiųjų sodas,978-0241305789,2018-09-09,2018-09-29 
+Rasa,Jonaitė,51470568,Téa Obreht,Tigrų žmona,978-0385343831,2003-12-25,2004-02-15 
+Gabija,Baranauskaitė,37088855,Antanas Drilinga,Širdis po lapais,978-6094560984,2009-03-10,2009-03-11 
+Gabija,Petrauskaitė,27671989,Frances Mayes,Povilas Toskanoje: gyvenimas ir atradimai,978-9986569733,2010-04-26,2010-06-03 
+Gabija,Petrauskaitė,84474002,Levison Wood,Nuo Nilso iki Nubijos: kelionės pėsčiomis po Afriką,978-6090123446,2012-06-21,2012-08-11 
+Petras,Petrauskas,57114003,Colin Thubron,Amžių dykumos: kelionės po Viduržemio jūros dykumas,978-6090114551,2018-11-28,2018-12-14 
+Karolis,Urbonas,64430892,Gabrielle Union,Mano kelias į laisvę,978-6094567651,2016-01-22,2016-01-24 
+Piktas,Šuo,59609292,Alvydas Šlepikas,Mano vardas - Marytė,978-6094214435,2011-02-18,2011-03-05 
+Ona,Petrauskaitė,13595899,Icchokas Meras,Geltonas lopas,9785415018352,2018-01-08,2018-01-14 
+Greta,Kazlauskaitė,13533669,Michael Palin,Sacharos kelionė,978-9986567891,2019-05-25,2019-07-08 
+Rasa,Jonaitė,48365414,Romualdas Granauskas,Šventųjų gyvenimai,978-6094546212,2021-01-29,2021-03-26 
+Ieva,Jankauskaitė,72929597,Eva Longoria,Mano gyvenimo kova,978-6090114327,2011-12-28,2011-12-30 
+Gabija,Petrauskaitė,78145525,Tina Fey,Bossypants: mano istorija,978-6090117652,2002-11-21,2003-01-03 
+Gabija,Jankauskaitė,91305612,Gintautas Sliesoriūnas,Lietuva ir Lenkija XIV–XV amžiuje,978-9986392343,2001-01-23,2001-02-13 
+Gabija,Petrauskaitė,64382462,Lily King,Meilės ir pykčio pamokos,978-0802148537,2014-03-08,2014-03-24 
+Lina,Jonaitė,37163375,Jonas Strielkūnas,Pavasario malda,978-9986391321,2005-08-22,2005-10-11 
+Ona,Petrauskaitė,13595899,Reese Witherspoon,Mano Pietų kelionė,978-6090115426,2000-06-14,2000-06-24 
+Ieva,Jankauskaitė,55601074,Antony Beevor,Ardenų mūšis 1944: paskutinė vokiečių kontrataka,978-6090112336,2011-04-14,2011-04-24 
+Žygimantas,Žaliauskas,98316441,Robert Kagan,Amerikos pasaulinė galia: nuo šaltojo karo iki XXI amžiaus,978-6090119885,2021-05-21,2021-07-12 
+Dominykas,Urbonas,39486944,Valdas Papievis,Eiti,978-6094039127,2010-04-14,2010-05-19 
+Gabija,Jankauskaitė,36375656,Jonas Aničas,Martynas Mažvydas: jo gyvenimas ir veikalai,978-9986392344,2005-12-02,2006-01-03 
+Karolis,Urbonas,28396397,Juozas Grušas,Barbora Radvilaitė,978-6093120732,2022-12-09,2022-12-10 
+Greta,Jankauskaitė,58926305,Saulius Šaltenis,Riešutų duona,978-6098099209,2006-05-17,2006-06-14 
+Marius,Pupinis,98882457,Petras Cvirka,Vaikų karas,9986026326,2011-09-13,2011-10-13 
+Ona,Petrauskaitė,30315262,Anne Applebaum,Raudonasis badas: Stalino genocidas Ukrainoje,978-6090111240,2004-01-03,2004-02-29 
+Ona,Petrauskaitė,80502968,Justinas Marcinkevičius,Mindaugas,978-6094651235,2009-02-22,2009-04-17 
+Marius,Pupinis,41323011,Nina LaCour,Mūsų paskutinis vasaros saulėlydis,978-1797193302,2021-01-27,2021-02-26 
+Gabija,Baranauskaitė,68196222,Jonas Genys,Martynas Mažvydas: knygos tėvo gyvenimo istorija,978-9986392316,2008-02-05,2008-02-24 
+Ona,Petrauskaitė,86524891,Saulius Šaltenis,Šiandien ir visada,978-6094561297,2021-02-24,2021-03-06 
+Marius,Pupinis,89174259,Jared Leto,Ekstremalios karjeros istorija,978-6090118759,2007-04-24,2007-06-17 
+Greta,Jankauskaitė,17030985,Antanas Rekašius,Lietuvos kultūros istorija,978-9986396121,2018-07-18,2018-07-30 
+Jonas,Jonaitis,41287010,Valdas Papievis,Eiti,978-6094039127,2016-10-04,2016-10-09 
+Gabija,Petrauskaitė,27671989,Ottessa Moshfegh,Mano metai ir atsitraukimas,978-0525522118,2019-05-14,2019-05-24 
+Petras,Petrauskas,30837595,Julia Roberts,Moteriškumo paslaptys,978-9986566330,2008-10-26,2008-11-25 
+Ona,Vasiliauskaitė,25838980,Christopher Andrew,Šnipų karai: pasaulio šnipinėjimo istorija,978-6090116740,2006-04-07,2006-05-05 
+Marius,Pupinis,81401855,Vanda Daugirdaitė-Sruogienė,Lietuvos valstybės kūrimasis,978-9986391146,2006-10-02,2006-11-29 
+Ona,Vasiliauskaitė,25838980,Marius Ivaškevičius,Madagaskaras,978-6098033118,2008-03-02,2008-04-24 
+Gabija,Petrauskaitė,64382462,Margaret Atwood,Liudijimai,978-0385543781,2009-05-20,2009-07-15 
+Lina,Jonaitė,48855869,Vytautas Petkevičius,Durnių laivas,978-6094270275,2006-11-05,2006-12-22 
+Gabija,Petrauskaitė,60677543,Dainius Vanagas,Vakaro žvaigždė,978-6094446717,2016-01-02,2016-02-26 
+Jonas,Jonaitis,32951570,Aminatta Forna,Laikas ištrintas,978-0802120434,2004-07-04,2004-07-16 
+Greta,Kazlauskaitė,98422947,Kazys Saja,Liepsnojantys metai,978-6094562343,2023-04-17,2023-04-18 
+Lina,Jonaitė,99739965,Harper Lee,Nežudyk strazdo giesmininko,978-0060935468,2021-11-02,2021-12-14 
+Gabija,Baranauskaitė,19990623, Sylvia Day,Nuodėmingas malonumas,978-6090121446,2010-01-29,2010-02-15 
+Jonas,Žaliauskas,20499645,Vytautas Sirijos Gira,Kultūros veikėjai: jų gyvenimo kelias,978-9986391212,2017-08-26,2017-10-01 
+Ona,Petrauskaitė,44822472,Antony Beevor,Ispanijos pilietinis karas: 1936–1939,978-9986568779,2007-06-02,2007-07-31 
+Karolis,Urbonas,64430892,Jurgis Kunčinas,Baltasis kvadratas,978-6094321874,2008-08-03,2008-09-23 
+storas,katinas,89677128,Alvydas Nikžentaitis,Lietuvos Didžiosios Kunigaikštystės dinastijos,978-9986393419,2008-09-19,2008-10-19 
+Ona,Vasiliauskaitė,74279289,Vytautas Landsbergis,Adamkus: kelio į valdžią kronika,978-6094598960,2012-05-14,2012-07-07 
+Gabija,Petrauskaitė,89459442,Robert Kaplan,Balkanų šešėliai: Balkanų istorija,978-9986562146,2001-06-27,2001-08-04 
+Ieva,Jankauskaitė,39466701,Edmundas Rimša,Lietuvos heraldika,978-9986390148,2016-09-28,2016-09-29 
+Ona,Vasiliauskaitė,35176788,Marcelijus Martinaitis,Saulėgrąžos,978-6094329764,2021-02-09,2021-02-13 
+Ieva,Jankauskaitė,91243749,Hanya Yanagihara,Įsivaizduojamas gyvenimas,978-0735224315,2000-09-06,2000-10-15 
+Ieva,Jankauskaitė,72929597,Tommy Orange,Ten mes buvome,978-0525520375,2017-12-07,2018-01-17 
+Greta,Jankauskaitė,55717961,Vanda Juknaitė,Raudonos gėlės: mano tėvas ir aš,978-6094457653,2011-09-05,2011-10-15 
+Dominykas,Urbonas,10178055,Jonas Mikuckis,Lietuvos miškai ir jų istorija,978-9986392885,2018-12-24,2019-01-16 
+Dominykas,Urbonas,19872917,Claire-Louise Bennett,Vandens grožis,978-0099590088,2012-10-22,2012-11-01 
+Karolis,Urbonas,32875294,Paul Kennedy,Didžiųjų galių iškilimas ir žlugimas,978-9986564764,2003-06-23,2003-07-11 
+Gabija,Baranauskaitė,58130850,Vytautas Merkius,Lietuvos politinės kovos XIX amžiuje,978-9986392154,2010-07-20,2010-08-21 
+Ona,Baranauskaitė,73765338,Richard Grant,Dykumos tauta: gyvenimas ir kelionės po Amerikos dykumas,978-6090119875,2016-07-29,2016-09-14 
+Lina,Jonaitė,37163375,Valdas Adamkus,Prezidento užrašai: politinė autobiografija,978-6098236422,2016-01-10,2016-02-28 
+Ona,Vasiliauskaitė,35176788,Robert Macfarlane,Kalnai mintyse: gamtos pažinimas,978-6090112494,2011-10-06,2011-11-20 
+Petras,Petrauskas,45474135,Jurgis Kunčinas,Tūla,978-6094167893,2009-08-11,2009-08-22 
+Gabija,Baranauskaitė,33146099,Alvydas Nikžentaitis,Mindaugas ir jo epocha,978-9986392769,2011-01-16,2011-03-04 
+Greta,Jankauskaitė,68495167,Saul Friedländer,Trečiojo Reicho karai ir genocidas,978-6090117886,2022-11-26,2022-12-24 
+Žygimantas,Žaliauskas,58376253,Freya Stark,Dykumų keliai: Vidurio Rytų tyrinėjimai,978-9986562311,2000-04-25,2000-06-05 
+Ieva,Jankauskaitė,55601074,Antony Beevor,Pasaulinio karo šešėlis: Sovietų Sąjungos kova prieš Vokietiją,978-9986569948,2005-11-24,2006-01-01 
+Marius,Pupinis,13861547,Thomas Mannas,Stebuklingasis kalnas,978-6094671237,2005-03-06,2005-03-14 
+Karolis,Urbonas,28396397,Mečislovas Jučas,Lietuvių liaudies sukilimas prieš carinę Rusiją,978-9986394452,2004-06-02,2004-06-24 
+Gabija,Petrauskaitė,94539079,Peter Matthiessen,Sniego leopardas: Himalajų tyrinėjimai,978-9986563453,2018-05-09,2018-05-30 
+Petras,Petrauskas,12076213,Dalia Kutraitė-Giedraitienė,Paprasti žmonės: kalbų ir susitikimų prisiminimai,978-6094598741,2009-07-25,2009-09-02 
+Marius,Pupinis,45575936,Žanas Polis Sartras,Už uždarų durų,978-6094557882,2018-08-21,2018-09-04 
+Gabija,Baranauskaitė,35959476,Jason Momoa,Mano kova: nuo Havajų iki Holivudo,978-6090117658,2018-12-25,2019-01-10 
+Jonas,Žaliauskas,18195278,Edith Piaf,Mano gyvenimo dainos,978-9986568827,2006-12-13,2007-01-01 
+Rasa,Jonaitė,86701957,Malala Yousafzai,Aš esu Malala,978-6090113467,2022-02-25,2022-03-24 
+Greta,Jankauskaitė,13716918,John Legend,Muzikos kelionė: mano sėkmės istorija,978-6090118653,2006-03-09,2006-03-23 
+Gabija,Petrauskaitė,11570109,Oprah Winfrey,Mano tiesa,978-6090112444,2021-07-04,2021-08-14 
+Dominykas,Urbonas,39486944,Italo Kalvinas,Nematomi miestai,978-6094231453,2004-01-06,2004-02-16 
+Žygimantas,Žaliauskas,58376253,Tim Severin,Atlantidos paieškos: kelionės Viduržemio jūros regione,978-9986568899,2009-09-10,2009-10-09 
+Ona,Vasiliauskaitė,31664864,Birutė Ciplijauskaitė,Salomėja Nėris: gyvensime ir mirsime drauge,978-9986398897,2018-08-22,2018-10-01 
+Ona,Vasiliauskaitė,51740758,Vincas Mykolaitis-Putinas,Kelias į save,978-9986395555,2008-02-25,2008-03-05 
+Karolis,Urbonas,64430892,Algirdas Šlepikas,Vilius Karalius: Ievos Simonaitytės gyvenimo kelias,978-6094467866,2014-06-02,2014-07-11 
+Ieva,Jankauskaitė,53112753,Balys Sruoga,Dievų miškas,978-6094042345,2020-05-04,2020-05-08 
+Ona,Petrauskaitė,27310081,J. K. Rowling,Kalėdos Hogvartse,9786090159651,2019-06-21,2019-07-25 
+Karolis,Urbonas,64430892,Edouard Louis,Kas nužudė mano tėvą,978-0374184315,2016-06-17,2016-07-22 
+Gabija,Petrauskaitė,71951653,Antony Beevor,Trečiojo Reicho karai: Vokietijos kovos ir žlugimas,978-6090112128,2007-12-17,2008-02-08 
+Greta,Jankauskaitė,17030985, Megan Maxwell,Norėčiau tavęs,978-6090121447,2022-07-22,2022-08-22 
+Gabija,Petrauskaitė,71449089,Jhumpa Lahiri,Vardas,978-0618485222,2008-02-24,2008-03-05 
+Gabija,Petrauskaitė,87597297,Anaïs Nin,Mažoji paukštė: erotinės novelės,978-9986568725,2023-07-11,2023-08-28 
+Gabija,Jankauskaitė,91305612,Maironis,Pavasario balsai,978-6094547329,2022-12-24,2023-01-01 
+Ieva,Jankauskaitė,37231865,Niall Ferguson,Civilizacija: Vakarų ir pasaulio likimas,978-6090112346,2002-01-04,2002-02-24 
+Karolis,Urbonas,37830039,Romualdas Granauskas,Gyvenimas po klevu,978-6099542582,2010-03-20,2010-05-17 
+Ona,Vasiliauskaitė,20924933,Thomas Mannas,Stebuklingasis kalnas,978-6094671237,2023-02-15,2023-03-08 
+Gabija,Petrauskaitė,46426530,Liudas Truska,Lietuvos prezidentai: gyvenimo aprašymai,978-6094557326,2006-03-09,2006-05-08 
+Gabija,Baranauskaitė,38602244,Audronė Urbšytė,Jonas Mekas: dienoraščiai ir pokalbiai,978-6094424238,2002-11-09,2002-12-06 
+Ona,Petrauskaitė,44822472,Raimondas Lopata,Lietuvos ir Rusijos santykiai XV amžiuje,978-9986393429,2014-03-07,2014-04-22 
+Žygimantas,Žaliauskas,57556936,Ričardas Gavelis,Vilniaus pokeris,978-6094321053,2012-09-26,2012-10-19 
+Ona,Vasiliauskaitė,20924933,Andrew Roberts,Kryžiaus karai: pasaulio civilizacijų susidūrimas,978-9986569235,2015-01-06,2015-02-20 
+Gabija,Petrauskaitė,81133089,Mykolas Sluckis,Laiko ženklai,978-6094328743,2020-07-10,2020-07-30 
+Gabija,Jankauskaitė,85979339,Gintautas Vėlius,Lietuvos mitologijos ištakos,978-9986390331,2000-03-02,2000-03-10 
+Jonas,Jonaitis,46139849,Niall Ferguson,Imperija: Britanijos imperijos iškilimas ir žlugimas,978-9986567336,2001-01-06,2001-02-21 
+Ona,Petrauskaitė,81628400,Stephen Hawking,Mano trumpa istorija,978-6090114938,2019-07-14,2019-07-18 
+Greta,Kazlauskaitė,87036163,Mindaugas Kvietkauskas,Algirdas Julius Greimas: semiotiko biografija,978-6094451237,2022-04-06,2022-05-28 
+Greta,Kazlauskaitė,71376662,Melania Trump,Mano pirmosios damos dienos,978-6094567893,2020-04-14,2020-06-07 
+Dominykas,Urbonas,25432245,Alfonsas Eidintas,Antanas Smetona: Politinė biografija,978-9986392433,2007-08-06,2007-09-04 
+ali,bali,93252287,David Mitchell,Debesų atlasas,978-0375507250,2016-11-02,2016-11-03 
+Ona,Petrauskaitė,44822472,John Boyne,Berniukas dryžuota pižama,978-0385751537,2021-01-24,2021-03-23 
+Ieva,Jankauskaitė,17652909,Mihailas Bulgakovas,Meistras ir Margarita,978-0141187792,2020-08-08,2020-08-29 
+Gabija,Petrauskaitė,71951653,Mary Beard,SPQR: Senovės Romos istorija,978-6090118762,2024-02-23,2024-03-21 
+Marius,Pupinis,18445767,Rimantas Jasas,Žemaitijos politinė raida XIV–XVI a.,978-9986392139,2023-11-09,2023-12-20 
+Greta,Kazlauskaitė,58478107,Jolanta Sereikaitė,Šešėlių akys,978-6094569027,2020-12-16,2021-01-31 
+Karolis,Urbonas,92086548,Saulius Šaltenis,Riešutų duona,978-6098099209,2018-02-18,2018-03-04 
+Rasa,Jonaitė,10864179,Audronė Girdzijauskaitė,Antanas Vienuolis: biografinis pasakojimas,978-9986394563,2005-04-06,2005-04-17 
+Greta,Kazlauskaitė,96218378,Vytautas Merkius,Lietuvos politinės kovos XIX amžiuje,978-9986392154,2020-05-21,2020-05-24 
+Gabija,Petrauskaitė,94539079,Džordžas Orvelas,1984-ieji,978-0451524935,2001-11-28,2001-12-20 
+Gabija,Petrauskaitė,53130346,Valdas Daškevičius,Sąvartyne,978-6094126711,2023-04-21,2023-05-20 
