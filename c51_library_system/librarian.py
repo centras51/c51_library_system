@@ -41,16 +41,18 @@ class Librarian:
 
         self.add_button("Peržiūrėti knygas", 250, 200, self.books_instance.show_books)  
         self.add_button("Pridėti knygą", 250, 350, self.books_instance.add_book)  
-        self.add_button("Knygų grąžinimas", 250, 500, self.lend_books)  
+        self.add_button("Išduotos knygos", 250, 500, self.lend_books)  
         self.add_button("Knygų statistika", 250, 650, self.books_instance.show_statistics)  
 
         self.add_button("Skaitytojų sąrašas", 700, 200, self.reader_list)  
         self.add_button("Pridėti skaitytoją", 700, 350, self.readerregistration_instance.register)  
         self.add_button("Pašalinti knygą", 700, 500, self.books_instance.remove_book)  
+        self.add_button("Nurašytos knygos", 700, 650, self.books_instance.show_removed_books)  
 
         self.add_button("Peržiūrėti darbuotojus", 1150, 200, self.show_librarians)  
-        self.add_button("Atgal į prisijungimo langą", 1150, 350, self.go_back_to_login)  
-        self.add_button("Išeiti iš sistemos", 1150, 500, self.root.quit)  
+        self.add_button("Ištrinti skaitytojai", 1150, 350, self.show_removed_readers)  
+        self.add_button("Atgal į prisijungimo langą", 1150, 500, self.go_back_to_login)  
+        self.add_button("Išeiti iš sistemos", 1150, 650, self.root.quit)  
 
     def add_button(self, text, x_position, y_position, command):
         """Sukurti mygtuką ir pridėti jį į `canvas`."""
@@ -440,5 +442,5 @@ class Librarian:
         for index, row in filtered_librarians.iterrows():
             tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['email'], row['telefonas'], row['username']))
             
-             
-    
+    def show_removed_readers(self):
+        """"Dar nesukurta"""

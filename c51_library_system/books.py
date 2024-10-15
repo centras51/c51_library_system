@@ -219,10 +219,15 @@ class Books:
             if self.is_reader:
                 self.add_button(new_window, "Rezervuoti knygą", 600, lambda: self.reserve_book(selected_book[0]))
             else:
-                self.add_button(new_window, "Priskirti knygą skaitytojui", 450, lambda: self.assign_book_to_reader_ui(selected_book[0], new_window))
-                self.add_button(new_window, "Rezervuoti knygą", 530, lambda: self.reserve_book(selected_book[0]))
-                self.add_button(new_window, "Išsaugoti pakeitimus", 610, self.save_book_edits)
-                self.add_button(new_window, "Ištrinti knygą", 690, lambda: self.confirm_delete_from_profile(selected_book[0], selected_book[3], new_window))
+                self.add_button(new_window, "Priskirti knygą skaitytojui", 420, lambda: self.assign_book_to_reader_ui(selected_book[0], new_window))
+                self.add_button(new_window, "Rezervuoti knygą", 500, lambda: self.reserve_book(selected_book[0]))
+                self.add_button(new_window, "Išsaugoti pakeitimus", 580, self.save_book_edits)
+
+                # Pridėti mygtuką grąžinimui
+                if "užimta" in knygos_statusas.lower():
+                    self.add_button(new_window, "Pažymėti kaip grąžintą", 660, lambda: self.return_book(selected_book[0], new_window))
+
+                self.add_button(new_window, "Ištrinti knygą", 740, lambda: self.confirm_delete_from_profile(selected_book[0], selected_book[3], new_window))
 
 
     def reserve_book(self, knygos_pavadinimas):
@@ -376,17 +381,17 @@ class Books:
         self.open_book_profile(None)
 
     def return_book(self, knygos_pavadinimas, window):
-        # Randame paskutinį įrašą skaitymo istorijoje šiai knygai, kur planuojama grąžinimo data dar nepasiekta
+        # Randame paskutinį įrašą skaitymo istorijoje šiai knygai, nepriklausomai nuo grąžinimo datos
         self.reading_history_df['knygos_grazinimo_data'] = pd.to_datetime(
             self.reading_history_df['knygos_grazinimo_data'], errors='coerce')
-        today = pd.Timestamp(datetime.now().date())
-
+        
+        # Paieškos kriterijus be datos tikrinimo
         mask = (self.reading_history_df['knygos_pavadinimas'].str.strip().str.title() == knygos_pavadinimas.strip().title()) & \
-            (self.reading_history_df['knygos_grazinimo_data'] >= today)
+            (self.reading_history_df['faktine_grazinimo_data'].isna())  # Tikriname, ar knyga dar nebuvo pažymėta kaip grąžinta
 
         if not self.reading_history_df.loc[mask].empty:
             index = self.reading_history_df.loc[mask].index[-1]
-            # Pridedame naują stulpelį 'faktine_grazinimo_data', jei jo dar nėra
+            # Pridedame arba atnaujiname 'faktine_grazinimo_data'
             if 'faktine_grazinimo_data' not in self.reading_history_df.columns:
                 self.reading_history_df['faktine_grazinimo_data'] = pd.NaT
             self.reading_history_df.at[index, 'faktine_grazinimo_data'] = datetime.now().strftime('%Y-%m-%d')
@@ -400,7 +405,8 @@ class Books:
             window.destroy()
             self.open_book_profile(None)
         else:
-            messagebox.showerror("Klaida", "Knyga nėra paskolinta arba grąžinimo data jau praėjo.")
+            messagebox.showerror("Klaida", "Knyga nėra paskolinta arba jau pažymėta kaip grąžinta.")
+
 
     def add_book(self):
         new_window = tk.Toplevel(self.root)
@@ -648,6 +654,127 @@ class Books:
             window.destroy()  # Uždaryti profilį po ištrynimo
         except FileNotFoundError:
             messagebox.showerror("Klaida", "Knygos duomenų bazė nerasta.")
+
+    def show_return_books(self):
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Grąžinimo laukiančios knygos")
+
+        # Paieškos laukelis
+        search_label = tk.Label(new_window, text="Ieškoti knygos:")
+        search_label.pack(pady=5)
+
+        search_entry = tk.Entry(new_window)
+        search_entry.pack(pady=5)
+        search_entry.bind("<KeyRelease>", lambda event: self.filter_return_books(search_entry, new_window))
+
+        frame = tk.Frame(new_window)
+        frame.pack(fill=tk.BOTH, expand=True)
+
+        vsb = tk.Scrollbar(frame, orient="vertical")
+        vsb.pack(side="right", fill="y")
+
+        hsb = tk.Scrollbar(frame, orient="horizontal")
+        hsb.pack(side="bottom", fill="x")
+
+        # Stulpelių identifikatoriai
+        columns = ("knygos_pavadinimas", "autorius", "skaitytojas", "paemimo_data", "grazinimo_data")
+        return_tree = ttk.Treeview(frame, columns=columns, show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        return_tree.pack(fill=tk.BOTH, expand=True)
+
+        vsb.config(command=return_tree.yview)
+        hsb.config(command=return_tree.xview)
+
+        # Nustatyti antraštes
+        return_tree.heading("knygos_pavadinimas", text="Knygos Pavadinimas")
+        return_tree.heading("autorius", text="Autorius")
+        return_tree.heading("skaitytojas", text="Skaitytojas")
+        return_tree.heading("paemimo_data", text="Paimimo Data")
+        return_tree.heading("grazinimo_data", text="Grąžinimo Data")
+
+        # Nustatyti stulpelių plotį
+        return_tree.column("knygos_pavadinimas", width=200)
+        return_tree.column("autorius", width=150)
+        return_tree.column("skaitytojas", width=150)
+        return_tree.column("paemimo_data", width=100)
+        return_tree.column("grazinimo_data", width=100)
+
+        # Pridedame dvigubo paspaudimo įvykio tvarkyklę
+        return_tree.bind("<Double-1>", self.mark_book_returned)
+
+        # Užpildome duomenimis apie grąžinimo laukiančias knygas
+        self.populate_return_books(return_tree)
+
+    def populate_return_books(self, tree):
+        for item in tree.get_children():
+            tree.delete(item)
+
+        today = pd.Timestamp(datetime.now().date())
+        # Filtruojame knygas, kurios dar negrąžintos
+        filtered_history = self.reading_history_df[self.reading_history_df['knygos_grazinimo_data'] >= today]
+
+        for index, row in filtered_history.iterrows():
+            reader_info = self.readers_df[self.readers_df['skaitytojo_kortele'] == row['skaitytojo_kortele']].iloc[0]
+            tree.insert("", "end", values=(
+                row['knygos_pavadinimas'],
+                self.books_df[self.books_df['knygos_pavadinimas'] == row['knygos_pavadinimas']]['autorius'].values[0],
+                f"{reader_info['vardas']} {reader_info['pavarde']}",
+                row['knygos_paemimo_data'],
+                row['knygos_grazinimo_data']
+            ))
+
+    def filter_return_books(self, search_entry, window):
+        search_term = search_entry.get().title()
+        filtered_history = self.reading_history_df[
+            (self.reading_history_df['knygos_pavadinimas'].str.contains(search_term, case=False, na=False)) |
+            (self.reading_history_df['knygos_grazinimo_data'].astype(str).str.contains(search_term, case=False, na=False))
+        ]
+
+        tree = window.children['!frame'].children['!treeview']
+        for item in tree.get_children():
+            tree.delete(item)
+
+        for index, row in filtered_history.iterrows():
+            reader_info = self.readers_df[self.readers_df['skaitytojo_kortele'] == row['skaitytojo_kortele']].iloc[0]
+            tree.insert("", "end", values=(
+                row['knygos_pavadinimas'],
+                self.books_df[self.books_df['knygos_pavadinimas'] == row['knygos_pavadinimas']]['autorius'].values[0],
+                f"{reader_info['vardas']} {reader_info['pavarde']}",
+                row['knygos_paemimo_data'],
+                row['knygos_grazinimo_data']
+            ))
+    
+    def mark_book_returned(self, event):
+        selected_item = event.widget.selection()[0]
+        selected_book = event.widget.item(selected_item, "values")
+        knygos_pavadinimas = selected_book[0]
+        skaitytojas = selected_book[2]
+
+        # Randame skaitytojo kortelės numerį
+        reader_card_number = self.readers_df[
+            (self.readers_df['vardas'] + ' ' + self.readers_df['pavarde'] == skaitytojas)
+        ]['skaitytojo_kortele'].values[0]
+
+        # Patvirtinimo dialogas
+        confirm = messagebox.askyesno("Grąžinti Knygą", f"Ar tikrai norite pažymėti knygą '{knygos_pavadinimas}' kaip grąžintą?")
+        if not confirm:
+            return
+
+        # Atnaujiname skaitymo istoriją
+        today = datetime.now().strftime('%Y-%m-%d')
+        mask = (self.reading_history_df['knygos_pavadinimas'] == knygos_pavadinimas) & \
+            (self.reading_history_df['skaitytojo_kortele'] == reader_card_number)
+
+        self.reading_history_df.loc[mask, 'faktine_grazinimo_data'] = today
+        self.reading_history_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv", index=False, encoding='utf-8')
+
+        # Atnaujiname knygos statusą į „laisva“
+        self.books_df.loc[self.books_df['knygos_pavadinimas'] == knygos_pavadinimas, 'statusas'] = 'laisva'
+        self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
+
+        messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' sėkmingai pažymėta kaip grąžinta.")
+        
+        # Atnaujiname grąžinimo sąrašą
+        self.populate_return_books(event.widget)
 
     
     def search_for_book(self):
