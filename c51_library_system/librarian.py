@@ -24,7 +24,7 @@ class Librarian:
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
-        self.show_menu()  # Pirmiausia rodomas meniu
+        self.show_menu()  
 
     def clear_window(self):
         for widget in self.root.winfo_children():
@@ -153,21 +153,52 @@ class Librarian:
         return books_df['knygos_pavadinimas'].tolist()
 
     def lend_books(self):
-        books_df = self.books_instance.load_books()
+        books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
+        readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+        reading_history_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv")
 
-        filtered_books_df = books_df[books_df['statusas'] != 'laisva']
+        merged_df = pd.merge(reading_history_df, readers_df[['skaitytojo_kortele', 'vardas', 'pavarde']], on='skaitytojo_kortele', how='left')
+        final_df = pd.merge(merged_df, books_df[['knygos_pavadinimas', 'autorius']], on='knygos_pavadinimas', how='left')
 
-        self.root = tk.Tk()
-        self.root.title("Knygų sąrašas")
-        
-        for idx, row in filtered_books_df.iterrows():
-            book_title = row['knygos_pavadinimas']
-            status = row['statusas']
-            
-            button = tk.Button(self.root, text=f"{book_title} - {status}", command=lambda b=book_title: self.open_book_profile(b))
-            button.pack(pady=5)
-        
-        self.root.mainloop()
+        filtered_books_df = final_df[final_df['knygos_pavadinimas'].isin(books_df[books_df['statusas'] != 'laisva']['knygos_pavadinimas'])]
+
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Paimtų knygų sąrašas")
+
+        tree = ttk.Treeview(new_window, columns=("Vardas", "Pavardė", "Skaitytojo Kortelė", "Autorius", "Knygos Pavadinimas", "Paėmimo Data", "Grąžinimo Data"), show="headings")
+
+        tree.heading("Vardas", text="Vardas")
+        tree.heading("Pavardė", text="Pavardė")
+        tree.heading("Skaitytojo Kortelė", text="Skaitytojo Kortelė")
+        tree.heading("Autorius", text="Autorius")
+        tree.heading("Knygos Pavadinimas", text="Knygos Pavadinimas")
+        tree.heading("Paėmimo Data", text="Paėmimo Data")
+        tree.heading("Grąžinimo Data", text="Grąžinimo Data")
+
+        tree.column("Vardas", width=100)
+        tree.column("Pavardė", width=100)
+        tree.column("Skaitytojo Kortelė", width=120)
+        tree.column("Autorius", width=150)
+        tree.column("Knygos Pavadinimas", width=200)
+        tree.column("Paėmimo Data", width=120)
+        tree.column("Grąžinimo Data", width=120)
+
+        for index, row in filtered_books_df.iterrows():
+            tree.insert("", tk.END, values=(
+                row["vardas"], 
+                row["pavarde"], 
+                row["skaitytojo_kortele"], 
+                row["autorius"], 
+                row["knygos_pavadinimas"], 
+                row["knygos_paemimo_data"], 
+                row["knygos_grazinimo_data"]
+            ))
+
+        tree.pack(fill=tk.BOTH, expand=True)
+
+        new_window.mainloop()
+
+
 
     def open_book_profile(self, book_title):
         self.books_instance.open_book_profile(None)
@@ -208,7 +239,7 @@ class Librarian:
         telefonas_entry.pack(pady=5)
 
         tk.Label(profile_window, text="Priskirti knygą:").pack(pady=5)
-        book_list = self.get_books_list()  # Gauti knygų sąrašą
+        book_list = self.get_books_list()  
         book_combobox = ttk.Combobox(profile_window, values=book_list)
         book_combobox.pack(pady=5)
 

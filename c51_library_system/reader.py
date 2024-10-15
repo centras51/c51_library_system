@@ -10,7 +10,7 @@ class Reader:
         self.root = root
         self.username = None
         self.password = None
-        self.reader_card_number = reader_card_number  # Skaitytojo kortelės numeris
+        self.reader_card_number = reader_card_number 
         self.books_instance = Books(self.root, is_reader=True)
         self.button_width = 30  
         self.button_height = 3 
@@ -30,7 +30,6 @@ class Reader:
         for widget in self.root.winfo_children():
             widget.destroy()
         
-        # Recreate the canvas after clearing the window
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
@@ -41,7 +40,6 @@ class Reader:
 
         self.canvas.create_text(250, 50, text=f"Skaitytojas: , Tel: , El. paštas: ", font=("Arial", 15, "bold"), fill="yellow", anchor="nw")
         
-        # Patikrinti dėl vėluojamų knygų, naudojant Books klasę
         if self.books_instance.check_late_books(self.reader_card_number):
             messagebox.showwarning("Įspėjimas", "Turite vėluojančių knygų! Prašome jas kuo greičiau grąžinti.")
 
@@ -59,7 +57,6 @@ class Reader:
         history_window = tk.Toplevel(self.root)
         history_window.title("Jūsų skaitymo ir rezervacijų istorija")
 
-        # Sukuriame sąrašą knygų istorijai
         tk.Label(history_window, text="Skaitymo ir rezervacijų istorija:", font=("Arial", 15)).pack(pady=10)
 
         for book in history:

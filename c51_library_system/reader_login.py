@@ -13,22 +13,18 @@ class ReaderLogin:
         self.entry_font = ("Arial", 18)  
         self.reader = None  
 
-        # Įkeliamas paveikslėlis ir nustatomas jo fiksuotas dydis 1400x800
         self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
         self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 
-        # Sukuriame Canvas ir nustatome paveikslėlį kaip foną
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
         self.canvas.pack(fill="both", expand=True)
 
-        # Nustatome paveikslėlį kaip fono paveikslėlį
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
     def reader_login_screen(self, back_function):
         self.clear_window()
 
-        # Sukuriame naują „Canvas“ po lango išvalymo
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
@@ -43,7 +39,6 @@ class ReaderLogin:
         self.password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
         self.canvas.create_window(700, 350, window=self.password_entry)
 
-        # Mygtukų su hover efektais pridėjimas
         self.add_button("Prisijungti", 500, self.verify_reader)
         self.add_button("Atgal", 650, back_function)
         self.add_button("Išeiti iš sistemos", 800, self.root.quit)
@@ -53,10 +48,8 @@ class ReaderLogin:
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
                            bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
 
-        # Įdedame mygtuką į drobę (canvas)
         self.canvas.create_window(700, y_position, window=button)
 
-        # Pridedame "hover" efektus
         button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
         button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
 
@@ -64,13 +57,10 @@ class ReaderLogin:
         username = self.username_entry.get()
         password = self.password_entry.get()
 
-        # Patikriname prisijungimo duomenis
         if self.username_password_verification(username, password):
-            # Jei prisijungimo duomenys teisingi, gauname skaitytojo kortelės numerį
             reader_card_number = self.get_reader_card_number(username)
 
             if reader_card_number:
-                # Sukuriame skaitytojo objektą ir perduodame kortelės numerį
                 self.reader = Reader(self.root, reader_card_number)
             else:
                 messagebox.showerror("Klaida", "Skaitytojo kortelės numeris nerastas.")
@@ -80,11 +70,10 @@ class ReaderLogin:
     def get_reader_card_number(self, username):
         """Ieško skaitytojo kortelės numerio pagal vartotojo vardą."""
         try:
-            # Nuskaitome skaitytojų duomenis iš CSV failo
             readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-            reader_info = readers_df[readers_df['username'] == username]  # Filtruojame pagal username
+            reader_info = readers_df[readers_df['username'] == username]  
             if not reader_info.empty:
-                return reader_info['skaitytojo_kortele'].values[0]  # Grąžiname skaitytojo kortelės numerį
+                return reader_info['skaitytojo_kortele'].values[0]  
             else:
                 return None
         except FileNotFoundError:

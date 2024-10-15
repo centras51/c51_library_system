@@ -12,12 +12,10 @@ class LibrarianLogin:
         self.entry_width = 30  
         self.entry_font = ("Arial", 18)
 
-        # Įkeliamas paveikslėlis ir nustatomas jo fiksuotas dydis 1400x800
         self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
         self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 
-        # Sukuriame Canvas ir nustatome paveikslėlį kaip foną
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
@@ -27,7 +25,7 @@ class LibrarianLogin:
             usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
             user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
             if not user_info.empty and user_info['password'].values[0] == password:
-                return user_info[['vardas', 'pavarde', 'telefonas', 'email']].values[0]  # Grąžina bibliotekininko informaciją
+                return user_info[['vardas', 'pavarde', 'telefonas', 'email']].values[0] # Grąžina bibliotekininko informaciją
             return None
         except FileNotFoundError:
             messagebox.showerror("Klaida", "Duomenų bazė nerasta")
@@ -36,7 +34,6 @@ class LibrarianLogin:
     def librarian_login_screen(self, back_function):
         self.clear_window()
 
-        # Sukuriame naują „Canvas“ po lango išvalymo
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
@@ -56,16 +53,15 @@ class LibrarianLogin:
             password = self.password_entry.get()
 
             librarian_info = self.username_password_verification(username, password)
-            if librarian_info is not None and librarian_info.size > 0:  # Pataisyta klaida
+            if librarian_info is not None and librarian_info.size > 0:  
                 self.clear_window()  
-                librarian = Librarian(self.root, librarian_info)  # Perduodame prisijungimo duomenis į Librarian klasę
-                librarian.show_menu()  # Rodyti bibliotekininko meniu
+                librarian = Librarian(self.root, librarian_info)  
+                librarian.show_menu()  
             else:
                 messagebox.showerror("Prisijungimas nepavyko", f"Neteisingas vartotojo {username} vardas arba slaptažodis.")
 
-        # Mygtukų su hover efektais pridėjimas
         self.add_button("Prisijungti", 500, verify_librarian)
-        self.add_button("Atgal", 650, back_function)  # „Atgal“ funkcija grąžina į pirmą langą
+        self.add_button("Atgal", 650, back_function)  
         self.add_button("Išeiti iš sistemos", 800, self.root.quit)
 
     def add_button(self, text, y_position, command):
@@ -73,10 +69,8 @@ class LibrarianLogin:
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
                            bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
 
-        # Įdedame mygtuką į drobę (canvas)
         self.canvas.create_window(700, y_position, window=button)
 
-        # Pridedame "hover" efektus
         button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
         button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
 
