@@ -44,9 +44,9 @@ class ReaderLogin:
         self.canvas.create_window(700, 350, window=self.password_entry)
 
         # Mygtukų su hover efektais pridėjimas
-        self.add_button("Prisijungti", 400, self.verify_reader)
-        self.add_button("Atgal", 500, back_function)
-        self.add_button("Išeiti iš sistemos", 600, self.root.quit)
+        self.add_button("Prisijungti", 500, self.verify_reader)
+        self.add_button("Atgal", 650, back_function)
+        self.add_button("Išeiti iš sistemos", 800, self.root.quit)
 
     def add_button(self, text, y_position, command):
         """Sukurti mygtuką su efektais"""
@@ -60,9 +60,41 @@ class ReaderLogin:
         button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
         button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
 
-    def username_password_verification(self, username, password):
+    def verify_reader(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+
+        # Patikriname prisijungimo duomenis
+        if self.username_password_verification(username, password):
+            # Jei prisijungimo duomenys teisingi, gauname skaitytojo kortelės numerį
+            reader_card_number = self.get_reader_card_number(username)
+
+            if reader_card_number:
+                # Sukuriame skaitytojo objektą ir perduodame kortelės numerį
+                self.reader = Reader(self.root, reader_card_number)
+            else:
+                messagebox.showerror("Klaida", "Skaitytojo kortelės numeris nerastas.")
+        else:
+            messagebox.showerror("Klaida", "Neteisingas vartotojo vardas arba slaptažodis.")
+
+    def get_reader_card_number(self, username):
+        """Ieško skaitytojo kortelės numerio pagal vartotojo vardą."""
         try:
-            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\passwords_db.csv")
+            # Nuskaitome skaitytojų duomenis iš CSV failo
+            readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+            reader_info = readers_df[readers_df['username'] == username]  # Filtruojame pagal username
+            if not reader_info.empty:
+                return reader_info['skaitytojo_kortele'].values[0]  # Grąžiname skaitytojo kortelės numerį
+            else:
+                return None
+        except FileNotFoundError:
+            messagebox.showerror("Klaida", "Skaitytojų duomenų bazės failas nerastas.")
+            return None
+
+    def username_password_verification(self, username, password):
+        """Patikriname vartotojo vardą ir slaptažodį."""
+        try:
+            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
             user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
             if not user_info.empty:
                 return user_info['password'].values[0] == password
@@ -70,17 +102,6 @@ class ReaderLogin:
         except FileNotFoundError:
             messagebox.showerror("Klaida", "Nepavyksta patikrinti slaptažodžio")
             return False
-
-    def verify_reader(self):
-        username = self.username_entry.get()
-        password = self.password_entry.get()
-
-        if self.username_password_verification(username, password):
-            messagebox.showinfo("Sėkmingai prisijungėte", f"Sveiki atvykę, {username.capitalize()}!")
-            self.reader = Reader(self.root)  
-            self.reader.show_menu()
-        else:
-            messagebox.showerror("Prisijungimas nepavyko", f"Neteisingas vartotojo {username} vardas arba slaptažodis.")
 
     def clear_window(self):
         for widget in self.root.winfo_children():

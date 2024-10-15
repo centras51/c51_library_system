@@ -37,7 +37,7 @@ class Librarian:
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
-        self.canvas.create_text(250, 50, text=f"Bibliotekininkas: {self.librarian_info[0]} {self.librarian_info[1]}, Tel: {self.librarian_info[2]}, El. paštas: {self.librarian_info[3]}", font=("Arial", 15, "bold"), fill="white", anchor="nw")
+        self.canvas.create_text(250, 50, text=f"Bibliotekininkas: {self.librarian_info[0]} {self.librarian_info[1]}, Tel: {self.librarian_info[2]}, El. paštas: {self.librarian_info[3]}", font=("Arial", 15, "bold"), fill="yellow", anchor="nw")
 
         self.add_button("Peržiūrėti knygas", 250, 200, self.books_instance.show_books)  
         self.add_button("Pridėti knygą", 250, 350, self.books_instance.add_book)  

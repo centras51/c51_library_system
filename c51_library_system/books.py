@@ -188,67 +188,121 @@ class Books:
         new_window = tk.Toplevel(self.root)
         new_window.title(f"Knygos profilis: {selected_book[0]}")
 
-        self.create_profile_field(new_window, "Pavadinimas:", selected_book[0], 100)
-        self.create_profile_field(new_window, "Autorius:", selected_book[1], 150)
-        self.create_profile_field(new_window, "Metai:", selected_book[2], 200)
-        self.create_profile_field(new_window, "Žanras:", selected_book[4], 250)
-        self.create_profile_field(new_window, "ISBN:", selected_book[3], 300)
-        self.create_profile_field(new_window, "Pastabos:", selected_book[5], 350)
-        self.create_profile_field(new_window, "Statusas:", selected_book[6], 400)
+        # Bibliotekininkui leidžiame redaguoti laukelius
+        is_readonly = self.is_reader or self.is_anonymous  # Tik skaitytojas arba anonimas negali redaguoti
 
-        # Pridedame informaciją apie dabartinį skaitytoją
+        # Sukuriame redaguojamus laukelius bibliotekininkui
+        self.create_profile_field(new_window, "Pavadinimas:", selected_book[0], 100, is_readonly=is_readonly)
+        self.create_profile_field(new_window, "Autorius:", selected_book[1], 150, is_readonly=is_readonly)
+        self.create_profile_field(new_window, "Metai:", selected_book[2], 200, is_readonly=is_readonly)
+        self.create_profile_field(new_window, "ISBN:", selected_book[3], 250, is_readonly=is_readonly)
+        self.create_profile_field(new_window, "Žanras:", selected_book[4], 300, is_readonly=is_readonly)
+        self.create_profile_field(new_window, "Pastabos:", selected_book[5], 350, is_readonly=is_readonly)
+
+        # Knygos statusas
+        knygos_statusas = selected_book[6]
+        tk.Label(new_window, text=f"Statusas: {knygos_statusas}", font=("Arial", 15)).place(x=100, y=400)
+
+        # Jei knyga rezervuota, parodykite, kas rezervavo
+        if "Rezervuota" in knygos_statusas:
+            rezervavo = knygos_statusas.split(" ")[1]  # Ištraukiame skaitytojo kortelės numerį
+            tk.Label(new_window, text=f"Rezervavo skaitytojas: {rezervavo}", font=("Arial", 15)).place(x=700, y=400)
+
+        # Jei knyga užimta, parodykite, kas skaito šiuo metu
         current_reader = self.get_current_reader(selected_book[0])
         if current_reader is not None:
             reader_info = f"{current_reader['vardas']} {current_reader['pavarde']}"
-            tk.Label(new_window, text="Skaito dabar:", font=("Arial", 15)).place(x=100, y=450)
-            tk.Label(new_window, text=reader_info, font=("Arial", 15)).place(x=250, y=450)
-            # Pridedame mygtuką 'Grąžinti knygą' tik jei vartotojas nėra anonimas
-            if not self.is_anonymous:
-                self.add_button(new_window, "Grąžinti knygą", 500, lambda: self.return_book(selected_book[0], new_window))
-        else:
-            tk.Label(new_window, text="Niekas šiuo metu neskolinasi šios knygos", font=("Arial", 15)).place(x=250, y=450)
-            # Tik jei knygos statusas yra 'laisva', leidžiame priskirti skaitytoją
-            if selected_book[6].title().startswith('laisva') and not self.is_anonymous:
-                # Priskirti skaitytoją
-                tk.Label(new_window, text="Priskirti skaitytoją:", font=("Arial", 15)).place(x=100, y=480)
-                reader_names = self.readers_df['vardas'] + ' ' + self.readers_df['pavarde']
-                selected_reader = tk.StringVar(new_window)
-                selected_reader.set(reader_names.iloc[0])
-                reader_menu = tk.OptionMenu(new_window, selected_reader, *reader_names)
-                reader_menu.place(x=250, y=480)
-                # Pridedame mygtuką priskirti knygą
-                self.add_button(new_window, "Priskirti knygą", 520, lambda: self.assign_book_to_reader(
-                    selected_book[0],
-                    self.readers_df[self.readers_df['vardas'] + ' ' + self.readers_df['pavarde'] == selected_reader.get()]['skaitytojo_kortele'].values[0],
-                    new_window
-                ))
+            tk.Label(new_window, text=f"Skaito dabar: {reader_info}", font=("Arial", 15)).place(x=700, y=400)
+
+        # Pridedame mygtukus priklausomai nuo vartotojo tipo
+        if not self.is_anonymous:  # Tik skaitytojas arba bibliotekininkas
+            if self.is_reader:
+                self.add_button(new_window, "Rezervuoti knygą", 600, lambda: self.reserve_book(selected_book[0]))
             else:
-                tk.Label(new_window, text="Knyga užimta, negalima priskirti naujo skaitytojo.", font=("Arial", 15), fg="red").place(x=250, y=480)
+                self.add_button(new_window, "Priskirti knygą skaitytojui", 450, lambda: self.assign_book_to_reader_ui(selected_book[0], new_window))
+                self.add_button(new_window, "Rezervuoti knygą", 530, lambda: self.reserve_book(selected_book[0]))
+                self.add_button(new_window, "Išsaugoti pakeitimus", 610, self.save_book_edits)
+                self.add_button(new_window, "Ištrinti knygą", 690, lambda: self.confirm_delete_from_profile(selected_book[0], selected_book[3], new_window))
 
-        # Mygtukai
-        if not self.is_anonymous or self.is_reader:
-            self.add_button(new_window, "Išsaugoti pakeitimus", 570, self.save_book_edits)
-        self.add_button(new_window, "Uždaryti", 620, new_window.destroy)
 
-    def create_profile_field(self, window, label_text, value, y_position):
+    def reserve_book(self, knygos_pavadinimas):
+        today = datetime.now()
+        reservation_end = today + pd.Timedelta(hours=4)
+
+        # Patikriname, ar knyga yra laisva
+        if self.get_current_reader(knygos_pavadinimas) is not None:
+            messagebox.showerror("Klaida", "Ši knyga jau rezervuota arba užimta.")
+            return
+
+        # Atnaujiname knygos statusą į „Rezervuota {reader_card_number} iki {data}“
+        reservation_status = f"Rezervuota {self.reader_card_number} iki {reservation_end.strftime('%Y-%m-%d %H:%M')}"
+        self.books_df.loc[self.books_df['knygos_pavadinimas'] == knygos_pavadinimas.strip().title(), 'statusas'] = reservation_status
+        self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
+
+        messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' rezervuota iki {reservation_end.strftime('%Y-%m-%d %H:%M')}.")
+
+        
+        # Atnaujiname knygos profilį
+        window.destroy()
+        self.open_book_profile(None)
+
+    def check_late_books(self, reader_card_number):
+        """Patikrina, ar skaitytojas turi vėluojamų knygų."""
+        # Konvertuojame 'knygos_grazinimo_data' į datetime formatą
+        self.reading_history_df['knygos_grazinimo_data'] = pd.to_datetime(self.reading_history_df['knygos_grazinimo_data'], errors='coerce')
+
+        today = pd.Timestamp(datetime.now().date())
+
+        # Filtruojame vėluojančias knygas
+        late_books = self.reading_history_df[
+            (self.reading_history_df['skaitytojo_kortele'] == reader_card_number) &
+            (self.reading_history_df['knygos_grazinimo_data'] < today) &
+            (self.reading_history_df['knygos_grazinimo_data'].notna())
+        ]
+
+        return not late_books.empty
+
+    def get_reader_history(self, reader_card_number):
+        """Grąžina skaitytojo skaitymo ir rezervacijų istoriją."""
+        history = self.reading_history_df[self.reading_history_df['skaitytojo_kortele'] == reader_card_number]
+
+        # Visos skaitytos knygos
+        books_read = history['knygos_pavadinimas'].tolist()
+
+        # Patikriname, ar „statusas“ stulpelyje yra rezervuota pagal kortelės numerį
+        reserved_books = self.books_df[
+            self.books_df['statusas'].str.contains(f"Rezervuota {reader_card_number}", na=False)
+            ]['knygos_pavadinimas'].tolist()
+
+        return books_read + reserved_books
+
+    def create_profile_field(self, window, label_text, value, y_position, is_readonly=False):
         label = tk.Label(window, text=label_text, font=("Arial", 15))
         label.place(x=100, y=y_position)
         entry = tk.Entry(window, font=("Arial", 15), width=40)
         entry.place(x=250, y=y_position)
         entry.insert(0, value)
-        # Sukuriame tinkamą atributų pavadinimą be specialiųjų simbolių
+        
+        # Jei naudotojas yra skaitytojas, įvesties laukas yra tik skaitymui
+        if is_readonly:
+            entry.config(state='readonly')
+        
         attribute_name = re.sub(r'\W+', '', label_text).title() + '_entry'
         setattr(self, attribute_name, entry)
+
 
     def add_button(self, window, text, y_position, command):
         button = tk.Button(window, text=text, font=("Arial", 15), width=20, height=2,
                            bg="lightblue", fg="black", activebackground="darkblue",
                            activeforeground="white", command=command)
         button.place(x=250, y=y_position)
+        
+        button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
+        button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
 
     def save_book_edits(self):
         # Gaukite atnaujintas reikšmes iš įvesties laukų
-        pavadinimas = self.pavadinimas_entry.get()
+        knygos_pavadinimas = self.knygos_pavadinimas_entry.get()
         autorius = self.autorius_entry.get()
         metai = self.metai_entry.get()
         zanras = self.zanras_entry.get()
@@ -258,42 +312,65 @@ class Books:
 
         # Atnaujinkite `books_df` su naujomis reikšmėmis
         self.books_df.loc[self.books_df['ISBN'] == isbn, ['knygos_pavadinimas', 'autorius', 'metai', 'zanras', 'pastabos', 'statusas']] = [
-            pavadinimas.strip().title(), autorius, metai, zanras, pastabos, statusas
+            knygos_pavadinimas.strip().title(), autorius, metai, zanras, pastabos, statusas
         ]
 
         # Išsaugokite atnaujintą `books_df` į CSV failą
         self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
 
-        messagebox.showinfo("Sėkmė", f"Knygos '{pavadinimas}' duomenys buvo sėkmingai atnaujinti.")
+        messagebox.showinfo("Sėkmė", f"Knygos '{knygos_pavadinimas}' duomenys buvo sėkmingai atnaujinti.")
+
+    def assign_book_to_reader_ui(self, knygos_pavadinimas, window):
+        """Sukurti UI, kuris leidžia bibliotekininkui priskirti knygą skaitytojui."""
+        assign_window = tk.Toplevel(self.root)
+        assign_window.title(f"Priskirti knygą: {knygos_pavadinimas}")
+
+        # Pridedame skaitytojo pasirinkimo laukelį (dropdown menu)
+        tk.Label(assign_window, text="Pasirinkite skaitytoją:", font=("Arial", 15)).place(x=100, y=50)
+
+        reader_names = self.readers_df['vardas'] + ' ' + self.readers_df['pavarde']
+        selected_reader = tk.StringVar(assign_window)
+        selected_reader.set(reader_names.iloc[0])
+
+        reader_menu = tk.OptionMenu(assign_window, selected_reader, *reader_names)
+        reader_menu.place(x=250, y=50)
+
+        # Priskirti mygtukas
+        self.add_button(assign_window, "Priskirti knygą", 150, lambda: self.assign_book_to_reader(
+            knygos_pavadinimas,
+            self.readers_df[self.readers_df['vardas'] + ' ' + self.readers_df['pavarde'] == selected_reader.get()]['skaitytojo_kortele'].values[0],
+            window
+        ))
 
     def assign_book_to_reader(self, knygos_pavadinimas, skaitytojo_kortele, window):
-        # Patikriname, ar knyga nėra jau priskirta
+        """Priskiria knygą skaitytojui."""
         if self.get_current_reader(knygos_pavadinimas) is not None:
-            messagebox.showerror("Klaida", "Ši knyga jau yra priskirta kitam skaitytojui.")
+            messagebox.showerror("Klaida", "Ši knyga jau priskirta kitam skaitytojui.")
             return
 
-        # Nustatome planuojamą grąžinimo datą (pvz., po 30 dienų)
+        # Priskiriame knygą skaitytojui ir atnaujiname statusą
         planuojama_grazinimo_data = datetime.now() + pd.Timedelta(days=30)
 
-        # Pridedame naują įrašą į skaitymo istoriją
         new_entry = {
             'skaitytojo_kortele': skaitytojo_kortele,
             'knygos_pavadinimas': knygos_pavadinimas.strip().title(),
             'knygos_paemimo_data': datetime.now().strftime('%Y-%m-%d'),
             'knygos_grazinimo_data': planuojama_grazinimo_data.strftime('%Y-%m-%d')
         }
+
         self.reading_history_df = pd.concat([self.reading_history_df, pd.DataFrame([new_entry])], ignore_index=True)
-        # Išsaugome atnaujintą skaitymo istoriją
         self.reading_history_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv", index=False, encoding='utf-8')
 
-        # Atnaujiname knygos 'statusas' lauką į 'užimta iki {data}'
-        statusas_naujas = f"užimta iki {planuojama_grazinimo_data.strftime('%Y-%m-%d')}"
+        statusas_naujas = f"Užimta iki {planuojama_grazinimo_data.strftime('%Y-%m-%d')}"
         self.books_df.loc[self.books_df['knygos_pavadinimas'] == knygos_pavadinimas.strip().title(), 'statusas'] = statusas_naujas
-        # Išsaugome knygų duomenų bazę
         self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
 
         messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' priskirta skaitytojui iki {planuojama_grazinimo_data.strftime('%Y-%m-%d')}.")
 
+        # Atnaujiname knygos profilį
+        window.destroy()
+        self.open_book_profile(None)
+        
         # Atnaujiname knygos profilį
         window.destroy()
         self.open_book_profile(None)
@@ -329,7 +406,7 @@ class Books:
         new_window = tk.Toplevel(self.root)
         new_window.title("Pridėti naują knygą")
 
-        self.create_profile_field(new_window, "Pavadinimas:", "", 100)
+        self.create_profile_field(new_window, "knygos_pavadinimas:", "", 100)
         self.create_profile_field(new_window, "Autorius:", "", 150)
         self.create_profile_field(new_window, "Metai:", "", 200)
         self.create_profile_field(new_window, "Žanras:", "", 250)
@@ -341,13 +418,13 @@ class Books:
 
     def submit_book(self, window):
         new_book = {
-            'knygos_pavadinimas': self.pavadinimas_entry.get().strip().title(),
-            'autorius': self.autorius_entry.get(),
-            'metai': self.metai_entry.get(),
-            'zanras': self.zanras_entry.get(),
-            'ISBN': self.isbn_entry.get(),
-            'pastabos': self.pastabos_entry.get(),
-            'statusas': self.statusas_entry.get()
+            'knygos_pavadinimas': self.Pavadinimas_entry.get().strip().title(),
+            'autorius': self.Autorius_entry.get(),
+            'metai': self.Metai_entry.get(),
+            'zanras': self.Zanras_entry.get(),
+            'ISBN': self.Isbn_entry.get(),
+            'pastabos': self.Pastabos_entry.get(),
+            'statusas': self.Statusas_entry.get()
         }
 
         try:
@@ -410,7 +487,7 @@ class Books:
         self.add_button(new_window, "Rasti knygą", 150, lambda: self.show_book_before_delete(new_window))
 
     def show_book_before_delete(self, window):
-        isbn = self.iveskiteisbn_entry.get()
+        isbn = self.isbn_entry.get()
 
         try:
             books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
@@ -528,6 +605,51 @@ class Books:
                 row['istrynimo_priezastis']
             ))
 
+    def confirm_delete_from_profile(self, knygos_pavadinimas, isbn, window):
+        confirm_window = tk.Toplevel(self.root)
+        confirm_window.title(f"Ištrinti knygą: {knygos_pavadinimas}?")
+
+        # Rodome knygos informaciją ir prašome ištrynimo priežasties
+        tk.Label(confirm_window, text=f"Ar tikrai norite ištrinti knygą '{knygos_pavadinimas}'?", font=("Arial", 12)).pack(pady=10)
+        tk.Label(confirm_window, text="Ištrynimo priežastis:", font=("Arial", 12)).pack(pady=5)
+        deletion_reason_entry = tk.Entry(confirm_window, width=50)
+        deletion_reason_entry.pack(pady=5)
+
+        # Patvirtinimo ir atšaukimo mygtukai
+        tk.Button(confirm_window, text="Patvirtinti trynimą", command=lambda: self.confirm_delete_from_profile_action(
+            knygos_pavadinimas, isbn, deletion_reason_entry.get(), window, confirm_window)).pack(pady=10)
+        tk.Button(confirm_window, text="Atšaukti", command=confirm_window.destroy).pack(pady=10)
+
+    def confirm_delete_from_profile_action(self, knygos_pavadinimas, isbn, deletion_reason, window, confirm_window):
+        if not deletion_reason.strip():
+            messagebox.showerror("Klaida", "Įveskite ištrynimo priežastį.")
+            return
+
+        try:
+            books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
+            book_data = books_df.loc[books_df['ISBN'] == isbn].iloc[0]
+            books_df_filtered = books_df[books_df['ISBN'] != isbn]
+
+            # Ištriname knygą iš pagrindinės duomenų bazės
+            books_df_filtered.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding="UTF-8")
+
+            # Perkeliame į removed_books_db.csv
+            book_data['istrynimo_data'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            book_data['istrynimo_priezastis'] = deletion_reason
+            try:
+                removed_books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\removed_books_db.csv")
+            except FileNotFoundError:
+                removed_books_df = pd.DataFrame(columns=['autorius', 'knygos_pavadinimas', 'metai', 'ISBN', 'zanras', 'pastabos', 'istrynimo_data', 'istrynimo_priezastis'])
+            removed_books_df = pd.concat([removed_books_df, pd.DataFrame([book_data])], ignore_index=True)
+            removed_books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\removed_books_db.csv", index=False, encoding="UTF-8")
+
+            messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' su ISBN {isbn} sėkmingai ištrinta.")
+            confirm_window.destroy()
+            window.destroy()  # Uždaryti profilį po ištrynimo
+        except FileNotFoundError:
+            messagebox.showerror("Klaida", "Knygos duomenų bazė nerasta.")
+
+    
     def search_for_book(self):
         new_window = tk.Toplevel(self.root)
         new_window.title("Paieška")
