@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53402eac-647a-48e5-b858-658b638a7b94" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/c51_library_system/anonymous.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/anonymous.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c51_library_system/books.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/books.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c51_library_system/librarian.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/librarian.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c51_library_system/readerregistration.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/readerregistration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c51_library_system/librarian_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/librarian_login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c51_library_system/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c51_library_system/reader_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/reader_login.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

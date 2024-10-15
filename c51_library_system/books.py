@@ -21,7 +21,6 @@ class Books:
             if not required_columns.issubset(df.columns):
                 messagebox.showerror("Klaida", "Trūksta būtinų stulpelių knygų duomenų bazėje.")
                 return pd.DataFrame()
-            # Normalizuojame knygos pavadinimus
             df['knygos_pavadinimas'] = df['knygos_pavadinimas'].str.strip().str.title()
             return df
         except FileNotFoundError:

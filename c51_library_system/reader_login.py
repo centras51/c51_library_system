@@ -33,13 +33,13 @@ class ReaderLogin:
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
-        self.canvas.create_text(700, 100, text="Skaitytojo prisijungimas", font=("Arial", 30, "bold"), fill="black")
+        self.canvas.create_text(700, 100, text="Skaitytojo prisijungimas", font=("Arial", 30, "bold"), fill="white")
 
-        self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20, "bold"), fill="black")
+        self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20, "bold"), fill="white")
         self.username_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
         self.canvas.create_window(700, 250, window=self.username_entry)
 
-        self.canvas.create_text(700, 300, text="Slaptažodis", font=("Arial", 20, "bold"), fill="black")
+        self.canvas.create_text(700, 300, text="Slaptažodis", font=("Arial", 20, "bold"), fill="white")
         self.password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
         self.canvas.create_window(700, 350, window=self.password_entry)
 
