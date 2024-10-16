@@ -474,4 +474,4 @@ class Librarian:
             tree.insert("", "end", values=(row['vardas'], row['pavarde'], row['email'], row['telefonas'], row['username']))
             
     def show_removed_readers(self):
-        """"Dar nesukurta"""
+        messagebox.showwarning("Apribota paslauga", "Šiuo metu neįmanoma pažiūrėti pašalintų skaitytojų")
