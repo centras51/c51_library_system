@@ -6,13 +6,14 @@ import re
 from PIL import Image, ImageTk
 import string
 
+
 class ReaderRegistration:
     def __init__(self, root, is_librarian=False):
         self.root = root
-        self.is_librarian = is_librarian 
+        self.is_librarian = is_librarian
         self.button_width = 30
         self.button_height = 3
-        self.entry_width = 30  
+        self.entry_width = 30
         self.entry_font = ("Arial", 18)
 
         self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
@@ -22,12 +23,10 @@ class ReaderRegistration:
         self.canvas = None
 
     def clear_window(self):
-        """Išvalyti visus esamus lango valdiklius."""
         for widget in self.root.winfo_children():
             widget.destroy()
 
     def register(self):
-        """Naujo skaitytojo registracijos forma naudojant Tkinter."""
         self.clear_window()
 
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
@@ -65,13 +64,16 @@ class ReaderRegistration:
             self.new_password2_entry = tk.Entry(self.root, font=("Arial", 18), width=30, show='*')
             self.canvas.create_window(700, 450, window=self.new_password2_entry)
 
-        self.register_button = tk.Button(self.canvas, text="Registruoti", font=("Arial", 18), width=28, height=2, command=self.save_reader_datas)
+        self.register_button = tk.Button(self.canvas, text="Registruoti", font=("Arial", 18), width=28, height=2,
+                                         command=self.save_reader_datas)
         self.canvas.create_window(700, 550, window=self.register_button)
 
-        back_button = tk.Button(self.canvas, text="Atgal", font=("Arial", 15), width=16, height=2, command=self.go_back_to_login)
+        back_button = tk.Button(self.canvas, text="Atgal", font=("Arial", 15), width=16, height=2,
+                                command=self.go_back_to_login)
         self.canvas.create_window(600, 700, window=back_button)
 
-        exit_button = tk.Button(self.canvas, text="Išeiti iš sistemos", font=("Arial", 15), width=16, height=2, command=self.root.quit)
+        exit_button = tk.Button(self.canvas, text="Išeiti iš sistemos", font=("Arial", 15), width=16, height=2,
+                                command=self.root.quit)
         self.canvas.create_window(800, 700, window=exit_button)
 
     def is_valid_email(self, reader_email):
@@ -121,7 +123,8 @@ class ReaderRegistration:
             return
 
         if not self.is_valid_phone(reader_phone):
-            messagebox.showerror("Klaida", "Neteisingas telefono numeris. Turėtų prasidėti su '6' ir turėti 8 skaitmenis.")
+            messagebox.showerror("Klaida",
+                                 "Neteisingas telefono numeris. Turėtų prasidėti su '6' ir turėti 8 skaitmenis.")
             return
 
         new_reader_line = {
@@ -138,7 +141,8 @@ class ReaderRegistration:
             reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
             reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
             reader_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv", index=False, encoding='utf-8')
-            messagebox.showinfo("Registracija baigta", f"Skaitytojas {new_reader_line['vardas']} {new_reader_line['pavarde']} sėkmingai užregistruotas!")
+            messagebox.showinfo("Registracija baigta",
+                                f"Skaitytojas {new_reader_line['vardas']} {new_reader_line['pavarde']} sėkmingai užregistruotas!")
         except FileNotFoundError:
             messagebox.showerror("Klaida", "Nepavyko rasti skaitytojų duomenų failo.")
 

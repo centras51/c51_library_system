@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-from books import Books  
-import pandas as pd
 from PIL import Image, ImageTk
+from books import Books
 
 
 class Reader:
@@ -16,7 +15,7 @@ class Reader:
         self.button_height = 3 
 
         self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.LANCZOS)
+        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
@@ -26,7 +25,6 @@ class Reader:
         self.show_menu()
 
     def clear_window(self):
-        """Clear all widgets from the window and recreate the canvas."""
         for widget in self.root.winfo_children():
             widget.destroy()
         
@@ -35,7 +33,6 @@ class Reader:
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
     def show_menu(self):
-        """Reader's menu after successful login."""
         self.clear_window()
 
         self.canvas.create_text(250, 50, text=f"Skaitytojas: , Tel: , El. paštas: ", font=("Arial", 15, "bold"), fill="yellow", anchor="nw")
@@ -51,7 +48,6 @@ class Reader:
         self.add_button("Išeiti iš sistemos", 700, 650, self.root.quit) 
 
     def show_history(self):
-        """Rodo skaitytojo skaitymo ir rezervacijų istoriją."""
         history = self.books_instance.get_reader_history(self.reader_card_number)
 
         history_window = tk.Toplevel(self.root)
@@ -63,7 +59,6 @@ class Reader:
             tk.Label(history_window, text=book, font=("Arial", 12)).pack(pady=5)
 
     def add_button(self, text, x_position, y_position, command):
-        """Sukurti mygtuką ir pridėti jį į `canvas`."""
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
                            bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
 

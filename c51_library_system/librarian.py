@@ -17,9 +17,8 @@ class Librarian:
         self.button_height = 3  
 
         self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.LANCZOS)
+        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
-
         self.canvas = tk.Canvas(self.root, width=1400, height=800)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
@@ -55,7 +54,6 @@ class Librarian:
         self.add_button("Išeiti iš sistemos", 1150, 650, self.root.quit)  
 
     def add_button(self, text, x_position, y_position, command):
-        """Sukurti mygtuką ir pridėti jį į `canvas`."""
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
                            bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
 
@@ -157,13 +155,16 @@ class Librarian:
         readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
         reading_history_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv")
 
+        reading_history_df['knygos_grazinimo_data'] = pd.to_datetime(reading_history_df['knygos_grazinimo_data'], errors='coerce')
+
         merged_df = pd.merge(reading_history_df, readers_df[['skaitytojo_kortele', 'vardas', 'pavarde']], on='skaitytojo_kortele', how='left')
+
         final_df = pd.merge(merged_df, books_df[['knygos_pavadinimas', 'autorius']], on='knygos_pavadinimas', how='left')
 
-        filtered_books_df = final_df[final_df['knygos_pavadinimas'].isin(books_df[books_df['statusas'] != 'laisva']['knygos_pavadinimas'])]
+        filtered_books_df = final_df[(final_df['faktine_grazinimo_data'].isna()) & (final_df['knygos_pavadinimas'].isin(books_df[books_df['statusas'] != 'laisva']['knygos_pavadinimas']))]
 
         new_window = tk.Toplevel(self.root)
-        new_window.title("Paimtų knygų sąrašas")
+        new_window.title("Išduotų į namus knygų sąrašas")
 
         tree = ttk.Treeview(new_window, columns=("Vardas", "Pavardė", "Skaitytojo Kortelė", "Autorius", "Knygos Pavadinimas", "Paėmimo Data", "Grąžinimo Data"), show="headings")
 
@@ -195,8 +196,10 @@ class Librarian:
             ))
 
         tree.pack(fill=tk.BOTH, expand=True)
-
         new_window.mainloop()
+
+
+
 
 
 
@@ -205,13 +208,17 @@ class Librarian:
 
     def update_return_date(self, book_title):
         history_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv",
-                                 usecols=['skaitytojo_kortele', 'knygos_pavadinimas', 'knygos_paemimo_data', 'knygos_grazinimo_data'],
-                                 encoding='utf-8', delimiter=',')
+                                usecols=['skaitytojo_kortele', 'knygos_pavadinimas', 'knygos_paemimo_data', 'knygos_grazinimo_data', 'faktine_grazinimo_data'],
+                                encoding='utf-8', delimiter=',')
 
         current_date = datetime.now().strftime("%Y-%m-%d")
-        history_df.loc[(history_df['knygos_pavadinimas'] == book_title) & (history_df['knygos_grazinimo_data'].isnull()), 'knygos_grazinimo_data'] = current_date
+        
+        history_df.loc[(history_df['knygos_pavadinimas'] == book_title) & (history_df['faktine_grazinimo_data'].isnull()), 'faktine_grazinimo_data'] = current_date
 
         history_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv", index=False, encoding='utf-8')
+
+        messagebox.showinfo("Atnaujinimas", f"Knyga '{book_title}' sėkmingai pažymėta kaip grąžinta.")
+
 
     
     def show_reader_profile(self, reader_data):
@@ -255,11 +262,19 @@ class Librarian:
 
     def show_reading_history(self, parent, reader_card_number):
         reading_history_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv")
+        
         reader_history = reading_history_df[reading_history_df['skaitytojo_kortele'] == reader_card_number]
 
-        for index, row in reader_history.iterrows():
-            tk.Label(parent, text=f"Knyga: {row['knygos_pavadinimas']}, Knygos paėmimo data: {row['knygos_paemimo_data']}, Knygos grąžinimo data: {row['knygos_grazinimo_data']}").pack(pady=2)
+        if reader_history.empty:
+            tk.Label(parent, text="Šis skaitytojas neturi skaitymo istorijos.").pack(pady=2)
+            return
 
+        for index, row in reader_history.iterrows():
+            tk.Label(
+                parent, 
+                text=f"Knyga: {row['knygos_pavadinimas']}, Paėmimo data: {row['knygos_paemimo_data']}, Grąžinimo data: {row['knygos_grazinimo_data']}, Faktinė grąžinimo data: {row.get('faktine_grazinimo_data', 'Nėra')}"
+            ).pack(pady=2)
+            
     def assign_book_to_reader(self, reader_card_number, book_name):
         if book_name:
             readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
@@ -277,7 +292,7 @@ class Librarian:
             reader_info = reader_info.iloc[0]  
 
             active_loans = history_df[(history_df['skaitytojo_kortele'] == reader_card_number) &
-                                    (pd.to_datetime(history_df['knygos_grazinimo_data']) > pd.Timestamp.now())]
+                          (history_df['faktine_grazinimo_data'].isna())]
 
             if len(active_loans) >= 5:
                 messagebox.showerror("DĖMESIO", "Jūs negalite paimti daugiau nei 5 knygas vienu metu.")
@@ -300,9 +315,12 @@ class Librarian:
 
             last_loan_entry = history_df[history_df['knygos_pavadinimas'] == book_name].sort_values('knygos_grazinimo_data', ascending=False).head(1)
 
-            if not last_loan_entry.empty and pd.to_datetime(last_loan_entry['knygos_grazinimo_data'].values[0]) > pd.Timestamp.now():
+            history_df['knygos_grazinimo_data'] = pd.to_datetime(history_df['knygos_grazinimo_data'], errors='coerce')
+
+            if not last_loan_entry.empty and last_loan_entry['knygos_grazinimo_data'].values[0] > pd.Timestamp.now():
                 messagebox.showerror("Klaida", f"Knyga '{book_name}' jau yra užimta iki {last_loan_entry['knygos_grazinimo_data'].values[0]}.")
                 return
+
 
             grazinimo_data = pd.Timestamp.now().date() + pd.Timedelta(days=14)  
             new_entry = pd.DataFrame({
@@ -314,6 +332,7 @@ class Librarian:
                 "ISBN": [book_info['ISBN']],
                 "knygos_paemimo_data": [pd.Timestamp.now().date()],
                 "knygos_grazinimo_data": [grazinimo_data],
+                "faktine_grazinimo_data": [None],
                                         })
 
             history_df = pd.concat([history_df, new_entry], ignore_index=True)
@@ -359,7 +378,7 @@ class Librarian:
         except FileNotFoundError:
             removed_readers_df = pd.DataFrame(columns=['vardas', 'pavarde', 'email', 'telefonas', 'skaitytojo_kortele', 
                                                     'autorius', 'knygos_pavadinimas', 'ISBN', 
-                                                    'knygos_paemimo_data', 'knygos_grazinimo_data'])
+                                                    'knygos_paemimo_data', 'knygos_grazinimo_data', 'faktine_grazinimo_data'])
         removed_readers_df = pd.concat([removed_readers_df, removed_reader_data], ignore_index=True)
         removed_readers_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\removed_readers_db.csv", index=False, encoding="utf-8")
 

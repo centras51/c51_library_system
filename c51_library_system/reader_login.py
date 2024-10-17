@@ -4,14 +4,15 @@ from reader import Reader
 import pandas as pd
 from PIL import Image, ImageTk
 
+
 class ReaderLogin:
     def __init__(self, root):
         self.root = root
         self.button_width = 60
         self.button_height = 3
-        self.entry_width = 30  
-        self.entry_font = ("Arial", 18)  
-        self.reader = None  
+        self.entry_width = 30
+        self.entry_font = ("Arial", 18)
+        self.reader = None
 
         self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
         self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
@@ -44,9 +45,9 @@ class ReaderLogin:
         self.add_button("Išeiti iš sistemos", 800, self.root.quit)
 
     def add_button(self, text, y_position, command):
-        """Sukurti mygtuką su efektais"""
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
-                           bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
+                           bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white",
+                           command=command)
 
         self.canvas.create_window(700, y_position, window=button)
 
@@ -68,12 +69,11 @@ class ReaderLogin:
             messagebox.showerror("Klaida", "Neteisingas vartotojo vardas arba slaptažodis.")
 
     def get_reader_card_number(self, username):
-        """Ieško skaitytojo kortelės numerio pagal vartotojo vardą."""
         try:
             readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-            reader_info = readers_df[readers_df['username'] == username]  
+            reader_info = readers_df[readers_df['username'] == username]
             if not reader_info.empty:
-                return reader_info['skaitytojo_kortele'].values[0]  
+                return reader_info['skaitytojo_kortele'].values[0]
             else:
                 return None
         except FileNotFoundError:
@@ -81,7 +81,6 @@ class ReaderLogin:
             return None
 
     def username_password_verification(self, username, password):
-        """Patikriname vartotojo vardą ir slaptažodį."""
         try:
             usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
             user_info = usr_psw_df.loc[usr_psw_df['username'] == username]

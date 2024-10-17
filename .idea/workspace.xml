@@ -5,12 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53402eac-647a-48e5-b858-658b638a7b94" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSVs/books_db.csv" beforeDir="false" afterPath="$PROJECT_DIR$/CSVs/books_db.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSVs/librarians_db.csv" beforeDir="false" afterPath="$PROJECT_DIR$/CSVs/librarians_db.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSVs/reading_history.csv" beforeDir="false" afterPath="$PROJECT_DIR$/CSVs/reading_history.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CSVs/removed_books_db.csv" beforeDir="false" afterPath="$PROJECT_DIR$/CSVs/removed_books_db.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c51_library_system/anonymous.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/anonymous.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c51_library_system/books.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/books.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c51_library_system/librarian.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/librarian.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c51_library_system/librarian_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/librarian_login.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c51_library_system/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c51_library_system/reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/reader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c51_library_system/reader_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/reader_login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c51_library_system/readerregistration.py" beforeDir="false" afterPath="$PROJECT_DIR$/c51_library_system/readerregistration.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

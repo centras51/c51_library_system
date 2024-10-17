@@ -1,10 +1,10 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from readerregistration import ReaderRegistration
+from anonymous import AnonymousUser
 from librarian_login import LibrarianLogin
 from reader_login import ReaderLogin
-from reader import Reader
-from anonymous import AnonymousUser
+from readerregistration import ReaderRegistration
+
 
 class LibraryApp:
     def __init__(self, root):
@@ -27,7 +27,6 @@ class LibraryApp:
         self.login_menu()
 
     def login_menu(self):
-        """Pagrindinis langas"""
         self.clear_window()
         
         self.canvas.create_text(700, 100, text="BIBLIOTEKOS SISTEMA", font=("Arial", 30, "bold"), fill="white")
@@ -39,7 +38,6 @@ class LibraryApp:
         self.add_button("Išeiti iš sistemos", 600, self.root.quit)
 
     def add_button(self, text, y_position, command):
-        """Sukurti mygtuką su efektais"""
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
                            bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white", command=command)
 
@@ -75,7 +73,6 @@ class LibraryApp:
         tk.Button(self.root, text="Išeiti iš sistemos", command=self.root.quit).pack(pady=10)
 
     def clear_window(self):
-        """Išvalyti esamą turinį lange"""
         for widget in self.root.winfo_children():
             if not isinstance(widget, tk.Canvas):  
                 widget.destroy()
