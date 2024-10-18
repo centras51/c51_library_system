@@ -68,7 +68,7 @@ class ReaderRegistration:
                                          command=self.save_reader_datas)
         self.canvas.create_window(700, 550, window=self.register_button)
 
-        back_button = tk.Button(self.root, text="Atgal į pagrindinį langą", font=("Arial", 15), width=16, height=2,
+        back_button = tk.Button(self.root, text="Atgal į \npagrindinį langą", font=("Arial", 15), width=16, height=2,
                                 command=lambda: self.navigator.go_back_to_login(self.root))
         self.canvas.create_window(600, 700, window=back_button)
 
