@@ -5,13 +5,14 @@ import pandas as pd
 import re
 from PIL import Image, ImageTk
 import string
-from utils.validation_helpers import is_valid_email, is_valid_phone
+from utils.validation_helpers import Validator
 
 
 class ReaderRegistration:
     def __init__(self, root, is_librarian=False):
         self.root = root
         self.is_librarian = is_librarian
+        self.validator = Validator()
         self.button_width = 30
         self.button_height = 3
         self.entry_width = 30
@@ -108,18 +109,33 @@ class ReaderRegistration:
                 messagebox.showerror("Klaida", "Slaptažodžiai nesutampa.")
                 return
 
+    
         if not reader_name or not reader_last_name:
-            messagebox.showerror("Klaida", "Vardas ir pavardė privalomi.")
+            messagebox.showerror("Klaida", 
+                                 "Vardas ir pavardė privalomi.")
             return
 
-        if not self.is_valid_email(reader_email):
-            messagebox.showerror("Klaida", "Neteisingas el. pašto formatas.")
+        if not self.validator.is_valid_reader_name(reader_name):
+            messagebox.showerror("Klaida",
+                                 "Neteisingas vardas. Vardo negali sudaryti skaičiai ar specialieji simboliai.")
+            return           
+        
+        if not self.validator.is_valid_reader_last_name(reader_last_name):
+            messagebox.showerror("Klaida",
+                                 "Neteisinga Pavardė. Pavardės negali sudaryti skaičiai ar specialieji simboliai.")
+            return 
+
+        if not self.validator.is_valid_email(reader_email):
+            messagebox.showerror("Klaida", 
+                                 "Neteisingas el. pašto formatas.")
             return
 
-        if not self.is_valid_phone(reader_phone):
+        if not self.validator.is_valid_phone(reader_phone):
             messagebox.showerror("Klaida",
                                  "Neteisingas telefono numeris. Turėtų prasidėti su '6' ir turėti 8 skaitmenis.")
             return
+        
+          
 
         new_reader_line = {
             'vardas': reader_name,
