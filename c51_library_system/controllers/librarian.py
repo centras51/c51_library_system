@@ -3,7 +3,7 @@ from tkinter import simpledialog, messagebox, ttk
 from PIL import Image, ImageTk
 import pandas as pd
 from books import Books
-from readerregistration import ReaderRegistration
+from c51_library_system.controllers.reader_registration import ReaderRegistration
 import datetime
 
 

@@ -1,7 +1,7 @@
 import tkinter as tk
 from books import Books
 from PIL import Image, ImageTk
-from readerregistration import ReaderRegistration
+from c51_library_system.controllers.reader_registration import ReaderRegistration
 
 
 class AnonymousUser:
