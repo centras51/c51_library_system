@@ -1,15 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
-import random
 import pandas as pd
-from PIL import Image, ImageTk
-import string
 from utils.validation_helpers import Validator
 from ui.ui_helpers import set_background
 from utils.general_helpers import Generator
-import os
-
-
+from utils.csv_helpers import CsvProcessor
+from utils.navigation_helpers import Navigator
 
 
 class ReaderRegistration:
@@ -18,13 +14,14 @@ class ReaderRegistration:
         self.is_librarian = is_librarian
         self.validator = Validator()
         self.generator = Generator()
+        self.csvprocessor = CsvProcessor()
+        self.navigator = Navigator()
         self.canvas = None
         self.background_image = None
         self.button_width = 30
         self.button_height = 3
         self.entry_width = 30
         self.entry_font = ("Arial", 18)
-
 
     def clear_window(self):
         for widget in self.root.winfo_children():
@@ -70,17 +67,13 @@ class ReaderRegistration:
                                          command=self.save_reader_datas)
         self.canvas.create_window(700, 550, window=self.register_button)
 
-        back_button = tk.Button(self.canvas, text="Atgal", font=("Arial", 15), width=16, height=2,
-                                command=self.go_back_to_login)
+        back_button = tk.Button(self.root, text="Atgal į pagrindinį langą", font=("Arial", 15), width=16, height=2,
+                                command=lambda: self.navigator.go_back_to_login(self.root))
         self.canvas.create_window(600, 700, window=back_button)
 
         exit_button = tk.Button(self.canvas, text="Išeiti iš sistemos", font=("Arial", 15), width=16, height=2,
                                 command=self.root.quit)
         self.canvas.create_window(800, 700, window=exit_button)
-
-
-
-
 
     def save_reader_datas(self):
         reader_name = self.reader_name_entry.get()
@@ -99,7 +92,6 @@ class ReaderRegistration:
             if new_password != new_password2:
                 messagebox.showerror("Klaida", "Slaptažodžiai nesutampa.")
                 return
-
     
         if not reader_name or not reader_last_name:
             messagebox.showerror("Klaida", 
@@ -125,8 +117,6 @@ class ReaderRegistration:
             messagebox.showerror("Klaida",
                                  "Neteisingas telefono numeris. Turėtų prasidėti su '6' ir turėti 8 skaitmenis.")
             return
-        
-          
 
         new_reader_line = {
             'vardas': reader_name,
@@ -139,15 +129,14 @@ class ReaderRegistration:
         }
 
         try:
-            reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+            reader_df = self.csvprocessor.read_readers_csv()
             reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
-            reader_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv", index=False, encoding='utf-8')
-            messagebox.showinfo("Registracija baigta",
+            self.csvprocessor.write_reader_csv(reader_df)
+            try:
+                messagebox.showinfo("Registracija baigta",
                                 f"Skaitytojas {new_reader_line['vardas']} {new_reader_line['pavarde']} sėkmingai užregistruotas!")
+                self.navigator.go_back_to_login(self.root)
+            except Exception as e:
+                messagebox.showerror("Klaida", f"Nepavyko užregistruoti: {str(e)}")
         except FileNotFoundError:
             messagebox.showerror("Klaida", "Nepavyko rasti skaitytojų duomenų failo.")
-
-    def go_back_to_login(self):
-        from main import LibraryApp
-        self.clear_window()
-        LibraryApp(self.root)
