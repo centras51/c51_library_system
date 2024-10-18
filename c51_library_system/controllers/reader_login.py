@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from reader import Reader
+from .reader import Reader
 import pandas as pd
 from PIL import Image, ImageTk
 

@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import pandas as pd
+import os
 from utils.validation_helpers import Validator
 from ui.ui_helpers import set_background
 from utils.general_helpers import Generator

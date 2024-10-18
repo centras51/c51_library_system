@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from books import Books
+from .books import Books
 
 
 class Reader:

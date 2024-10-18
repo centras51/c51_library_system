@@ -1,5 +1,10 @@
 import tkinter as tk
+import os
+import sys
 from PIL import Image, ImageTk
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from controllers.anonymous import AnonymousUser
 from controllers.librarian_login import LibrarianLogin
 from controllers.reader_login import ReaderLogin
@@ -15,7 +20,7 @@ class LibraryApp:
         self.button_width = 60
         self.button_height = 3
 
-        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
+        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\background.png")
         self.background_image = self.original_image.resize((1600, 1000), Image.Resampling.LANCZOS)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
 
