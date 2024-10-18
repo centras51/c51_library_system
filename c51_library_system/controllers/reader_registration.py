@@ -2,10 +2,13 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 import pandas as pd
-import re
 from PIL import Image, ImageTk
 import string
 from utils.validation_helpers import Validator
+from ui.ui_helpers import set_background
+import os
+
+
 
 
 class ReaderRegistration:
@@ -13,16 +16,13 @@ class ReaderRegistration:
         self.root = root
         self.is_librarian = is_librarian
         self.validator = Validator()
+        self.canvas = None
+        self.background_image = None
         self.button_width = 30
         self.button_height = 3
         self.entry_width = 30
         self.entry_font = ("Arial", 18)
 
-        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
-        self.background_photo = ImageTk.PhotoImage(self.background_image)
-
-        self.canvas = None
 
     def clear_window(self):
         for widget in self.root.winfo_children():
@@ -30,10 +30,9 @@ class ReaderRegistration:
 
     def register(self):
         self.clear_window()
+        
+        self.canvas, self.background_image = set_background(self.root)
 
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
         self.canvas.create_text(700, 50, text="Naujo skaitytojo registracija", font=("Arial", 30, "bold"), fill="white")
 
