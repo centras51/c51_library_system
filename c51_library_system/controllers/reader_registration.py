@@ -5,6 +5,7 @@ import pandas as pd
 import re
 from PIL import Image, ImageTk
 import string
+from utils.validation_helpers import is_valid_email, is_valid_phone
 
 
 class ReaderRegistration:
@@ -75,13 +76,6 @@ class ReaderRegistration:
         exit_button = tk.Button(self.canvas, text="Išeiti iš sistemos", font=("Arial", 15), width=16, height=2,
                                 command=self.root.quit)
         self.canvas.create_window(800, 700, window=exit_button)
-
-    def is_valid_email(self, reader_email):
-        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-        return re.match(email_regex, reader_email) is not None
-
-    def is_valid_phone(self, reader_phone):
-        return reader_phone.isdigit() and len(reader_phone) == 8 and reader_phone.startswith("6")
 
     def reader_card_number_generator(self):
         reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")

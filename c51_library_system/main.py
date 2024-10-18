@@ -1,9 +1,9 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from anonymous import AnonymousUser
-from librarian_login import LibrarianLogin
-from reader_login import ReaderLogin
-from readerregistration import ReaderRegistration
+from controllers.anonymous import AnonymousUser
+from controllers.librarian_login import LibrarianLogin
+from controllers.reader_login import ReaderLogin
+from controllers.reader_registration import ReaderRegistration
 
 
 class LibraryApp:
