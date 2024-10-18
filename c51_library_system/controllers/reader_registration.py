@@ -6,6 +6,7 @@ from PIL import Image, ImageTk
 import string
 from utils.validation_helpers import Validator
 from ui.ui_helpers import set_background
+from utils.general_helpers import Generator
 import os
 
 
@@ -16,6 +17,7 @@ class ReaderRegistration:
         self.root = root
         self.is_librarian = is_librarian
         self.validator = Validator()
+        self.generator = Generator()
         self.canvas = None
         self.background_image = None
         self.button_width = 30
@@ -32,7 +34,6 @@ class ReaderRegistration:
         self.clear_window()
         
         self.canvas, self.background_image = set_background(self.root)
-
 
         self.canvas.create_text(700, 50, text="Naujo skaitytojo registracija", font=("Arial", 30, "bold"), fill="white")
 
@@ -77,28 +78,19 @@ class ReaderRegistration:
                                 command=self.root.quit)
         self.canvas.create_window(800, 700, window=exit_button)
 
-    def reader_card_number_generator(self):
-        reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-        existing_reader_card_numbers = reader_df['skaitytojo_kortele'].to_list()
-        while True:
-            reader_card_number = random.randint(10000000, 99999999)
-            if reader_card_number not in existing_reader_card_numbers:
-                return reader_card_number
 
-    def generate_username_password(self):
-        username = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-        password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-        return username, password
+
+
 
     def save_reader_datas(self):
         reader_name = self.reader_name_entry.get()
         reader_last_name = self.reader_last_name_entry.get()
         reader_email = self.reader_email_entry.get()
         reader_phone = self.reader_phone_entry.get()
-        reader_card_number = self.reader_card_number_generator()
+        reader_card_number = self.generator.reader_card_number_generator()
 
         if self.is_librarian:
-            new_username, new_password = self.generate_username_password()
+            new_username, new_password = self.generator.generate_username_password()
         else:
             new_username = self.new_username_entry.get()
             new_password = self.new_password_entry.get()
