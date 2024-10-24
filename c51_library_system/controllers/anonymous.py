@@ -1,6 +1,5 @@
 import tkinter as tk
 from .books import Books
-from PIL import Image, ImageTk
 from .reader_registration import ReaderRegistration
 from utils.validation_helpers import Validator
 from ui.ui_helpers import set_background
@@ -38,7 +37,7 @@ class AnonymousUser:
         self.add_button("Peržiūrėti knygas", 700, 200, self.books_instance.show_books)
         self.add_button("Skaitytojo registracija", 700, 350, self.readerregistration_instance.register)
         self.add_button("Atgal į pagrindinį langą", 700, 500, command=lambda: self.navigator.go_back_to_login(self.root))
-        self.add_button("Išeiti iš sistemos", 700, 650, command=lambda: self.root.quit)
+        self.add_button("Išeiti iš sistemos", 700, 650, command=self.root.quit)
                                 
     def add_button(self, text, x_position, y_position, command):
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
