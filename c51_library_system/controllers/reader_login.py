@@ -3,32 +3,36 @@ from tkinter import messagebox
 from .reader import Reader
 import pandas as pd
 from PIL import Image, ImageTk
+from utils.validation_helpers import Validator
+from ui.ui_helpers import set_background
+from utils.general_helpers import Generator
+from utils.csv_helpers import CsvProcessor
+from utils.navigation_helpers import Navigator
 
 
 class ReaderLogin:
     def __init__(self, root):
         self.root = root
+        self.validator = Validator()
+        self.generator = Generator()
+        self.csvprocessor = CsvProcessor()
+        self.navigator = Navigator()
+        self.canvas = None
+        self.background_image = None
         self.button_width = 60
         self.button_height = 3
         self.entry_width = 30
         self.entry_font = ("Arial", 18)
         self.reader = None
 
-        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
-        self.background_photo = ImageTk.PhotoImage(self.background_image)
-
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
-
+    def clear_window(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+            
+        self.canvas, self.background_image = set_background(self.root)
+    
     def reader_login_screen(self, back_function):
         self.clear_window()
-
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
         self.canvas.create_text(700, 100, text="Skaitytojo prisijungimas", font=("Arial", 30, "bold"), fill="white")
 
