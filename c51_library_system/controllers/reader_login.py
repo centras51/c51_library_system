@@ -1,13 +1,13 @@
 import tkinter as tk
+import sqlite3
 from tkinter import messagebox
 from .reader import Reader
-import pandas as pd
-from PIL import Image, ImageTk
 from utils.validation_helpers import Validator
 from ui.ui_helpers import set_background
 from utils.general_helpers import Generator
 from utils.csv_helpers import CsvProcessor
 from utils.navigation_helpers import Navigator
+from utils.authenticators import Authenticator
 
 
 class ReaderLogin:
@@ -17,6 +17,7 @@ class ReaderLogin:
         self.generator = Generator()
         self.csvprocessor = CsvProcessor()
         self.navigator = Navigator()
+        self.authenticator = Authenticator()
         self.canvas = None
         self.background_image = None
         self.button_width = 60
@@ -59,42 +60,34 @@ class ReaderLogin:
         button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
 
     def verify_reader(self):
-        username = self.username_entry.get()
-        password = self.password_entry.get()
+        reader_username = self.username_entry.get()
+        reader_password = self.password_entry.get()
 
-        if self.username_password_verification(username, password):
-            reader_card_number = self.get_reader_card_number(username)
-
+        if self.authenticator.username_password_verification(reader_username, reader_password):
+            reader_card_number = self.get_reader_card_number(reader_username)
             if reader_card_number:
                 self.reader = Reader(self.root, reader_card_number)
+                messagebox.showinfo("Prisijungta", "Prisijungimas sėkmingas!")
             else:
                 messagebox.showerror("Klaida", "Skaitytojo kortelės numeris nerastas.")
         else:
             messagebox.showerror("Klaida", "Neteisingas vartotojo vardas arba slaptažodis.")
-
+            
     def get_reader_card_number(self, username):
         try:
-            readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-            reader_info = readers_df[readers_df['username'] == username]
-            if not reader_info.empty:
-                return reader_info['skaitytojo_kortele'].values[0]
+            connection = sqlite3.connect("D:\\CodeAcademy\\c51_library_system\\data_bases\\library_db.db")
+            cursor = connection.cursor()
+
+            cursor.execute("SELECT skaitytojo_kortele FROM readers WHERE username = ?", (username,))
+            result = cursor.fetchone()
+
+            if result:
+                return result[0]
             else:
                 return None
-        except FileNotFoundError:
-            messagebox.showerror("Klaida", "Skaitytojų duomenų bazės failas nerastas.")
+        except sqlite3.Error as e:
+            messagebox.showerror("Klaida", f"Duomenų bazės klaida: {e}")
             return None
-
-    def username_password_verification(self, username, password):
-        try:
-            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-            user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
-            if not user_info.empty:
-                return user_info['password'].values[0] == password
-            return False
-        except FileNotFoundError:
-            messagebox.showerror("Klaida", "Nepavyksta patikrinti slaptažodžio")
-            return False
-
-    def clear_window(self):
-        for widget in self.root.winfo_children():
-            widget.destroy()
+        finally:
+            if connection:
+                connection.close()
