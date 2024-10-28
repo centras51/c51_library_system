@@ -64,17 +64,9 @@ class ReaderRegistration:
             self.new_password2_entry = tk.Entry(self.root, font=("Arial", 18), width=30, show='*')
             self.canvas.create_window(700, 450, window=self.new_password2_entry)
 
-        self.register_button = tk.Button(self.canvas, text="Registruoti", font=("Arial", 18), width=28, height=2,
-                                         command=self.save_reader_datas)
-        self.canvas.create_window(700, 550, window=self.register_button)
-
-        back_button = tk.Button(self.root, text="Atgal į \npagrindinį langą", font=("Arial", 15), width=16, height=2,
-                                command=lambda: self.navigator.go_back_to_login(self.root))
-        self.canvas.create_window(600, 700, window=back_button)
-
-        exit_button = tk.Button(self.canvas, text="Išeiti iš sistemos", font=("Arial", 15), width=16, height=2,
-                                command=self.root.quit)
-        self.canvas.create_window(800, 700, window=exit_button)
+        self.add_button("Registruoti", 700, 550, self.save_reader_datas)
+        self.add_button("Atgal į \npagrindinį langą", 200, 550, lambda: self.navigator.go_back_to_login(self.root))
+        self.add_button("Išeiti iš sistemos", 1200, 550, self.root.quit)
 
     def save_reader_datas(self):
         reader_name = self.reader_name_entry.get()
@@ -141,3 +133,15 @@ class ReaderRegistration:
                 messagebox.showerror("Klaida", f"Nepavyko užregistruoti: {str(e)}")
         except FileNotFoundError:
             messagebox.showerror("Klaida", "Nepavyko rasti skaitytojų duomenų failo.")
+            
+    def add_button(self, text, x_position, y_position, command):
+        button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
+                        bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white",
+                        command=command)
+
+        # Naudojame x_position ir y_position
+        self.canvas.create_window(x_position, y_position, window=button)
+
+        # Pridedame hover efektus
+        button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
+        button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
