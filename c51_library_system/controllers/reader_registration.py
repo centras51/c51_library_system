@@ -1,27 +1,28 @@
 import tkinter as tk
 from tkinter import messagebox
-import random
 import pandas as pd
-import re
-from PIL import Image, ImageTk
-import string
-from utils.validation_helpers import is_valid_email, is_valid_phone
+import os
+from utils.validation_helpers import Validator
+from ui.ui_helpers import set_background
+from utils.general_helpers import Generator
+from utils.csv_helpers import CsvProcessor
+from utils.navigation_helpers import Navigator
 
 
 class ReaderRegistration:
     def __init__(self, root, is_librarian=False):
         self.root = root
         self.is_librarian = is_librarian
+        self.validator = Validator()
+        self.generator = Generator()
+        self.csvprocessor = CsvProcessor()
+        self.navigator = Navigator()
+        self.canvas = None
+        self.background_image = None
         self.button_width = 30
         self.button_height = 3
         self.entry_width = 30
         self.entry_font = ("Arial", 18)
-
-        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
-        self.background_photo = ImageTk.PhotoImage(self.background_image)
-
-        self.canvas = None
 
     def clear_window(self):
         for widget in self.root.winfo_children():
@@ -29,10 +30,8 @@ class ReaderRegistration:
 
     def register(self):
         self.clear_window()
-
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
+        
+        self.canvas, self.background_image = set_background(self.root)
 
         self.canvas.create_text(700, 50, text="Naujo skaitytojo registracija", font=("Arial", 30, "bold"), fill="white")
 
@@ -69,36 +68,23 @@ class ReaderRegistration:
                                          command=self.save_reader_datas)
         self.canvas.create_window(700, 550, window=self.register_button)
 
-        back_button = tk.Button(self.canvas, text="Atgal", font=("Arial", 15), width=16, height=2,
-                                command=self.go_back_to_login)
+        back_button = tk.Button(self.root, text="Atgal į \npagrindinį langą", font=("Arial", 15), width=16, height=2,
+                                command=lambda: self.navigator.go_back_to_login(self.root))
         self.canvas.create_window(600, 700, window=back_button)
 
         exit_button = tk.Button(self.canvas, text="Išeiti iš sistemos", font=("Arial", 15), width=16, height=2,
                                 command=self.root.quit)
         self.canvas.create_window(800, 700, window=exit_button)
 
-    def reader_card_number_generator(self):
-        reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-        existing_reader_card_numbers = reader_df['skaitytojo_kortele'].to_list()
-        while True:
-            reader_card_number = random.randint(10000000, 99999999)
-            if reader_card_number not in existing_reader_card_numbers:
-                return reader_card_number
-
-    def generate_username_password(self):
-        username = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-        password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-        return username, password
-
     def save_reader_datas(self):
         reader_name = self.reader_name_entry.get()
         reader_last_name = self.reader_last_name_entry.get()
         reader_email = self.reader_email_entry.get()
         reader_phone = self.reader_phone_entry.get()
-        reader_card_number = self.reader_card_number_generator()
+        reader_card_number = self.generator.reader_card_number_generator()
 
         if self.is_librarian:
-            new_username, new_password = self.generate_username_password()
+            new_username, new_password = self.generator.generate_username_password()
         else:
             new_username = self.new_username_entry.get()
             new_password = self.new_password_entry.get()
@@ -107,16 +93,28 @@ class ReaderRegistration:
             if new_password != new_password2:
                 messagebox.showerror("Klaida", "Slaptažodžiai nesutampa.")
                 return
-
+    
         if not reader_name or not reader_last_name:
-            messagebox.showerror("Klaida", "Vardas ir pavardė privalomi.")
+            messagebox.showerror("Klaida", 
+                                 "Vardas ir pavardė privalomi.")
             return
 
-        if not self.is_valid_email(reader_email):
-            messagebox.showerror("Klaida", "Neteisingas el. pašto formatas.")
+        if not self.validator.is_valid_reader_name(reader_name):
+            messagebox.showerror("Klaida",
+                                 "Neteisingas vardas. Vardo negali sudaryti skaičiai ar specialieji simboliai.")
+            return           
+        
+        if not self.validator.is_valid_reader_last_name(reader_last_name):
+            messagebox.showerror("Klaida",
+                                 "Neteisinga Pavardė. Pavardės negali sudaryti skaičiai ar specialieji simboliai.")
+            return 
+
+        if not self.validator.is_valid_email(reader_email):
+            messagebox.showerror("Klaida", 
+                                 "Neteisingas el. pašto formatas.")
             return
 
-        if not self.is_valid_phone(reader_phone):
+        if not self.validator.is_valid_phone(reader_phone):
             messagebox.showerror("Klaida",
                                  "Neteisingas telefono numeris. Turėtų prasidėti su '6' ir turėti 8 skaitmenis.")
             return
@@ -132,15 +130,14 @@ class ReaderRegistration:
         }
 
         try:
-            reader_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
+            reader_df = self.csvprocessor.read_readers_csv()
             reader_df = pd.concat([reader_df, pd.DataFrame([new_reader_line])], ignore_index=True)
-            reader_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv", index=False, encoding='utf-8')
-            messagebox.showinfo("Registracija baigta",
+            self.csvprocessor.write_reader_csv(reader_df)
+            try:
+                messagebox.showinfo("Registracija baigta",
                                 f"Skaitytojas {new_reader_line['vardas']} {new_reader_line['pavarde']} sėkmingai užregistruotas!")
+                self.navigator.go_back_to_login(self.root)
+            except Exception as e:
+                messagebox.showerror("Klaida", f"Nepavyko užregistruoti: {str(e)}")
         except FileNotFoundError:
             messagebox.showerror("Klaida", "Nepavyko rasti skaitytojų duomenų failo.")
-
-    def go_back_to_login(self):
-        from main import LibraryApp
-        self.clear_window()
-        LibraryApp(self.root)

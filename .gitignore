@@ -6,3 +6,11 @@ c51_library_system/__pycache__/librarian.cpython-312.pyc
 c51_library_system/__pycache__/reader.cpython-312.pyc
 c51_library_system/__pycache__/readeregistration.cpython-312.pyc
 data_bases/library_db.db
+c51_library_system/csv_to_db.py
+c51_library_system/librarians_db.db
+CSVs/librarians_db.csv
+CSVs/readers_db.csv
+library_db.db
+testinis.py
+readers_db.db
+CSVs/librarians_db.csv

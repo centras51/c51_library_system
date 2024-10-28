@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import simpledialog, messagebox, ttk
 from PIL import Image, ImageTk
 import pandas as pd
-from books import Books
-from c51_library_system.controllers.reader_registration import ReaderRegistration
+from .books import Books
+from .reader_registration import ReaderRegistration
 import datetime
 
 
