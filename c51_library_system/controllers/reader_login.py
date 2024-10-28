@@ -58,25 +58,25 @@ class ReaderLogin:
         reader_password = self.password_entry.get()
 
         if self.authenticator.username_password_verification(reader_username, reader_password):
-            reader_card_number = self.get_reader_card_number(reader_username)
-            if reader_card_number:
+            reader_info = self.get_reader_info(reader_username)
+            if reader_info:
+                reader_card_number, reader_name, reader_last_name = reader_info
                 self.reader = Reader(self.root, reader_card_number)
-                messagebox.showinfo(f"Prisijungta", "Prisijungimas sėkmingas!")
             else:
                 messagebox.showerror("Klaida", "Skaitytojo kortelės numeris nerastas.")
         else:
             messagebox.showerror("Klaida", "Neteisingas vartotojo vardas arba slaptažodis.")
-            
+
     def get_reader_card_number(self, username):
         try:
             connection = sqlite3.connect("D:\\CodeAcademy\\c51_library_system\\data_bases\\library_db.db")
             cursor = connection.cursor()
 
-            cursor.execute("SELECT skaitytojo_kortele FROM readers WHERE username = ?", (username,))
+            cursor.execute("SELECT skaitytojo_kortele, vardas, pavarde FROM readers WHERE username = ?", (username,))
             result = cursor.fetchone()
 
             if result:
-                return result[0]
+                return result
             else:
                 return None
         except sqlite3.Error as e:
