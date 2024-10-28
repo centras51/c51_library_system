@@ -6,7 +6,6 @@ from ui.ui_helpers import set_background
 from utils.navigation_helpers import Navigator
 from utils.authenticators import Authenticator
 
-
 class ReaderLogin:
     def __init__(self, root):
         self.root = root
@@ -21,14 +20,20 @@ class ReaderLogin:
         self.reader = None
 
     def clear_window(self):
+        # Sunaikina visus elementus lange ir sukuria naują `canvas`
         for widget in self.root.winfo_children():
             widget.destroy()
-            
         self.canvas, self.background_image = set_background(self.root)
-    
+
     def reader_login_screen(self, back_function):
+        # Išvalome langą ir patikriname, ar `canvas` yra sukurtas
         self.clear_window()
 
+        if not self.canvas:
+            messagebox.showerror("Klaida", "Nepavyko sukurti `canvas` elemento.")
+            return
+
+        # Sukuriame prisijungimo langą
         self.canvas.create_text(700, 100, text="Skaitytojo prisijungimas", font=("Arial", 30, "bold"), fill="white")
 
         self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20, "bold"), fill="white")
@@ -39,8 +44,9 @@ class ReaderLogin:
         self.password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
         self.canvas.create_window(700, 350, window=self.password_entry)
 
+        # Priskiriame funkcijas mygtukams, „Atgal“ mygtukui naudojame `lambda`
         self.add_button("Prisijungti", 500, self.verify_reader)
-        self.add_button("Atgal", 650, back_function)
+        self.add_button("Atgal", 650, lambda: back_function())
         self.add_button("Išeiti iš sistemos", 800, self.root.quit)
 
     def add_button(self, text, y_position, command):
@@ -48,7 +54,11 @@ class ReaderLogin:
                            bg="lightblue", fg="black", activebackground="darkblue", activeforeground="white",
                            command=command)
 
-        self.canvas.create_window(700, y_position, window=button)
+        # Patikriname, ar `canvas` yra sukurta, prieš naudojant `create_window`
+        if self.canvas:
+            self.canvas.create_window(700, y_position, window=button)
+        else:
+            messagebox.showerror("Klaida", "`canvas` elementas nėra sukurtas.")
 
         button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
         button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
@@ -65,6 +75,7 @@ class ReaderLogin:
                 
                 messagebox.showinfo("Prisijungta", f"Prisijungimas sėkmingas! Sveiki, {reader_name} {reader_last_name}.")
                 
+                # Rodo skaitytojo meniu
                 self.reader.show_menu()
             else:
                 messagebox.showerror("Klaida", "Skaitytojo kortelės numeris nerastas.")
@@ -76,6 +87,7 @@ class ReaderLogin:
             connection = sqlite3.connect("D:\\CodeAcademy\\c51_library_system\\data_bases\\library_db.db")
             cursor = connection.cursor()
 
+            # Gauname skaitytojo kortelės numerį, vardą ir pavardę
             cursor.execute("SELECT skaitytojo_kortele, vardas, pavarde FROM readers WHERE username = ?", (username,))
             result = cursor.fetchone()
 
