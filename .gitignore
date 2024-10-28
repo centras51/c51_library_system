@@ -14,3 +14,5 @@ library_db.db
 testinis.py
 readers_db.db
 CSVs/librarians_db.csv
+*.pyc
+__pycache__/
