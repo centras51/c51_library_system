@@ -57,18 +57,35 @@ class Books:
 
     def load_reading_history(self):
         try:
-            df = pd.read_csv(
-                "D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv",
-                usecols=['skaitytojo_kortele', 'knygos_pavadinimas', 'knygos_paemimo_data', 'knygos_grazinimo_data',
-                         'faktine_grazinimo_data'],
-                encoding='utf-8',
-                delimiter=','
-            )
-            df['knygos_pavadinimas'] = df['knygos_pavadinimas'].str.strip().str.title()
-            return df
-        except FileNotFoundError:
-            messagebox.showerror("Klaida", "Skaitymo istorijos failas nerastas.")
-            return pd.DataFrame()
+            cursor = self.connection.cursor()
+            query = """SELECT 
+                        reading_history.iraso_id as 'Įrašo ID', 
+                        reading_history.skaitytojo_id as 'Skaitytojo ID', 
+                        readers.vardas as 'Skaitytojo vardas', 
+                        readers.pavarde as 'Skaitytojo pavardė', 
+                        reading_history.knygos_id as 'Knygos ID', 
+                        authors.vardas_pavarde as 'Autoriaus vardas',
+                        authors.pavarde as 'Autoriaus pavardė',
+                        books.knygos_pavadinimas as 'Knygos pavadinimas',  
+                        reading_history.knygos_isdavimo_data as 'Išdavimo data', 
+                        reading_history.data_grazinimui as 'Grąžinti iki', 
+                        reading_history.faktine_grazinimo_data as 'Grąžino', 
+                        reading_history.pradelstos_dienos as 'Pradelstos dienos', 
+                        reading_history.bauda as 'Bauda' from reading_history 
+                    JOIN 
+                        readers ON reading_history.skaitytojo_id = readers.skaitytojo_id
+                    JOIN 
+                        books ON reading_history.knygos_id = books.knygos_id
+                    JOIN
+                        authors ON books.author_id = authors.author_id
+                    """
+            cursor.execute(query)
+            reading_history = cursor.fetchall()
+            cursor.close
+            return reading_history
+        except Exception as e:
+            messagebox.showerror("Klaida", f"Skaitymo istorijos įkėlimo klaida: {e}")
+            return []
 
     def get_current_reader(self, knygos_pavadinimas):
         knygos_pavadinimas = knygos_pavadinimas.strip().title()
@@ -97,12 +114,13 @@ class Books:
         new_window = tk.Toplevel(self.root)
         new_window.title("Knygų sąrašas")
 
-        search_label = tk.Label(new_window, text="Ieškoti knygos:")
+        search_label = tk.Label(new_window, text="Paieška")
         search_label.pack(pady=5)
 
         search_entry = tk.Entry(new_window)
         search_entry.pack(pady=5)
-        search_entry.bind("<KeyRelease>", lambda event: self.filter_books(search_entry, new_window))
+        
+        search_entry.bind("<KeyRelease>", lambda event: self.filter_books(search_entry, book_tree))
 
         frame = tk.Frame(new_window)
         frame.pack(fill=tk.BOTH, expand=True)
@@ -113,76 +131,48 @@ class Books:
         hsb = tk.Scrollbar(frame, orient="horizontal")
         hsb.pack(side="bottom", fill="x")
 
-        columns = ("knygos_pavadinimas", "autorius", "metai", "ISBN", "zanras", "pastabos", "statusas")
-        book_tree = ttk.Treeview(frame, columns=columns, show="headings", yscrollcommand=vsb.set,
-                                 xscrollcommand=hsb.set)
+        columns = ("Knygos ID", "Autoriaus vardas", "Autoriaus pavardė", "Knygos pavadinimas", "Metai", "Žanras", 
+                "ISBN", "Knygos aprašymas", "Statusas")
+        book_tree = ttk.Treeview(frame, columns=columns, show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
         book_tree.pack(fill=tk.BOTH, expand=True)
 
         vsb.config(command=book_tree.yview)
         hsb.config(command=book_tree.xview)
 
-        book_tree.heading("knygos_pavadinimas", text="Pavadinimas")
-        book_tree.heading("autorius", text="Autorius")
-        book_tree.heading("metai", text="Metai")
-        book_tree.heading("ISBN", text="ISBN")
-        book_tree.heading("zanras", text="Zanras")
-        book_tree.heading("pastabos", text="Pastabos")
-        book_tree.heading("statusas", text="statusas")
+        for col in columns:
+            book_tree.heading(col, text=col)
 
-        book_tree.column("knygos_pavadinimas", width=200)
-        book_tree.column("autorius", width=150)
-        book_tree.column("metai", width=100)
+        book_tree.column("Knygos ID", width=80)
+        book_tree.column("Autoriaus vardas", width=150)
+        book_tree.column("Autoriaus pavardė", width=150)
+        book_tree.column("Knygos pavadinimas", width=200)
+        book_tree.column("Metai", width=100)
+        book_tree.column("Žanras", width=150)
         book_tree.column("ISBN", width=150)
-        book_tree.column("zanras", width=150)
-        book_tree.column("pastabos", width=350)
-        book_tree.column("statusas", width=100)
-
-        book_tree.bind("<Double-1>", self.open_book_profile)
+        book_tree.column("Knygos aprašymas", width=350)
+        book_tree.column("Statusas", width=100)
 
         self.populate_books(book_tree)
 
+
     def populate_books(self, tree):
+        books = self.load_books()
         for item in tree.get_children():
             tree.delete(item)
 
-        for index, row in self.books_df.iterrows():
-            tree.insert("", "end", values=(
-                row['knygos_pavadinimas'],
-                row['autorius'],
-                row['metai'],
-                row['ISBN'],
-                row['zanras'],
-                row['pastabos'],
-                row['statusas']
-            ))
+        for row in books:  # sąrašas gaunamas iš def load_books
+            tree.insert("", "end", values=row)
 
-    def filter_books(self, search_entry, window):
-        search_term = search_entry.get().title()
-        filtered_books = self.books_df[
-            (self.books_df['knygos_pavadinimas'].str.contains(search_term, case=False, na=False)) |
-            (self.books_df['autorius'].str.contains(search_term, case=False, na=False)) |
-            (self.books_df['metai'].astype(str).str.contains(search_term, case=False, na=False)) |
-            (self.books_df['zanras'].str.contains(search_term, case=False, na=False)) |
-            (self.books_df['ISBN'].str.contains(search_term, case=False, na=False)) |
-            (self.books_df['pastabos'].str.contains(search_term, case=False, na=False)) |
-            (self.books_df['statusas'].str.contains(search_term, case=False, na=False))
-            ]
-
-        tree = window.children['!frame'].children['!treeview']
+    def filter_books(self, search_entry, tree):
+        search_term = search_entry.get().lower()
+        books = self.load_books()  
 
         for item in tree.get_children():
             tree.delete(item)
 
-        for index, row in filtered_books.iterrows():
-            tree.insert("", "end", values=(
-                row['knygos_pavadinimas'],
-                row['autorius'],
-                row['metai'],
-                row['ISBN'],
-                row['zanras'],
-                row['pastabos'],
-                row['statusas']
-            ))
+        for row in books:
+            if any(search_term in str(value).lower() for value in row):
+                tree.insert("", "end", values=row)
 
     def open_book_profile(self, event):
         if event is not None:
@@ -234,35 +224,24 @@ class Books:
                                 lambda: self.confirm_delete_from_profile(selected_book[0], selected_book[3],
                                                                          new_window))
 
-    def reserve_book(self, knygos_pavadinimas):
-        if hasattr(self, 'reader_card_number') and self.reader_card_number:
-            reader_card_number = self.reader_card_number
-        else:
-            reader_card_number = tk.simpledialog.askstring("Skaitytojo kortelė",
-                                                           "Įveskite savo skaitytojo kortelės numerį:")
+        def reserve_book(self, knygos_pavadinimas):
+            reader_card_number = tk.simpledialog.askstring("Skaitytojo kortelė", "Įveskite savo skaitytojo kortelės numerį:")
+            today = datetime.now()
+            reservation_end = today + datetime.Timedelta(hours=4)
 
-            if not reader_card_number:
-                messagebox.showerror("Klaida", "Skaitytojo kortelės numeris neįvestas.")
-                return
+            try:
+                cursor = self.connection.cursor()
+                # Atkreipkite dėmesį į vietos užpildymą `?`, kad būtų išvengta SQL injekcijų.
+                cursor.execute("""
+                    UPDATE books 
+                    SET statusas = ? 
+                    WHERE knygos_pavadinimas = ?
+                """, (f"Rezervuota {reader_card_number} iki {reservation_end.strftime('%Y-%m-%d %H:%M')}", knygos_pavadinimas))
+                self.connection.commit()
+                messagebox.showinfo("Sėkmė", f"Knyga '{knygos_pavadinimas}' rezervuota iki {reservation_end.strftime('%Y-%m-%d %H:%M')}.")
+            except Exception as e:
+                messagebox.showerror("Klaida", f"Rezervavimo klaida: {e}")
 
-            self.reader_card_number = reader_card_number
-
-        today = datetime.now()
-        reservation_end = today + pd.Timedelta(hours=4)
-
-        if self.get_current_reader(knygos_pavadinimas) is not None:
-            messagebox.showerror("Klaida", "Ši knyga jau rezervuota arba užimta.")
-            return
-
-        reservation_status = f"Rezervuota {reader_card_number} iki {reservation_end.strftime('%Y-%m-%d %H:%M')}"
-        self.books_df.loc[
-            self.books_df['knygos_pavadinimas'] == knygos_pavadinimas.strip().title(), 'statusas'] = reservation_status
-        self.books_df.to_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv", index=False, encoding='utf-8')
-
-        messagebox.showinfo("Sėkmė",
-                            f"Knyga '{knygos_pavadinimas}' rezervuota iki {reservation_end.strftime('%Y-%m-%d %H:%M')}.")
-
-        self.open_book_profile(None)
 
     def check_late_books(self, reader_card_number):
         self.reading_history_df['knygos_grazinimo_data'] = pd.to_datetime(
