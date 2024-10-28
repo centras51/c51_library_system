@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-import pandas as pd
+import sqlite3
 from datetime import datetime
 import re
 
@@ -10,23 +10,38 @@ class Books:
         self.root = root
         self.is_anonymous = is_anonymous
         self.is_reader = is_reader
-        self.books_df = self.load_books()
-        self.readers_df = self.load_readers()
-        self.reading_history_df = self.load_reading_history()
         self.selected_book = None
+        self.connection = self.connect_to_db()
+
+    def connect_to_db(self):
+        return sqlite3.connect("D:\\CodeAcademy\\c51_library_system\\data_bases\\library_db.db")
 
     def load_books(self):
         try:
-            df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-            required_columns = {'knygos_pavadinimas', 'autorius', 'metai', 'ISBN', 'zanras', 'pastabos', 'statusas'}
-            if not required_columns.issubset(df.columns):
-                messagebox.showerror("Klaida", "Trūksta būtinų stulpelių knygų duomenų bazėje.")
-                return pd.DataFrame()
-            df['knygos_pavadinimas'] = df['knygos_pavadinimas'].str.strip().str.title()
-            return df
-        except FileNotFoundError:
-            messagebox.showerror("Klaida", "Knygų duomenų bazės failas nerastas.")
-            return pd.DataFrame()
+            cursor = self.connection.cursor()
+            query = """SELECT 
+                        knygos_id as 'Knygos ID', 
+                        authors.vardas_pavarde as 'Autoriaus vardas', 
+                        authors.pavarde as 'Autoriaus pavardė', 
+                        knygos_pavadinimas as 'Knygos pavadinimas', 
+                        metai as 'Metai', 
+                        zanras as 'Žanras', 
+                        books.ISBN, 
+                        books.pastabos as 'Knygos aprašymas', 
+                        books.statusas as 'Statusas' 
+                    from 
+                        books 
+                    join 
+                        authors 
+                    WHERE 
+                        books.author_id = authors.author_id"""
+            cursor.execute(query)
+            books = cursor.fetchall()
+            cursor.close()
+            return books  
+        except Exception as e:
+            messagebox.showerror("Klaida", f"Knygų įkėlimo klaida: {e}")
+            return []
 
     def load_readers(self):
         try:
