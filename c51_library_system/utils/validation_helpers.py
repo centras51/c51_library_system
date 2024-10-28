@@ -15,3 +15,4 @@ class Validator:
         return reader_last_name.isalpha()
     
     
+    
