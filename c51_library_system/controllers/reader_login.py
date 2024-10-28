@@ -2,10 +2,7 @@ import tkinter as tk
 import sqlite3
 from tkinter import messagebox
 from .reader import Reader
-from utils.validation_helpers import Validator
 from ui.ui_helpers import set_background
-from utils.general_helpers import Generator
-from utils.csv_helpers import CsvProcessor
 from utils.navigation_helpers import Navigator
 from utils.authenticators import Authenticator
 
@@ -13,9 +10,6 @@ from utils.authenticators import Authenticator
 class ReaderLogin:
     def __init__(self, root):
         self.root = root
-        self.validator = Validator()
-        self.generator = Generator()
-        self.csvprocessor = CsvProcessor()
         self.navigator = Navigator()
         self.authenticator = Authenticator()
         self.canvas = None
@@ -67,7 +61,7 @@ class ReaderLogin:
             reader_card_number = self.get_reader_card_number(reader_username)
             if reader_card_number:
                 self.reader = Reader(self.root, reader_card_number)
-                messagebox.showinfo("Prisijungta", "Prisijungimas sėkmingas!")
+                messagebox.showinfo(f"Prisijungta", "Prisijungimas sėkmingas!")
             else:
                 messagebox.showerror("Klaida", "Skaitytojo kortelės numeris nerastas.")
         else:

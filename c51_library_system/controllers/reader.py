@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
-from PIL import Image, ImageTk
+from ui.ui_helpers import set_background
 from .books import Books
+from utils.navigation_helpers import Navigator
 
 
 class Reader:
@@ -11,27 +12,16 @@ class Reader:
         self.password = None
         self.reader_card_number = reader_card_number 
         self.books_instance = Books(self.root, is_reader=True)
+        self.navigator = Navigator()
         self.button_width = 30  
         self.button_height = 3 
-
-        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
-        self.background_photo = ImageTk.PhotoImage(self.background_image)
-
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
-        
-        self.show_menu()
 
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
         
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
-
+        self.canvas, self.background_image = set_background(self.root)
+        
     def show_menu(self):
         self.clear_window()
 
@@ -44,7 +34,7 @@ class Reader:
 
         self.add_button("Peržiūrėti knygas", 700, 200, self.books_instance.show_books)  
         self.add_button("Skaitymo istorija", 700, 350, self.show_history)
-        self.add_button("Atgal į prisijungimo langą", 700, 500, self.go_back_to_login)  
+        self.add_button("Atgal į prisijungimo langą", 700, 500, lambda: self.navigator.go_back_to_login(self.root))  
         self.add_button("Išeiti iš sistemos", 700, 650, self.root.quit) 
 
     def show_history(self):
