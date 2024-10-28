@@ -5,3 +5,4 @@ c51_library_system/.gitignore
 c51_library_system/__pycache__/librarian.cpython-312.pyc
 c51_library_system/__pycache__/reader.cpython-312.pyc
 c51_library_system/__pycache__/readeregistration.cpython-312.pyc
+data_bases/library_db.db
