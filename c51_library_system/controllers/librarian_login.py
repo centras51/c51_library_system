@@ -1,72 +1,86 @@
+import sqlite3
 import tkinter as tk
 from tkinter import messagebox
 from .librarian import Librarian
 import pandas as pd
-from PIL import Image, ImageTk
+from ui.ui_helpers import set_background
+from utils.navigation_helpers import Navigator
+from utils.authenticators import Authenticator
 
 
 class LibrarianLogin:
     def __init__(self, root):
         self.root = root
+        self.navigator = Navigator()
+        self.authenticator = Authenticator()
+        self.canvas = None
+        self.background_image = None
         self.button_width = 60
         self.button_height = 3
         self.entry_width = 30
         self.entry_font = ("Arial", 18)
 
-        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
-        self.background_photo = ImageTk.PhotoImage(self.background_image)
-
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
-
-    def username_password_verification(self, username, password):
-        try:
-            usr_psw_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\librarians_db.csv")
-            user_info = usr_psw_df.loc[usr_psw_df['username'] == username]
-            if not user_info.empty and user_info['password'].values[0] == password:
-                return user_info[['vardas', 'pavarde', 'telefonas', 'email']].values[
-                    0]  # Grąžina bibliotekininko informaciją
-            return None
-        except FileNotFoundError:
-            messagebox.showerror("Klaida", "Duomenų bazė nerasta")
-            return None
+    def clear_window(self):
+            for widget in self.root.winfo_children():
+                widget.destroy()
+            self.canvas, self.background_image = set_background(self.root)
 
     def librarian_login_screen(self, back_function):
-        self.clear_window()
+            self.clear_window()
 
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
+            if not self.canvas:
+                messagebox.showerror("Klaida", "Nepavyko sukurti `canvas` elemento.")
+                return
+            
+            self.canvas.create_text(700, 100, text="Bibliotekininko prisijungimas", font=("Arial", 30, "bold"),
+                                    fill="white")
 
-        self.canvas.create_text(700, 100, text="Bibliotekininko prisijungimas", font=("Arial", 30, "bold"),
-                                fill="white")
+            self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20, "bold"), fill="white")
+            self.username_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
+            self.canvas.create_window(700, 250, window=self.username_entry)
 
-        self.canvas.create_text(700, 200, text="Vartotojo vardas", font=("Arial", 20, "bold"), fill="white")
-        self.username_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width)
-        self.canvas.create_window(700, 250, window=self.username_entry)
+            self.canvas.create_text(700, 300, text="Slaptažodis", font=("Arial", 20, "bold"), fill="white")
+            self.password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
+            self.canvas.create_window(700, 350, window=self.password_entry)
 
-        self.canvas.create_text(700, 300, text="Slaptažodis", font=("Arial", 20, "bold"), fill="white")
-        self.password_entry = tk.Entry(self.root, font=self.entry_font, width=self.entry_width, show='*')
-        self.canvas.create_window(700, 350, window=self.password_entry)
+            self.add_button("Prisijungti", 500, self.verify_librarian)
+            self.add_button("Atgal", 650, lambda: back_function())
+            self.add_button("Išeiti iš sistemos", 800, self.root.quit)
+            
+    def verify_librarian(self):
+        librarian_username = self.username_entry.get()
+        librarian_password = self.password_entry.get()
 
-        def verify_librarian():
-            username = self.username_entry.get()
-            password = self.password_entry.get()
+        if self.authenticator.librarian_username_password_verification(librarian_username, librarian_password):
+            librarian_info = self.get_librarian_info(librarian_username)
+            if librarian_info:
+                librarian_id, librarian_name, librarian_last_name, librarian_phone, librarian_email = librarian_info
+                self.librarian = Librarian(self.root, librarian_id, librarian_username)
+                
+                messagebox.showinfo("Prisijungta", f"Prisijungimas sėkmingas! Sveiki, {librarian_name} {librarian_last_name}.")
+                
+                self.librarian.show_menu()
+        else:
+            messagebox.showerror("Prisijungimas nepavyko",
+                                    f"Neteisingas vartotojo {librarian_username} vardas arba slaptažodis.")
 
-            librarian_info = self.username_password_verification(username, password)
-            if librarian_info is not None and librarian_info.size > 0:
-                self.clear_window()
-                librarian = Librarian(self.root, librarian_info)
-                librarian.show_menu()
-            else:
-                messagebox.showerror("Prisijungimas nepavyko",
-                                     f"Neteisingas vartotojo {username} vardas arba slaptažodis.")
+    def get_librarian_info(self, username):
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("""SELECT 
+                                    bibliotekininko_id, vardas, pavarde, telefonas, email 
+                                FROM 
+                                    readers 
+                                WHERE 
+                                    username = ?""", (username,))
+                result = cursor.fetchone()
 
-        self.add_button("Prisijungti", 500, verify_librarian)
-        self.add_button("Atgal", 650, back_function)
-        self.add_button("Išeiti iš sistemos", 800, self.root.quit)
+            return result if result else None
+        except sqlite3.Error as e:
+            messagebox.showerror("Klaida", f"Duomenų bazės klaida: {e}")
+            return None
+    
 
     def add_button(self, text, y_position, command):
         button = tk.Button(self.root, text=text, font=("Arial", 15), width=self.button_width, height=self.button_height,
