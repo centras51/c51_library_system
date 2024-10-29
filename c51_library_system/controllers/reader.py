@@ -6,12 +6,13 @@ from utils.navigation_helpers import Navigator
 
 
 class Reader:
-    def __init__(self, root, reader_card_number):
+    def __init__(self, root, reader_card_number, reader_id):
         self.root = root
         self.username = None
         self.password = None
-        self.reader_card_number = reader_card_number 
-        self.books_instance = Books(self.root, is_reader=True)
+        self.reader_card_number = reader_card_number
+        self.reader_id = reader_id 
+        self.books_instance = Books(self.root, is_reader=True, reader_id=self.reader_id)
         self.navigator = Navigator()
         self.button_width = 30  
         self.button_height = 3 
@@ -38,7 +39,7 @@ class Reader:
         self.add_button("Išeiti iš sistemos", 700, 650, self.root.quit) 
 
     def show_history(self):
-        history = self.books_instance.get_reader_history(self.reader_card_number)
+        history = self.books_instance.get_reader_history(self.reader_id)
 
         history_window = tk.Toplevel(self.root)
         history_window.title("Jūsų skaitymo ir rezervacijų istorija")

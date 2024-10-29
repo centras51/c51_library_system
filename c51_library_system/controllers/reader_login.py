@@ -70,8 +70,8 @@ class ReaderLogin:
         if self.authenticator.username_password_verification(reader_username, reader_password):
             reader_info = self.get_reader_info(reader_username)
             if reader_info:
-                reader_card_number, reader_name, reader_last_name = reader_info
-                self.reader = Reader(self.root, reader_card_number)
+                reader_card_number, reader_id, reader_name, reader_last_name = reader_info
+                self.reader = Reader(self.root, reader_card_number, reader_id)
                 
                 messagebox.showinfo("Prisijungta", f"Prisijungimas sėkmingas! Sveiki, {reader_name} {reader_last_name}.")
                 
@@ -88,7 +88,7 @@ class ReaderLogin:
             cursor = connection.cursor()
 
             # Gauname skaitytojo kortelės numerį, vardą ir pavardę
-            cursor.execute("SELECT skaitytojo_kortele, vardas, pavarde FROM readers WHERE username = ?", (username,))
+            cursor.execute("SELECT skaitytojo_id, skaitytojo_kortele, vardas, pavarde FROM readers WHERE username = ?", (username,))
             result = cursor.fetchone()
 
             if result:
