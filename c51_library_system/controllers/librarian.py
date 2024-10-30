@@ -1,56 +1,51 @@
+import sqlite3
 import tkinter as tk
 from tkinter import simpledialog, messagebox, ttk
-from PIL import Image, ImageTk
-import pandas as pd
+from ui.ui_helpers import set_background
 from .books import Books
+from utils.navigation_helpers import Navigator
 from .reader_registration import ReaderRegistration
 import datetime
 
 
 class Librarian:
-    def __init__(self, root, librarian_info):
+    def __init__(self, root, librarian_info, librarian_id):
         self.root = root
+        self.username = None
+        self.password = None
+        self.librarian_id = librarian_id
         self.librarian_info = librarian_info
         self.books_instance = Books(self.root)
         self.readerregistration_instance = ReaderRegistration(self.root, is_librarian=True)
+        self.navigator = Navigator()
         self.button_width = 30  
         self.button_height = 3  
 
-        self.original_image = Image.open("D:\\CodeAcademy\\c51_library_system\\background\\library.png")
-        self.background_image = self.original_image.resize((1400, 800), Image.Resampling.LANCZOS)
-        self.background_photo = ImageTk.PhotoImage(self.background_image)
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
-
-        self.show_menu()  
 
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
 
+        self.canvas, self.background_image = set_background(self.root)
+
     def show_menu(self):
         self.clear_window()
-
-        self.canvas = tk.Canvas(self.root, width=1400, height=800)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.background_photo, anchor="nw")
 
         self.canvas.create_text(250, 50, text=f"Bibliotekininkas: {self.librarian_info[0]} {self.librarian_info[1]}, Tel: {self.librarian_info[2]}, El. paštas: {self.librarian_info[3]}", font=("Arial", 15, "bold"), fill="yellow", anchor="nw")
 
         self.add_button("Peržiūrėti knygas", 250, 200, self.books_instance.show_books)  
         self.add_button("Pridėti knygą", 250, 350, self.books_instance.add_book)  
-        self.add_button("Išduotos knygos", 250, 500, self.lend_books)  
+        self.add_button("Išduotos knygos", 250, 500, self.books_instance.lend_books)  
         self.add_button("Knygų statistika", 250, 650, self.books_instance.show_statistics)  
 
         self.add_button("Skaitytojų sąrašas", 700, 200, self.reader_list)  
         self.add_button("Pridėti skaitytoją", 700, 350, self.readerregistration_instance.register)  
-        self.add_button("Pašalinti knygą", 700, 500, self.books_instance.remove_book)  
+        self.add_button("Pašalinti knygą", 700, 500, self.books_instance.show_books)  
         self.add_button("Nurašytos knygos", 700, 650, self.books_instance.show_removed_books)  
 
         self.add_button("Peržiūrėti darbuotojus", 1150, 200, self.show_librarians)  
         self.add_button("Ištrinti skaitytojai", 1150, 350, self.show_removed_readers)  
-        self.add_button("Atgal į prisijungimo langą", 1150, 500, self.go_back_to_login)  
+        self.add_button("Atgal į prisijungimo langą", 1150, 500, lambda: self.navigator.go_back_to_login(self.root))  
         self.add_button("Išeiti iš sistemos", 1150, 650, self.root.quit)  
 
     def add_button(self, text, x_position, y_position, command):
@@ -61,11 +56,6 @@ class Librarian:
 
         button.bind("<Enter>", lambda e: button.config(bg="darkblue", fg="white"))
         button.bind("<Leave>", lambda e: button.config(bg="lightblue", fg="black"))
-
-    def go_back_to_login(self):
-        from librarian_login import LibrarianLogin
-        librarian_login = LibrarianLogin(self.root)
-        librarian_login.librarian_login_screen(back_function=self.go_back_to_login)
 
     def reader_list(self):
         new_window = tk.Toplevel(self.root)
@@ -87,7 +77,7 @@ class Librarian:
         hsb = tk.Scrollbar(frame, orient="horizontal")
         hsb.pack(side="bottom", fill="x")
 
-        self.reader_tree = ttk.Treeview(frame, columns=("Vardas", "Pavardė", "El. paštas", "Telefonas", "Skaitytojo kortelė", "Username"), show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        self.reader_tree = ttk.Treeview(frame, columns=("Vardas", "Pavardė", "El. paštas", "Telefonas"), show="headings", yscrollcommand=vsb.set, xscrollcommand=hsb.set)
         self.reader_tree.pack(fill=tk.BOTH, expand=True)
 
         vsb.config(command=self.reader_tree.yview)
@@ -149,59 +139,6 @@ class Librarian:
     def get_books_list(self):
         books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
         return books_df['knygos_pavadinimas'].tolist()
-
-    def lend_books(self):
-        books_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\books_db.csv")
-        readers_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\readers_db.csv")
-        reading_history_df = pd.read_csv("D:\\CodeAcademy\\c51_library_system\\CSVs\\reading_history.csv")
-
-        reading_history_df['knygos_grazinimo_data'] = pd.to_datetime(reading_history_df['knygos_grazinimo_data'], errors='coerce')
-
-        merged_df = pd.merge(reading_history_df, readers_df[['skaitytojo_kortele', 'vardas', 'pavarde']], on='skaitytojo_kortele', how='left')
-
-        final_df = pd.merge(merged_df, books_df[['knygos_pavadinimas', 'autorius']], on='knygos_pavadinimas', how='left')
-
-        filtered_books_df = final_df[(final_df['faktine_grazinimo_data'].isna()) & (final_df['knygos_pavadinimas'].isin(books_df[books_df['statusas'] != 'laisva']['knygos_pavadinimas']))]
-
-        new_window = tk.Toplevel(self.root)
-        new_window.title("Išduotų į namus knygų sąrašas")
-
-        tree = ttk.Treeview(new_window, columns=("Vardas", "Pavardė", "Skaitytojo Kortelė", "Autorius", "Knygos Pavadinimas", "Paėmimo Data", "Grąžinimo Data"), show="headings")
-
-        tree.heading("Vardas", text="Vardas")
-        tree.heading("Pavardė", text="Pavardė")
-        tree.heading("Skaitytojo Kortelė", text="Skaitytojo Kortelė")
-        tree.heading("Autorius", text="Autorius")
-        tree.heading("Knygos Pavadinimas", text="Knygos Pavadinimas")
-        tree.heading("Paėmimo Data", text="Paėmimo Data")
-        tree.heading("Grąžinimo Data", text="Grąžinimo Data")
-
-        tree.column("Vardas", width=100)
-        tree.column("Pavardė", width=100)
-        tree.column("Skaitytojo Kortelė", width=120)
-        tree.column("Autorius", width=150)
-        tree.column("Knygos Pavadinimas", width=200)
-        tree.column("Paėmimo Data", width=120)
-        tree.column("Grąžinimo Data", width=120)
-
-        for index, row in filtered_books_df.iterrows():
-            tree.insert("", tk.END, values=(
-                row["vardas"], 
-                row["pavarde"], 
-                row["skaitytojo_kortele"], 
-                row["autorius"], 
-                row["knygos_pavadinimas"], 
-                row["knygos_paemimo_data"], 
-                row["knygos_grazinimo_data"]
-            ))
-
-        tree.pack(fill=tk.BOTH, expand=True)
-        new_window.mainloop()
-
-
-
-
-
 
     def open_book_profile(self, book_title):
         self.books_instance.open_book_profile(None)

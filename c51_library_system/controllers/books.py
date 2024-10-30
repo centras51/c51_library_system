@@ -233,6 +233,15 @@ class Books:
         except Exception as e:
             messagebox.showerror("Klaida", f"Grąžinant knygą įvyko klaida: {e}")
 
+    def add_book(self):
+        """Diegiama"""
+    
+    def lend_books(self):
+        """Diegiama"""
+    
+    def show_statistics(self):
+        """Diegiama"""
+    
     def confirm_delete(self, knygos_id, deletion_reason):
         try:
             with self.connection as conn:
